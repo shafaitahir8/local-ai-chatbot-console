@@ -1,0 +1,25 @@
+{
+  "name": "Anthropic Claude",
+  "provider": "claude",
+  "description": "Template for Anthropic Claude models",
+  "required_fields": ["api_key"],
+  "optional_fields": ["model", "temperature", "max_tokens"],
+  "default_model": "claude-sonnet-4-20250514",
+  "default_temperature": 0.7,
+  "default_max_tokens": 2000,
+  "default_system_prompt": "You are Claude, a helpful AI assistant created by Anthropic. You aim to be helpful, harmless, and honest. Provide thoughtful, accurate responses to user questions.",
+  "supports_memory": true,
+  "supports_temperature": true,
+  "supports_streaming": true,
+  "available_models": [
+    "claude-sonnet-4-20250514",
+    "claude-opus-4-20250514",
+    "claude-3-7-sonnet-20250219",
+    "claude-3-5-sonnet-20241022",
+    "claude-3-5-haiku-20241022",
+    "claude-3-opus-20240229",
+    "claude-3-sonnet-20240229",
+    "claude-3-haiku-20240307"
+  ],
+  "notes": "Requires Anthropic API key from console.anthropic.com"
+}

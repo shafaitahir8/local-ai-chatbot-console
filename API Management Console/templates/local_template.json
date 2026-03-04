@@ -1,0 +1,28 @@
+{
+  "name": "Local LLM",
+  "provider": "local",
+  "description": "Template for local LLM servers (llama.cpp, Ollama, LM Studio, etc.)",
+  "required_fields": [],
+  "optional_fields": ["base_url", "model", "temperature", "max_tokens", "api_key"],
+  "default_model": "local",
+  "default_temperature": 0.7,
+  "default_max_tokens": 2000,
+  "default_base_url": "http://localhost:8080",
+  "default_system_prompt": "You are a helpful AI assistant running locally. Provide accurate, helpful responses to user questions.",
+  "supports_memory": true,
+  "supports_temperature": true,
+  "supports_streaming": true,
+  "available_models": [
+    "local",
+    "llama-3.3-70b",
+    "llama-3.2-3b",
+    "llama-3.1-8b",
+    "mistral-7b",
+    "mixtral-8x7b",
+    "codellama-34b",
+    "phi-3",
+    "qwen-2.5",
+    "deepseek-coder"
+  ],
+  "notes": "Requires a local LLM server running with OpenAI-compatible API endpoints"
+}

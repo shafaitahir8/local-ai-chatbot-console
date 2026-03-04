@@ -1,0 +1,26 @@
+{
+  "name": "Customer Support Bot",
+  "provider": "openai",
+  "description": "Pre-configured template for customer support chatbots",
+  "required_fields": [
+    "api_key"
+  ],
+  "optional_fields": [
+    "model",
+    "temperature",
+    "max_tokens",
+    "company_name"
+  ],
+  "default_model": "gpt-4.1-mini",
+  "default_temperature": 0.5,
+  "default_max_tokens": 1500,
+  "default_system_prompt": "You are a helpful customer support assistant for {company_name}. Your role is to:\n1. Answer customer questions accurately and professionally\n2. Help resolve issues and concerns\n3. Provide information about products and services\n4. Escalate complex issues when necessary\n\nAlways be polite, patient, and helpful. If you don't know something, say so and offer to connect the customer with a human agent.",
+  "supports_memory": true,
+  "supports_temperature": true,
+  "supports_streaming": true,
+  "available_models": [
+    "gpt-4.1-mini",
+    "gpt-4.1",
+    "gpt-4o-mini"
+  ]
+}
