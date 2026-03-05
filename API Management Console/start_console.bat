@@ -127,13 +127,14 @@ if %ERRORLEVEL% equ 0 (
         echo        Found !MODEL_COUNT! installed model^(s^).
     ) else (
         echo [WARN] No Ollama models installed.
-        echo        Run setup_ollama.bat to install models.
+        echo        Run scripts\setup_ollama.bat to install models.
     )
     echo [INFO] Ollama ready, !MODEL_COUNT! models >> "%LOGFILE%"
 ) else (
     echo [WARN] Ollama not installed - local LLM disabled
     echo        Install from https://ollama.ai for local models
     echo [WARN] Ollama not found >> "%LOGFILE%"
+    echo        To install models later, run scripts\setup_ollama.bat
 )
 
 REM ==================== STEP 6: Start Server ====================
