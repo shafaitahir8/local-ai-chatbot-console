@@ -185,6 +185,22 @@ static_path = os.path.join(os.path.dirname(__file__), "static")
 if os.path.exists(static_path):
     app.mount("/static", StaticFiles(directory=static_path), name="static")
 
+# React frontend static files
+frontend_dist_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "frontend", "dist")
+frontend_assets_path = os.path.join(frontend_dist_path, "assets")
+frontend_index_path = os.path.join(frontend_dist_path, "index.html")
+
+# Check if React frontend build exists
+REACT_FRONTEND_AVAILABLE = os.path.exists(frontend_index_path)
+if REACT_FRONTEND_AVAILABLE:
+    logger.info("React frontend found, serving from frontend/dist")
+    app.mount("/assets", StaticFiles(directory=frontend_assets_path), name="frontend-assets")
+    # Serve favicon if exists
+    if os.path.exists(os.path.join(frontend_dist_path, "favicon.svg")):
+        app.mount("/favicon.svg", StaticFiles(directory=frontend_dist_path), name="favicon")
+else:
+    logger.info("React frontend not found, using fallback UI")
+
 
 @app.get("/", response_class=RedirectResponse)
 async def root():
@@ -196,6 +212,11 @@ async def root():
 @app.get("/admin/{path:path}", response_class=HTMLResponse)
 async def admin_dashboard(request: Request, path: str = ""):
     """Serve the admin dashboard."""
+    # Serve React frontend if available
+    if REACT_FRONTEND_AVAILABLE:
+        with open(frontend_index_path, "r", encoding="utf-8") as f:
+            return f.read()
+    # Fallback to inline HTML
     return get_admin_html()
 
 
