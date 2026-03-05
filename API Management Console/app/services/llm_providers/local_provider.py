@@ -7,10 +7,16 @@ import subprocess
 import asyncio
 import logging
 from typing import List, Optional, AsyncIterator
+from concurrent.futures import ThreadPoolExecutor
 import httpx
 from .base_provider import BaseLLMProvider, ChatMessage, ChatResponse, EmbeddingResponse
 
 logger = logging.getLogger(__name__)
+
+# Module-level singleton for sentence-transformers model (lazy loaded)
+_sentence_model = None
+_sentence_model_lock = asyncio.Lock()
+_thread_executor = ThreadPoolExecutor(max_workers=2)
 
 
 class LocalProvider(BaseLLMProvider):
@@ -399,9 +405,27 @@ class LocalProvider(BaseLLMProvider):
         except Exception as e:
             # Fallback: use sentence-transformers locally if available
             try:
+                global _sentence_model
                 from sentence_transformers import SentenceTransformer
-                model = SentenceTransformer('all-MiniLM-L6-v2')
-                embeddings = model.encode(texts).tolist()
+                
+                # Use singleton pattern with async lock to prevent blocking
+                async with _sentence_model_lock:
+                    if _sentence_model is None:
+                        logger.info("Loading sentence-transformers model (first time, may take a moment)...")
+                        # Load model in thread to avoid blocking
+                        loop = asyncio.get_event_loop()
+                        _sentence_model = await loop.run_in_executor(
+                            _thread_executor,
+                            lambda: SentenceTransformer('all-MiniLM-L6-v2')
+                        )
+                        logger.info("Sentence-transformers model loaded successfully")
+                
+                # Run encoding in thread executor to avoid blocking async
+                loop = asyncio.get_event_loop()
+                embeddings = await loop.run_in_executor(
+                    _thread_executor,
+                    lambda: _sentence_model.encode(texts).tolist()
+                )
                 return EmbeddingResponse(
                     embeddings=embeddings,
                     tokens_used=sum(len(t.split()) for t in texts),

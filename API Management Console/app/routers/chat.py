@@ -12,7 +12,7 @@ from ..services.bot_service import bot_service
 from ..services.analytics_service import analytics_service
 from .auth import rate_limit_dependency
 
-router = APIRouter(prefix="/bot", tags=["chat"])
+router = APIRouter(prefix="/api/bot", tags=["chat"])
 
 
 async def get_client_info(request: Request) -> dict:
