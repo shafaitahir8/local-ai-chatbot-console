@@ -106,8 +106,47 @@ REM Create data directories
 if not exist "data" mkdir data
 if not exist "data\bots" mkdir data\bots
 
-REM ==================== STEP 5: Ollama (Optional) ====================
-echo [5/6] Checking Ollama (local LLM)...
+REM ==================== STEP 5: Cloudflare Tunnel ====================
+echo [5/7] Checking Cloudflare Tunnel...
+if not exist "tools" mkdir tools
+
+set "CLOUDFLARE_BIN="
+if exist "tools\cloudflared.exe" (
+    set "CLOUDFLARE_BIN=%CD%\tools\cloudflared.exe"
+) else (
+    where cloudflared >nul 2>&1
+    if %ERRORLEVEL% equ 0 (
+        for /f "tokens=*" %%i in ('where cloudflared') do (
+            set "CLOUDFLARE_BIN=%%i"
+            goto :cf_found
+        )
+    ) else (
+        echo        cloudflared not found, downloading portable binary...
+        powershell -Command "try { Invoke-WebRequest -UseBasicParsing -Uri 'https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-windows-amd64.exe' -OutFile 'tools\\cloudflared.exe'; exit 0 } catch { exit 1 }" >nul 2>&1
+        if !ERRORLEVEL! equ 0 (
+            set "CLOUDFLARE_BIN=%CD%\tools\cloudflared.exe"
+            echo        cloudflared downloaded to tools\cloudflared.exe
+        ) else (
+            echo [WARN] Could not download cloudflared. Tunnel auto-start may be unavailable.
+            echo [WARN] cloudflared download failed >> "%LOGFILE%"
+        )
+    )
+)
+
+:cf_found
+if defined CLOUDFLARE_BIN (
+    set "CLOUDFLARED_PATH=%CLOUDFLARE_BIN%"
+    set "AUTO_CLOUDFLARE_TUNNEL=true"
+    set "TUNNEL_ORIGIN_URL=http://localhost:8000"
+    echo        Cloudflare tunnel ready via: %CLOUDFLARE_BIN%
+    echo [INFO] cloudflared path: %CLOUDFLARE_BIN% >> "%LOGFILE%"
+) else (
+    echo [WARN] Cloudflare tunnel binary unavailable - public endpoint may be missing.
+    echo [WARN] cloudflared unavailable >> "%LOGFILE%"
+)
+
+REM ==================== STEP 6: Ollama (Optional) ====================
+echo [6/7] Checking Ollama (local LLM)...
 where ollama >nul 2>&1
 if %ERRORLEVEL% equ 0 (
     REM Check if Ollama is running using PowerShell (more reliable on Windows)
@@ -137,8 +176,8 @@ if %ERRORLEVEL% equ 0 (
     echo        To install models later, run scripts\setup_ollama.bat
 )
 
-REM ==================== STEP 6: Start Server ====================
-echo [6/6] Starting server...
+REM ==================== STEP 7: Start Server ====================
+echo [7/7] Starting server...
 echo.
 
 REM Test app import first
