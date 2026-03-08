@@ -1,0 +1,8 @@
+============================================ 
+ Startup Log - Sat 03/07/2026 14:25:01.27 
+============================================ 
+[INFO] Working directory: D:\JupyterNotebooks\Chatbots\API Management Console 
+[INFO] Python 3.14.0 
+[INFO] venv activated 
+[INFO] Ollama ready, 5 models 
+[INFO] Starting uvicorn 

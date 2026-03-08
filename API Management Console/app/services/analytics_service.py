@@ -61,10 +61,16 @@ class AnalyticsService:
         )
         db.add(message)
         
-        # Update bot message count
+        # Update bot message count and tracked metrics
         bot = db.query(Bot).filter(Bot.id == bot_id).first()
         if bot:
-            bot.messages_used = (bot.messages_used or 0) + 1
+            old_count = bot.messages_used or 0
+            bot.messages_used = old_count + 1
+            bot.token_usage = (bot.token_usage or 0) + tokens_prompt + tokens_completion
+            if old_count == 0:
+                bot.avg_latency = latency_ms / 1000.0
+            else:
+                bot.avg_latency = ((bot.avg_latency or 0) * old_count + latency_ms / 1000.0) / (old_count + 1)
         
         # Update daily analytics
         await self._update_daily_analytics(

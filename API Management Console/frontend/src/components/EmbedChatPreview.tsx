@@ -71,18 +71,18 @@ export function EmbedChatPreview({ botName, botId, accentColor = "#00d4aa" }: Em
   };
 
   return (
-    <div className="bg-card border border-border rounded-lg overflow-hidden w-full max-w-md">
+    <div className="bg-card border border-border rounded-xl overflow-hidden w-full max-w-none shadow-lg">
       {/* Header */}
-      <div className="px-4 py-3 border-b border-border flex items-center gap-2" style={{ borderBottomColor: accentColor + "33" }}>
-        <div className="w-7 h-7 rounded-full flex items-center justify-center" style={{ background: accentColor + "20" }}>
-          <BotIcon className="w-3.5 h-3.5" style={{ color: accentColor }} />
+      <div className="px-5 py-4 border-b border-border flex items-center gap-3 bg-secondary/40" style={{ borderBottomColor: accentColor + "33" }}>
+        <div className="w-9 h-9 rounded-full flex items-center justify-center" style={{ background: accentColor + "20" }}>
+          <BotIcon className="w-4 h-4" style={{ color: accentColor }} />
         </div>
-        <span className="font-mono text-xs font-semibold text-foreground">{botName}</span>
+        <span className="font-mono text-sm font-semibold text-foreground">{botName}</span>
         <div className="ml-auto w-2 h-2 rounded-full animate-pulse-glow" style={{ background: accentColor }} />
       </div>
 
       {/* Messages */}
-      <div className="h-64 overflow-y-auto p-3 space-y-3 scanline">
+      <div className="h-[460px] overflow-y-auto p-4 space-y-3 scanline">
         {messages.map((msg, i) => (
           <motion.div
             key={i}
@@ -131,7 +131,7 @@ export function EmbedChatPreview({ botName, botId, accentColor = "#00d4aa" }: Em
       </div>
 
       {/* Input */}
-      <div className="p-3 border-t border-border">
+      <div className="p-4 border-t border-border bg-secondary/20">
         <div className="flex gap-2">
           <input
             value={input}
@@ -139,12 +139,12 @@ export function EmbedChatPreview({ botName, botId, accentColor = "#00d4aa" }: Em
             onKeyDown={(e) => e.key === "Enter" && send()}
             placeholder="Type a message..."
             disabled={loading}
-            className="flex-1 bg-secondary border border-border rounded-md px-3 py-2 font-mono text-xs text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/50 transition-colors disabled:opacity-50"
+            className="flex-1 bg-secondary border border-border rounded-md px-3 py-2.5 font-mono text-xs text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/50 transition-colors disabled:opacity-50"
           />
           <button
             onClick={send}
             disabled={loading || !input.trim()}
-            className="px-3 py-2 rounded-md text-primary-foreground transition-opacity hover:opacity-90 disabled:opacity-50"
+            className="px-4 py-2.5 rounded-md text-primary-foreground transition-opacity hover:opacity-90 disabled:opacity-50"
             style={{ background: accentColor }}
           >
             <Send className="w-3.5 h-3.5" />

@@ -42,8 +42,8 @@ export interface BotUpdate {
   temperature?: number;
   memory_enabled?: boolean;
   message_limit?: number | null;
-  expires_at?: string | null;
-  status?: BotStatus;
+  expiration_date?: string | null;
+  is_active?: boolean;
   accent_color?: string;
   api_key?: string;
   model?: string;

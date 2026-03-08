@@ -2,6 +2,9 @@
 Bot management API routes.
 """
 
+import os
+import subprocess
+from pathlib import Path
 from typing import Optional
 from datetime import datetime
 from fastapi import APIRouter, Depends, HTTPException, status, UploadFile, File, Form, Query
@@ -155,9 +158,128 @@ async def toggle_bot_status(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Bot not found"
         )
-    
-    bot = bot_service.update_bot(db, bot_id, is_active=not bot.is_active)
+
+    if bot.is_active:
+        bot = bot_service.update_bot(db, bot_id, is_active=False)
+    else:
+        # Recover from expiry when explicitly toggled on.
+        is_expired = bool(bot.expiration_date and bot.expiration_date < datetime.utcnow())
+        bot = bot_service.update_bot(
+            db,
+            bot_id,
+            is_active=True,
+            expiration_date=None if is_expired else bot.expiration_date
+        )
+
     return BotResponse(**bot.to_dict())
+
+
+@router.post("/{bot_id}/expire", response_model=BotResponse)
+async def expire_bot(
+    bot_id: str,
+    db: Session = Depends(get_db),
+    current_user: str = Depends(get_current_user)
+):
+    """Expire a bot immediately and move it to expired state."""
+    bot = bot_service.get_bot(db, bot_id)
+    if not bot:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Bot not found"
+        )
+
+    updated = bot_service.update_bot(
+        db,
+        bot_id,
+        is_active=False,
+        expiration_date=datetime.utcnow()
+    )
+    return BotResponse(**updated.to_dict())
+
+
+@router.post("/{bot_id}/recover", response_model=BotResponse)
+async def recover_bot(
+    bot_id: str,
+    db: Session = Depends(get_db),
+    current_user: str = Depends(get_current_user)
+):
+    """Recover an expired/inactive bot back to active state."""
+    bot = bot_service.get_bot(db, bot_id)
+    if not bot:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Bot not found"
+        )
+
+    updated = bot_service.update_bot(
+        db,
+        bot_id,
+        is_active=True,
+        expiration_date=None
+    )
+    return BotResponse(**updated.to_dict())
+
+
+@router.get("/{bot_id}/model-files")
+async def get_bot_model_files_folder(
+    bot_id: str,
+    db: Session = Depends(get_db),
+    current_user: str = Depends(get_current_user)
+):
+    """Return the local model files folder for this bot."""
+    bot = bot_service.get_bot(db, bot_id)
+    if not bot:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Bot not found"
+        )
+
+    folder = bot_service.get_bot_model_files_dir(bot)
+    return {
+        "bot_id": bot_id,
+        "path": folder,
+        "exists": os.path.isdir(folder)
+    }
+
+
+@router.post("/{bot_id}/model-files/open")
+async def open_bot_model_files_folder(
+    bot_id: str,
+    db: Session = Depends(get_db),
+    current_user: str = Depends(get_current_user)
+):
+    """Open this bot's model files folder in the host file explorer."""
+    bot = bot_service.get_bot(db, bot_id)
+    if not bot:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Bot not found"
+        )
+
+    folder = bot_service.get_bot_model_files_dir(bot)
+    if not os.path.isdir(folder):
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Model files folder not found"
+        )
+
+    try:
+        if os.name == "nt":
+            subprocess.Popen(["explorer", folder])
+        elif os.name == "posix":
+            if Path("/usr/bin/open").exists():
+                subprocess.Popen(["open", folder])
+            else:
+                subprocess.Popen(["xdg-open", folder])
+        else:
+            raise RuntimeError("Unsupported OS for opening file explorer")
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Could not open folder: {str(e)}"
+        )
+
+    return {"message": "Folder opened", "path": folder}
 
 
 @router.post("/{bot_id}/knowledge", status_code=status.HTTP_201_CREATED)
@@ -212,6 +334,20 @@ async def upload_knowledge_file(
     try:
         content = await file.read()
         text = content.decode('utf-8')
+
+        # Save original upload into model-specific bot folder.
+        bot = bot_service.get_bot(db, bot_id)
+        if not bot:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Bot not found"
+            )
+        model_folder = bot_service.get_bot_model_files_dir(bot)
+        timestamp = datetime.utcnow().strftime("%Y%m%d_%H%M%S")
+        safe_name = filename.replace("\\", "_").replace("/", "_")
+        save_path = os.path.join(model_folder, f"{timestamp}_{safe_name}")
+        with open(save_path, "wb") as f:
+            f.write(content)
         
         # Handle JSON specially
         if ext == '.json':

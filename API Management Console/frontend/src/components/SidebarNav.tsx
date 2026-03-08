@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Bot, BarChart3, Plus, Settings, Terminal, LogOut } from "lucide-react";
+import { Bot, BarChart3, Plus, Settings, Terminal, LogOut, KeyRound } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { logout } from "@/lib/api";
 import { useNavigate } from "react-router-dom";
@@ -13,6 +13,7 @@ const navItems = [
   { id: "bots", label: "Bots", icon: Bot },
   { id: "analytics", label: "Analytics", icon: BarChart3 },
   { id: "create", label: "New Bot", icon: Plus },
+  { id: "api-keys", label: "API Keys", icon: KeyRound },
   { id: "settings", label: "Settings", icon: Settings },
 ];
 

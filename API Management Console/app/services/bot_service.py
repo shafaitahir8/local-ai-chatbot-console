@@ -6,6 +6,7 @@ import os
 import json
 import shutil
 import uuid
+import re
 from datetime import datetime
 from typing import Dict, Any, List, Optional, Tuple
 from sqlalchemy.orm import Session
@@ -14,7 +15,7 @@ from ..models.database import Bot, KnowledgeChunk, ConversationMemory, get_db_co
 from .encryption_service import encryption_service
 from .embedding_service import EmbeddingService
 from .template_service import template_service
-from .llm_providers import OpenAIProvider, LocalProvider, ClaudeProvider
+from .llm_providers import OpenAIProvider, LocalProvider, ClaudeProvider, GeminiProvider
 from .llm_providers.base_provider import BaseLLMProvider, ChatMessage
 
 
@@ -26,6 +27,34 @@ class BotService:
     def __init__(self):
         self.embedding_service = EmbeddingService()
         self._provider_cache: Dict[str, BaseLLMProvider] = {}
+        self.model_files_root = os.path.join(
+            os.path.dirname(os.path.dirname(os.path.dirname(__file__))),
+            'data',
+            'model_files'
+        )
+        os.makedirs(self.model_files_root, exist_ok=True)
+
+    def _slug(self, value: Optional[str]) -> str:
+        """Create a filesystem-safe slug."""
+        if not value:
+            return "default"
+        slug = re.sub(r"[^A-Za-z0-9._-]+", "_", value.strip()).strip("._-").lower()
+        return slug or "default"
+
+    def get_bot_model_files_dir(self, bot: Bot) -> str:
+        """Get model-specific files directory for a bot."""
+        provider = self._slug(bot.provider_type)
+        model = self._slug(bot.model or "default")
+        path = os.path.join(self.model_files_root, provider, model, bot.id)
+        os.makedirs(path, exist_ok=True)
+        return path
+
+    def ensure_bot_storage(self, bot: Bot) -> None:
+        """Ensure all storage directories exist for a bot."""
+        self.embedding_service.get_bot_data_dir(bot.id)
+        self.embedding_service.get_documents_dir(bot.id)
+        self.embedding_service.get_embeddings_dir(bot.id)
+        self.get_bot_model_files_dir(bot)
     
     def _get_provider(self, bot: Bot) -> BaseLLMProvider:
         """
@@ -61,6 +90,11 @@ class BotService:
                 )
             elif bot.provider_type == "claude":
                 self._provider_cache[cache_key] = ClaudeProvider(
+                    api_key=api_key,
+                    model=bot.model
+                )
+            elif bot.provider_type == "gemini":
+                self._provider_cache[cache_key] = GeminiProvider(
                     api_key=api_key,
                     model=bot.model
                 )
@@ -127,9 +161,7 @@ class BotService:
         db.refresh(bot)
         
         # Create bot data directories
-        self.embedding_service.get_bot_data_dir(bot.id)
-        self.embedding_service.get_documents_dir(bot.id)
-        self.embedding_service.get_embeddings_dir(bot.id)
+        self.ensure_bot_storage(bot)
         
         return bot
     
@@ -175,6 +207,10 @@ class BotService:
         bot = self.get_bot(db, bot_id)
         if not bot:
             return None
+
+        old_provider_type = bot.provider_type
+        old_cache_key = f"{bot.id}_{old_provider_type}"
+        provider_reconfigured = False
         
         # Handle API key encryption
         if 'api_key' in kwargs:
@@ -183,18 +219,26 @@ class BotService:
                 bot.api_key_encrypted = encryption_service.encrypt(api_key)
             else:
                 bot.api_key_encrypted = None
-            # Clear provider cache
-            cache_key = f"{bot.id}_{bot.provider_type}"
-            self._provider_cache.pop(cache_key, None)
+            provider_reconfigured = True
         
         # Update fields
+        nullable_fields = {"message_limit", "expiration_date", "description", "model", "system_prompt", "welcome_message"}
         for key, value in kwargs.items():
-            if hasattr(bot, key) and value is not None:
+            if hasattr(bot, key) and (value is not None or key in nullable_fields):
                 setattr(bot, key, value)
+                if key in {"model", "provider_type"}:
+                    provider_reconfigured = True
         
         bot.updated_at = datetime.utcnow()
         db.commit()
         db.refresh(bot)
+
+        if provider_reconfigured:
+            self._provider_cache.pop(old_cache_key, None)
+            new_cache_key = f"{bot.id}_{bot.provider_type}"
+            self._provider_cache.pop(new_cache_key, None)
+
+        self.ensure_bot_storage(bot)
         
         return bot
     
@@ -304,6 +348,8 @@ class BotService:
         else:
             # Create empty directories
             self.embedding_service.get_bot_data_dir(new_bot.id)
+
+        self.ensure_bot_storage(new_bot)
         
         return new_bot
     

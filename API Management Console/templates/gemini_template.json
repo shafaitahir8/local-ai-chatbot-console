@@ -1,0 +1,25 @@
+{
+  "name": "Google Gemini (Free Tier)",
+  "provider": "gemini",
+  "description": "Google Gemini API template optimized for low-cost/free-tier usage",
+  "required_fields": [
+    "api_key"
+  ],
+  "optional_fields": [
+    "model",
+    "temperature",
+    "max_tokens"
+  ],
+  "default_model": "gemini-2.0-flash-lite",
+  "default_temperature": 0.6,
+  "default_max_tokens": 1200,
+  "default_system_prompt": "You are a helpful AI assistant. Keep answers concise and accurate.",
+  "supports_memory": true,
+  "supports_temperature": true,
+  "supports_streaming": false,
+  "available_models": [
+    "gemini-2.0-flash-lite",
+    "gemini-2.0-flash",
+    "gemini-1.5-flash"
+  ]
+}

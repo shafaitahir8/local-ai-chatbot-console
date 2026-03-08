@@ -23,6 +23,7 @@ async def list_templates(
     return TemplateListResponse(
         templates=[
             TemplateResponse(
+                template_id=t.get('template_id'),
                 name=t.get('name', t.get('template_id', 'Unknown')),
                 provider=t.get('provider', 'openai'),
                 required_fields=t.get('required_fields', []),

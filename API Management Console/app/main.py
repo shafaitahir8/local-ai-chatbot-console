@@ -11,6 +11,7 @@ Version: 1.0.0
 import os
 import sys
 import logging
+import asyncio
 from datetime import datetime
 from contextlib import asynccontextmanager
 from fastapi import FastAPI, Request
@@ -98,6 +99,22 @@ except Exception as e:
     logger.exception(f"Failed to import template service: {e}")
     raise
 
+logger.info("Importing tunnel service...")
+try:
+    from .services.tunnel_service import tunnel_service
+    logger.info("Tunnel service imported")
+except Exception as e:
+    logger.exception(f"Failed to import tunnel service: {e}")
+    raise
+
+logger.info("Importing API gateway service...")
+try:
+    from .services.api_gateway_service import api_gateway_service
+    logger.info("API gateway service imported")
+except Exception as e:
+    logger.exception(f"Failed to import API gateway service: {e}")
+    raise
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -121,14 +138,81 @@ async def lifespan(app: FastAPI):
     except Exception as e:
         logger.exception(f"Failed to load templates: {e}")
         raise
+
+    # Start API-only gateway and expose that through the tunnel for reduced attack surface.
+    app_origin_url = os.getenv("APP_ORIGIN_URL", "http://127.0.0.1:8000")
+    gateway_origin_url = app_origin_url
+    try:
+        gateway_enabled = os.getenv("TUNNEL_API_ONLY", "true").strip().lower() not in {"0", "false", "no"}
+        if gateway_enabled:
+            api_gateway_service.start(target_base_url=app_origin_url)
+            gateway_status = api_gateway_service.get_status()
+            if gateway_status.get("running") and gateway_status.get("port"):
+                gateway_origin_url = api_gateway_service.get_origin_url() or app_origin_url
+                logger.info("🔒 API-only gateway active on: %s", gateway_origin_url)
+                print(f"🔒 API-only gateway active on: {gateway_origin_url}")
+            else:
+                logger.warning("API-only gateway failed to start; falling back to full app origin")
+                print("⚠️ API-only gateway failed to start; falling back to full app origin")
+    except Exception as gateway_err:
+        logger.warning("API-only gateway startup failed; using direct app origin: %s", gateway_err)
+        print(f"⚠️ API-only gateway startup failed; using direct app origin: {gateway_err}")
+
+    # Start/resolve public tunnel URL for external integrations (e.g., HubSpot)
+    tunnel_origin_url = os.getenv("TUNNEL_ORIGIN_URL", gateway_origin_url)
+    try:
+        tunnel_ok = await tunnel_service.ensure_started(origin_url=tunnel_origin_url)
+        tunnel_status = tunnel_service.get_status()
+        if tunnel_ok and tunnel_status.get("public_base_url"):
+            logger.info("🌐 Public endpoint ready: %s", tunnel_status["public_base_url"])
+            print(f"🌐 Public endpoint ready: {tunnel_status['public_base_url']}")
+        else:
+            logger.warning("Public tunnel unavailable: %s", tunnel_status.get("last_error"))
+            print(f"⚠️ Public tunnel unavailable: {tunnel_status.get('last_error')}")
+    except Exception as tunnel_err:
+        logger.warning("Public tunnel startup failed: %s", tunnel_err)
+        print(f"⚠️ Public tunnel startup failed: {tunnel_err}")
     
     logger.info("📍 Admin Dashboard: http://localhost:8000/admin")
     logger.info("📍 API Documentation: http://localhost:8000/docs")
     print("📍 Admin Dashboard: http://localhost:8000/admin")
     print("📍 API Documentation: http://localhost:8000/docs")
     
+    # Schedule bot initialization as a background task (non-blocking)
+    async def _init_bots():
+        """Warm up active bots after server is ready to accept connections."""
+        await asyncio.sleep(1)  # let the server finish binding
+        try:
+            from .models.database import SessionLocal, Bot as BotModel
+            from .services.bot_service import bot_service
+            db = SessionLocal()
+            try:
+                active_bots = db.query(BotModel).filter(BotModel.is_active == True).all()
+                logger.info(f"🤖 Initializing {len(active_bots)} active bot(s) in background...")
+                print(f"🤖 Initializing {len(active_bots)} active bot(s) in background...")
+                for bot_record in active_bots:
+                    try:
+                        await bot_service.chat(db, bot_record.id, "Begin Initialization", session_id="system-init")
+                        logger.info(f"  ✅ {bot_record.name} ({bot_record.id}) initialized")
+                        print(f"  ✅ {bot_record.name} initialized")
+                    except Exception as bot_err:
+                        logger.warning(f"  ⚠️ {bot_record.name} ({bot_record.id}) init failed: {bot_err}")
+                        print(f"  ⚠️ {bot_record.name} init failed: {bot_err}")
+            finally:
+                db.close()
+        except Exception as e:
+            logger.warning(f"Bot initialization skipped: {e}")
+            print(f"⚠️ Bot initialization skipped: {e}")
+    
+    init_task = asyncio.create_task(_init_bots())
+    
     yield
     
+    # Shutdown — cancel init if still running
+    init_task.cancel()
+    await tunnel_service.shutdown()
+    api_gateway_service.shutdown()
+
     # Shutdown
     logger.info("👋 Shutting down...")
     print("👋 Shutting down...")
@@ -223,7 +307,18 @@ async def admin_dashboard(request: Request, path: str = ""):
 @app.get("/health")
 async def health_check():
     """Health check endpoint."""
-    return {"status": "healthy", "version": "1.0.0"}
+    tunnel_status = tunnel_service.get_status()
+    gateway_status = api_gateway_service.get_status()
+    return {
+        "status": "healthy",
+        "version": "1.0.0",
+        "public_base_url": tunnel_status.get("public_base_url"),
+        "cloudflare_tunnel": {
+            "running": tunnel_status.get("running"),
+            "source": tunnel_status.get("source"),
+        },
+        "api_gateway": gateway_status,
+    }
 
 
 def get_admin_html() -> str:

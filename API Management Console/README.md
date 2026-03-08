@@ -251,7 +251,7 @@ API Management Console/
 
 #### Chat with Bot
 ```http
-POST /bot/{bot_id}/chat
+POST /api/bot/{bot_id}/chat
 Content-Type: application/json
 
 {
@@ -262,7 +262,7 @@ Content-Type: application/json
 
 #### Get Bot Status
 ```http
-GET /bot/{bot_id}/status
+GET /api/bot/{bot_id}/status
 ```
 
 ### Admin Endpoints (Auth Required)

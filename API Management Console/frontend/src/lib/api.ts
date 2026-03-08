@@ -24,24 +24,24 @@ async function fetchWithAuth(url: string, options: RequestInit = {}) {
     "Content-Type": "application/json",
     ...(options.headers || {}),
   };
-  
+
   if (authToken) {
     headers["Authorization"] = `Bearer ${authToken}`;
   }
 
   const response = await fetch(url, { ...options, headers });
-  
+
   if (response.status === 401) {
     clearAuthToken();
     window.location.href = "/login";
     throw new Error("Unauthorized");
   }
-  
+
   if (!response.ok) {
     const error = await response.json().catch(() => ({ detail: "Request failed" }));
     throw new Error(error.detail || "Request failed");
   }
-  
+
   return response;
 }
 
@@ -52,12 +52,12 @@ export async function login(password: string): Promise<{ access_token: string }>
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ username: "admin", password }),
   });
-  
+
   if (!response.ok) {
     const error = await response.json().catch(() => ({ detail: "Login failed" }));
     throw new Error(error.detail || "Login failed");
   }
-  
+
   const data = await response.json();
   setAuthToken(data.access_token);
   return data;
@@ -74,13 +74,16 @@ export async function logout() {
 
 // Helper to transform API bot response to frontend format
 function transformBotResponse(data: any): Bot {
+  const expirationDate = data.expiration_date ? new Date(data.expiration_date) : null;
+  const isExpired = !!(expirationDate && expirationDate < new Date());
+
   return {
     id: data.id,
     name: data.name,
     template_type: data.template_type,
     provider_type: data.provider_type,
     system_prompt: data.system_prompt || "",
-    status: data.is_active ? "active" : (data.expiration_date && new Date(data.expiration_date) < new Date() ? "expired" : "inactive"),
+    status: isExpired ? "expired" : (data.is_active ? "active" : "inactive"),
     temperature: data.temperature,
     memory_enabled: data.memory_enabled || false,
     message_limit: data.message_limit,
@@ -151,21 +154,50 @@ export async function toggleBot(id: string): Promise<Bot> {
   return transformBotResponse(result);
 }
 
+export async function expireBot(id: string): Promise<Bot> {
+  const response = await fetchWithAuth(`${API_BASE}/bots/${id}/expire`, {
+    method: "POST",
+  });
+  const result = await response.json();
+  return transformBotResponse(result);
+}
+
+export async function recoverBot(id: string): Promise<Bot> {
+  const response = await fetchWithAuth(`${API_BASE}/bots/${id}/recover`, {
+    method: "POST",
+  });
+  const result = await response.json();
+  return transformBotResponse(result);
+}
+
+export async function getBotModelFilesFolder(id: string): Promise<{ bot_id: string; path: string; exists: boolean }> {
+  const response = await fetchWithAuth(`${API_BASE}/bots/${id}/model-files`);
+  return response.json();
+}
+
+export async function openBotModelFilesFolder(id: string): Promise<{ message: string; path: string }> {
+  const response = await fetchWithAuth(`${API_BASE}/bots/${id}/model-files/open`, {
+    method: "POST",
+  });
+  return response.json();
+}
+
 // Templates API
 export async function fetchTemplates(): Promise<Template[]> {
   const response = await fetchWithAuth(`${API_BASE}/templates`);
   const data = await response.json();
-  
+
   // Template icons/descriptions based on provider
   const providerMeta: Record<string, { icon: string; description: string }> = {
-    openai: { icon: "🧠", description: "Cloud-based GPT models via OpenAI API" },
-    local: { icon: "🖥️", description: "Run models locally via Ollama" },
-    claude: { icon: "🔮", description: "Anthropic Claude models" },
+    openai: { icon: "AI", description: "Cloud-based GPT models via OpenAI API" },
+    local: { icon: "LOC", description: "Run models locally via Ollama" },
+    claude: { icon: "CLD", description: "Anthropic Claude models" },
+    gemini: { icon: "GEM", description: "Google Gemini API (free-tier friendly)" },
   };
-  
+
   // Transform API response to frontend Template type
   const templates = (data.templates || []).map((t: any) => ({
-    id: t.name?.toLowerCase().replace(/\s+/g, '_') || t.provider,
+    id: t.template_id || t.name?.toLowerCase().replace(/\s+/g, "_") || t.provider,
     name: t.name || t.provider,
     provider: t.provider,
     required_fields: t.required_fields || [],
@@ -175,20 +207,20 @@ export async function fetchTemplates(): Promise<Template[]> {
     default_temp: t.default_temperature ?? 0.7,
     default_prompt: t.default_system_prompt || "You are a helpful assistant.",
     description: providerMeta[t.provider]?.description || `${t.provider} provider`,
-    icon: providerMeta[t.provider]?.icon || "🤖",
+    icon: providerMeta[t.provider]?.icon || "BOT",
   }));
-  
+
   return templates;
 }
 
 // Analytics API
 export async function fetchAnalytics(botId?: string): Promise<Analytics> {
-  const url = botId 
-    ? `${API_BASE}/admin/analytics/${botId}` 
+  const url = botId
+    ? `${API_BASE}/admin/analytics/${botId}`
     : `${API_BASE}/admin/analytics/all`;
   const response = await fetchWithAuth(url);
   const data = await response.json();
-  
+
   // Transform the response to match our Analytics type
   return {
     total_messages: data.total_messages || 0,
@@ -207,12 +239,12 @@ export async function sendMessage(botId: string, message: string, sessionId?: st
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ message, session_id: sessionId }),
   });
-  
+
   if (!response.ok) {
     const error = await response.json().catch(() => ({ detail: "Chat failed" }));
     throw new Error(error.detail || "Chat failed");
   }
-  
+
   return response.json();
 }
 
@@ -220,18 +252,18 @@ export async function sendMessage(botId: string, message: string, sessionId?: st
 export async function uploadDocument(botId: string, file: File): Promise<void> {
   const formData = new FormData();
   formData.append("file", file);
-  
+
   const headers: HeadersInit = {};
   if (authToken) {
     headers["Authorization"] = `Bearer ${authToken}`;
   }
-  
+
   const response = await fetch(`${API_BASE}/bots/${botId}/knowledge/file`, {
     method: "POST",
     headers,
     body: formData,
   });
-  
+
   if (!response.ok) {
     const error = await response.json().catch(() => ({ detail: "Upload failed" }));
     throw new Error(error.detail || "Upload failed");
@@ -244,15 +276,49 @@ export async function rebuildEmbeddings(botId: string): Promise<void> {
   });
 }
 
+export interface KnowledgeChunk {
+  id: string;
+  content: string;
+  full_content: string;
+  source: string | null;
+  metadata?: Record<string, unknown> | null;
+  created_at: string | null;
+  word_count: number;
+}
+
+export async function fetchKnowledgeChunks(
+  botId: string,
+  page: number = 1,
+  perPage: number = 20,
+  search: string = ""
+): Promise<{
+  chunks: KnowledgeChunk[];
+  pagination: {
+    page: number;
+    per_page: number;
+    total_items: number;
+    total_pages: number;
+  };
+}> {
+  const params = new URLSearchParams({
+    page: String(page),
+    per_page: String(perPage),
+  });
+  if (search.trim()) params.set("search", search.trim());
+
+  const response = await fetchWithAuth(`${API_BASE}/bots/${botId}/knowledge/chunks?${params.toString()}`);
+  return response.json();
+}
+
 // Scraper API
 export async function scrapeWebsite(botId: string, url: string, depth: number = 2): Promise<{ id: string; status: string }> {
   const response = await fetchWithAuth(`${API_BASE}/scraper/start`, {
     method: "POST",
-    body: JSON.stringify({ 
-      url, 
-      depth, 
+    body: JSON.stringify({
+      url,
+      depth,
       consent_confirmed: true,
-      bot_id: botId 
+      bot_id: botId
     }),
   });
   return response.json();
@@ -265,12 +331,48 @@ export async function updatePassword(oldPassword: string, newPassword: string): 
   });
 }
 
+export interface AdminApiKeyRecord {
+  id: string;
+  bot_id: string;
+  bot_name: string;
+  provider: string;
+  company: string;
+  model?: string | null;
+  is_active: boolean;
+  created_at?: string | null;
+  updated_at?: string | null;
+  masked_key: string;
+  key_value?: string | null;
+  key_available: boolean;
+  decrypt_error?: boolean;
+}
+
+export async function fetchApiKeys(): Promise<{ keys: AdminApiKeyRecord[]; total: number; revealed: boolean }> {
+  const response = await fetchWithAuth(`${API_BASE}/admin/api-keys`);
+  return response.json();
+}
+
+export async function revealApiKeys(password: string): Promise<{ keys: AdminApiKeyRecord[]; total: number; revealed: boolean }> {
+  const response = await fetchWithAuth(`${API_BASE}/admin/api-keys/reveal`, {
+    method: "POST",
+    body: JSON.stringify({ password }),
+  });
+  return response.json();
+}
+
 export async function getSystemStatus(): Promise<{
   server: string;
   database: string;
   faiss: string;
   openai: string;
   local_llm: string;
+  cloudflare_tunnel?: string;
+  public_base_url?: string | null;
+  cloudflare_stable?: boolean;
+  cloudflare_source?: string;
+  cloudflare_error?: string | null;
+  api_gateway_running?: boolean;
+  api_gateway_port?: number | null;
 }> {
   // Check the system status endpoint
   try {
@@ -289,6 +391,13 @@ export async function getSystemStatus(): Promise<{
           faiss: "Loaded",
           openai: "Configured",
           local_llm: "Not configured",
+          cloudflare_tunnel: "Unknown",
+          public_base_url: null,
+          cloudflare_stable: false,
+          cloudflare_source: "unknown",
+          cloudflare_error: null,
+          api_gateway_running: false,
+          api_gateway_port: null,
         };
       }
     } catch (e) {
@@ -301,5 +410,12 @@ export async function getSystemStatus(): Promise<{
     faiss: "Unknown",
     openai: "Unknown",
     local_llm: "Unknown",
+    cloudflare_tunnel: "Unknown",
+    public_base_url: null,
+    cloudflare_stable: false,
+    cloudflare_source: "unknown",
+    cloudflare_error: null,
+    api_gateway_running: false,
+    api_gateway_port: null,
   };
 }

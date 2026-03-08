@@ -56,6 +56,10 @@ class Bot(Base):
     message_limit = Column(Integer, nullable=True)  # None = unlimited
     messages_used = Column(Integer, default=0)
     
+    # Tracked metrics
+    token_usage = Column(Integer, default=0)
+    avg_latency = Column(Float, default=0)
+    
     # Expiration
     expiration_date = Column(DateTime, nullable=True)
     
@@ -99,6 +103,8 @@ class Bot(Base):
             "is_active": self.is_active,
             "message_limit": self.message_limit,
             "messages_used": self.messages_used,
+            "token_usage": self.token_usage or 0,
+            "avg_latency": self.avg_latency or 0,
             "expiration_date": self.expiration_date.isoformat() if self.expiration_date else None,
             "accent_color": self.accent_color,
             "welcome_message": self.welcome_message,

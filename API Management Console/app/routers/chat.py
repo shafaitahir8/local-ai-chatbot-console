@@ -3,6 +3,7 @@ Public Chat API routes - exposed for client applications.
 """
 
 from typing import Optional
+import logging
 from fastapi import APIRouter, Depends, HTTPException, status, Request
 from sqlalchemy.orm import Session
 
@@ -13,6 +14,7 @@ from ..services.analytics_service import analytics_service
 from .auth import rate_limit_dependency
 
 router = APIRouter(prefix="/api/bot", tags=["chat"])
+logger = logging.getLogger(__name__)
 
 
 async def get_client_info(request: Request) -> dict:
@@ -95,9 +97,34 @@ async def chat(
         )
         
     except Exception as e:
+        error_message = str(e)
+        logger.exception("Chat processing error for bot %s: %s", bot_id, error_message)
+
+        # Return user-friendly provider diagnostics as chat text so embeds don't fail hard.
+        if "Gemini API error: 429" in error_message or "RESOURCE_EXHAUSTED" in error_message:
+            return ChatResponse(
+                response=(
+                    "Google Gemini quota is exhausted for this API key/project. "
+                    "Enable billing or increase quota, then try again."
+                ),
+                session_id=chat_request.session_id or "",
+                tokens_used=0,
+                latency_ms=0
+            )
+        if "Gemini API error: 401" in error_message or "Gemini API key is required" in error_message:
+            return ChatResponse(
+                response=(
+                    "Google Gemini API key is invalid or missing. "
+                    "Update the key in bot settings and retry."
+                ),
+                session_id=chat_request.session_id or "",
+                tokens_used=0,
+                latency_ms=0
+            )
+
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Chat processing error: {str(e)}"
+            detail=f"Chat processing error: {error_message}"
         )
 
 

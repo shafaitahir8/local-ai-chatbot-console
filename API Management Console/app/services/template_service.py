@@ -96,6 +96,26 @@ class TemplateService:
                     "claude-3-opus-20240229"
                 ]
             },
+            'gemini_template.json': {
+                "name": "Google Gemini (Free Tier)",
+                "provider": "gemini",
+                "description": "Google Gemini API template optimized for low-cost/free-tier usage",
+                "required_fields": ["api_key"],
+                "optional_fields": ["model", "temperature", "max_tokens"],
+                "default_model": "gemini-2.5-flash",
+                "default_temperature": 0.6,
+                "default_max_tokens": 1200,
+                "default_system_prompt": "You are a helpful AI assistant. Keep answers concise and accurate.",
+                "supports_memory": True,
+                "supports_temperature": True,
+                "supports_streaming": False,
+                "available_models": [
+                    "gemini-2.5-flash",
+                    "gemini-2.0-flash-lite",
+                    "gemini-2.0-flash",
+                    "gemini-1.5-flash"
+                ]
+            },
             'customer_support_template.json': {
                 "name": "Customer Support Bot",
                 "provider": "openai",

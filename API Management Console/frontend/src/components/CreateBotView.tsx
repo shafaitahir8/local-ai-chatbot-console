@@ -39,7 +39,7 @@ export function CreateBotView({ onCreated }: CreateBotViewProps) {
 
   const handleCreate = () => {
     if (!template) return;
-    
+
     createMutation.mutate({
       name,
       template_type: template.id,
@@ -48,13 +48,14 @@ export function CreateBotView({ onCreated }: CreateBotViewProps) {
       temperature: template.default_temp,
       memory_enabled: template.supports_memory,
       api_key: apiKey || undefined,
+      model: template.default_model || undefined,
     });
   };
 
   // Fallback templates if API returns empty
   const displayTemplates = templates.length > 0 ? templates : [
     {
-      id: "openai",
+      id: "openai_template",
       name: "OpenAI GPT",
       provider: "openai",
       required_fields: ["api_key", "model"],
@@ -64,10 +65,10 @@ export function CreateBotView({ onCreated }: CreateBotViewProps) {
       default_temp: 0.7,
       default_prompt: "You are a helpful assistant.",
       description: "Cloud-based GPT models via OpenAI API",
-      icon: "🧠",
+      icon: "AI",
     },
     {
-      id: "local",
+      id: "local_template",
       name: "Local LLM",
       provider: "local",
       required_fields: ["base_url"],
@@ -77,10 +78,10 @@ export function CreateBotView({ onCreated }: CreateBotViewProps) {
       default_temp: 0.5,
       default_prompt: "You are a helpful assistant.",
       description: "Run models locally via Ollama",
-      icon: "🖥️",
+      icon: "LOC",
     },
     {
-      id: "claude",
+      id: "claude_template",
       name: "Claude (Anthropic)",
       provider: "claude",
       required_fields: ["api_key", "model"],
@@ -90,7 +91,20 @@ export function CreateBotView({ onCreated }: CreateBotViewProps) {
       default_temp: 0.7,
       default_prompt: "You are a helpful assistant.",
       description: "Anthropic Claude models",
-      icon: "🔮",
+      icon: "CLD",
+    },
+    {
+      id: "gemini_template",
+      name: "Google Gemini (Free Tier)",
+      provider: "gemini",
+      required_fields: ["api_key", "model"],
+      default_model: "gemini-2.5-flash",
+      supports_memory: true,
+      supports_temperature: true,
+      default_temp: 0.6,
+      default_prompt: "You are a helpful assistant.",
+      description: "Google Gemini API using low-cost free-tier model",
+      icon: "GEM",
     },
   ];
 
@@ -99,7 +113,6 @@ export function CreateBotView({ onCreated }: CreateBotViewProps) {
       <h1 className="font-mono text-xl font-bold text-foreground mb-1">Create New Bot</h1>
       <p className="font-mono text-xs text-muted-foreground mb-6">Select a template and configure your chatbot</p>
 
-      {/* Steps indicator */}
       <div className="flex items-center gap-2 mb-8">
         {["Template", "Configure", "Review"].map((s, i) => (
           <div key={s} className="flex items-center gap-2">
@@ -159,10 +172,10 @@ export function CreateBotView({ onCreated }: CreateBotViewProps) {
                 type="password"
                 value={apiKey}
                 onChange={(e) => setApiKey(e.target.value)}
-                placeholder="sk-..."
+                placeholder="Paste your provider key"
                 className="w-full bg-secondary border border-border rounded-md px-3 py-2 font-mono text-xs text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/50 transition-colors"
               />
-              <p className="font-mono text-[10px] text-muted-foreground mt-1">🔒 Stored encrypted locally. Never sent to frontend.</p>
+              <p className="font-mono text-[10px] text-muted-foreground mt-1">Stored encrypted locally. Never sent to frontend.</p>
             </div>
           )}
           <div>
@@ -219,7 +232,7 @@ export function CreateBotView({ onCreated }: CreateBotViewProps) {
             className="font-mono text-xs px-4 py-2 rounded-md bg-primary text-primary-foreground hover:opacity-90 disabled:opacity-50 transition-all flex items-center gap-2"
           >
             {createMutation.isPending && <Loader2 className="w-3 h-3 animate-spin" />}
-            Deploy Bot →
+            Deploy Bot {"->"}
           </button>
         )}
       </div>

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { SidebarNav } from "@/components/SidebarNav";
 import { BotListView } from "@/components/BotListView";
@@ -6,6 +6,7 @@ import { BotDetailView } from "@/components/BotDetailView";
 import { AnalyticsView } from "@/components/AnalyticsView";
 import { CreateBotView } from "@/components/CreateBotView";
 import { SettingsView } from "@/components/SettingsView";
+import { APIKeysView } from "@/components/APIKeysView";
 import { EmbedChatPreview } from "@/components/EmbedChatPreview";
 import { fetchBots, cloneBot, toggleBot } from "@/lib/api";
 import { Bot } from "@/types/bot";
@@ -85,14 +86,14 @@ export function Dashboard() {
         )}
 
         {view === "detail" && selectedBot && (
-          <div className="grid grid-cols-1 xl:grid-cols-[1fr_380px] gap-8">
+          <div className="grid grid-cols-1 xl:grid-cols-[minmax(0,1fr)_500px] gap-8">
             <BotDetailView
               bot={selectedBot}
               onBack={() => setView("bots")}
               onSave={handleBotSaved}
               onClone={handleClone}
             />
-            <div className="hidden xl:block">
+            <div className="hidden lg:block">
               <label className="font-mono text-[10px] text-muted-foreground uppercase tracking-wider mb-3 block">
                 Chat Widget Preview
               </label>
@@ -107,6 +108,7 @@ export function Dashboard() {
 
         {view === "analytics" && <AnalyticsView />}
         {view === "create" && <CreateBotView onCreated={() => setView("bots")} />}
+        {view === "api-keys" && <APIKeysView />}
         {view === "settings" && <SettingsView />}
       </main>
     </div>

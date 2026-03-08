@@ -1,0 +1,2129 @@
+2026-03-08 08:39:07 - app.main - INFO - === Application Starting ===
+2026-03-08 08:39:07 - app.main - INFO - Log file: D:\JupyterNotebooks\Chatbots\API Management Console\logs\app_20260308.log
+2026-03-08 08:39:07 - app.main - INFO - Python version: 3.14.0 (tags/v3.14.0:ebf955d, Oct  7 2025, 10:15:03) [MSC v.1944 64 bit (AMD64)]
+2026-03-08 08:39:07 - app.main - INFO - Working directory: D:\JupyterNotebooks\Chatbots\API Management Console
+2026-03-08 08:39:07 - app.main - INFO - Loading environment variables...
+2026-03-08 08:39:07 - app.main - INFO - Environment variables loaded
+2026-03-08 08:39:07 - app.main - INFO - Importing routers...
+2026-03-08 08:39:13 - app.main - INFO - Routers imported successfully
+2026-03-08 08:39:13 - app.main - INFO - Initializing database...
+2026-03-08 08:39:13 - app.main - INFO - Database module imported
+2026-03-08 08:39:13 - app.main - INFO - Importing template service...
+2026-03-08 08:39:13 - app.main - INFO - Template service imported
+2026-03-08 08:39:13 - app.main - INFO - React frontend found, serving from frontend/dist
+2026-03-08 08:39:15 - app.main - INFO - === Application Starting ===
+2026-03-08 08:39:15 - app.main - INFO - Log file: D:\JupyterNotebooks\Chatbots\API Management Console\logs\app_20260308.log
+2026-03-08 08:39:15 - app.main - INFO - Python version: 3.14.0 (tags/v3.14.0:ebf955d, Oct  7 2025, 10:15:03) [MSC v.1944 64 bit (AMD64)]
+2026-03-08 08:39:15 - app.main - INFO - Working directory: D:\JupyterNotebooks\Chatbots\API Management Console
+2026-03-08 08:39:15 - app.main - INFO - Loading environment variables...
+2026-03-08 08:39:15 - app.main - INFO - Environment variables loaded
+2026-03-08 08:39:15 - app.main - INFO - Importing routers...
+2026-03-08 08:39:16 - app.main - INFO - Routers imported successfully
+2026-03-08 08:39:16 - app.main - INFO - Initializing database...
+2026-03-08 08:39:16 - app.main - INFO - Database module imported
+2026-03-08 08:39:16 - app.main - INFO - Importing template service...
+2026-03-08 08:39:16 - app.main - INFO - Template service imported
+2026-03-08 08:39:16 - app.main - INFO - React frontend found, serving from frontend/dist
+2026-03-08 08:39:16 - app.main - INFO - 🚀 Starting Local AI Chatbot Deployment Console...
+2026-03-08 08:39:16 - app.main - INFO - ✅ Database initialized
+2026-03-08 08:39:16 - app.main - INFO - ✅ Templates loaded
+2026-03-08 08:39:16 - app.main - INFO - 📍 Admin Dashboard: http://localhost:8000/admin
+2026-03-08 08:39:16 - app.main - INFO - 📍 API Documentation: http://localhost:8000/docs
+2026-03-08 08:39:17 - app.main - INFO - 🤖 Initializing 2 active bot(s) in background...
+2026-03-08 08:39:17 - faiss.loader - DEBUG - Environment variable FAISS_OPT_LEVEL is not set, so let's pick the instruction set according to the current CPU
+2026-03-08 08:39:17 - faiss.loader - INFO - Loading faiss with AVX2 support.
+2026-03-08 08:39:18 - faiss.loader - INFO - Successfully loaded faiss with AVX2 support.
+2026-03-08 08:40:16 - app.services.llm_providers.local_provider - INFO - Loading sentence-transformers model (first time, may take a moment)...
+2026-03-08 08:40:16 - sentence_transformers.SentenceTransformer - INFO - Use pytorch device_name: cpu
+2026-03-08 08:40:16 - sentence_transformers.SentenceTransformer - INFO - Load pretrained SentenceTransformer: all-MiniLM-L6-v2
+2026-03-08 08:40:17 - huggingface_hub.utils._http - WARNING - Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+2026-03-08 08:40:23 - app.services.llm_providers.local_provider - INFO - Sentence-transformers model loaded successfully
+2026-03-08 08:40:25 - app.services.llm_providers.local_provider - INFO - Ollama is already running
+2026-03-08 08:40:26 - app.services.llm_providers.local_provider - INFO - Ollama is already running
+2026-03-08 08:40:26 - app.services.llm_providers.local_provider - INFO - Ollama is already running
+2026-03-08 08:40:52 - app.main - INFO -   ✅ Arctic Chatbot (d3909391-417e-4e4a-ba18-ae8f890801e2) initialized
+2026-03-08 08:40:53 - app.services.llm_providers.local_provider - INFO - Ollama is already running
+2026-03-08 08:40:56 - app.main - INFO -   ✅ Arctic Customer Bot (3027bcaf-eeaf-4746-8d55-0390d9f922e6) initialized
+2026-03-08 08:52:59 - app.main - INFO - 👋 Shutting down...
+2026-03-08 08:53:03 - app.main - INFO - === Application Starting ===
+2026-03-08 08:53:03 - app.main - INFO - Log file: D:\JupyterNotebooks\Chatbots\API Management Console\logs\app_20260308.log
+2026-03-08 08:53:03 - app.main - INFO - Python version: 3.14.0 (tags/v3.14.0:ebf955d, Oct  7 2025, 10:15:03) [MSC v.1944 64 bit (AMD64)]
+2026-03-08 08:53:03 - app.main - INFO - Working directory: D:\JupyterNotebooks\Chatbots\API Management Console
+2026-03-08 08:53:03 - app.main - INFO - Loading environment variables...
+2026-03-08 08:53:03 - app.main - INFO - Environment variables loaded
+2026-03-08 08:53:03 - app.main - INFO - Importing routers...
+2026-03-08 08:53:07 - app.main - INFO - Routers imported successfully
+2026-03-08 08:53:07 - app.main - INFO - Initializing database...
+2026-03-08 08:53:07 - app.main - INFO - Database module imported
+2026-03-08 08:53:07 - app.main - INFO - Importing template service...
+2026-03-08 08:53:07 - app.main - INFO - Template service imported
+2026-03-08 08:53:07 - app.main - INFO - React frontend found, serving from frontend/dist
+2026-03-08 08:53:07 - app.main - INFO - 🚀 Starting Local AI Chatbot Deployment Console...
+2026-03-08 08:53:07 - app.main - INFO - ✅ Database initialized
+2026-03-08 08:53:07 - app.main - INFO - ✅ Templates loaded
+2026-03-08 08:53:07 - app.main - INFO - 📍 Admin Dashboard: http://localhost:8000/admin
+2026-03-08 08:53:07 - app.main - INFO - 📍 API Documentation: http://localhost:8000/docs
+2026-03-08 08:53:08 - app.main - INFO - 🤖 Initializing 2 active bot(s) in background...
+2026-03-08 08:53:08 - faiss.loader - DEBUG - Environment variable FAISS_OPT_LEVEL is not set, so let's pick the instruction set according to the current CPU
+2026-03-08 08:53:08 - faiss.loader - INFO - Loading faiss with AVX2 support.
+2026-03-08 08:53:08 - faiss.loader - INFO - Successfully loaded faiss with AVX2 support.
+2026-03-08 08:53:36 - app.services.llm_providers.local_provider - INFO - Loading sentence-transformers model (first time, may take a moment)...
+2026-03-08 08:53:36 - sentence_transformers.SentenceTransformer - INFO - Use pytorch device_name: cpu
+2026-03-08 08:53:36 - sentence_transformers.SentenceTransformer - INFO - Load pretrained SentenceTransformer: all-MiniLM-L6-v2
+2026-03-08 08:53:36 - app.main - INFO - 👋 Shutting down...
+2026-03-08 08:53:39 - huggingface_hub.utils._http - WARNING - Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+2026-03-08 08:53:41 - app.main - INFO - === Application Starting ===
+2026-03-08 08:53:41 - app.main - INFO - Log file: D:\JupyterNotebooks\Chatbots\API Management Console\logs\app_20260308.log
+2026-03-08 08:53:41 - app.main - INFO - Python version: 3.14.0 (tags/v3.14.0:ebf955d, Oct  7 2025, 10:15:03) [MSC v.1944 64 bit (AMD64)]
+2026-03-08 08:53:41 - app.main - INFO - Working directory: D:\JupyterNotebooks\Chatbots\API Management Console
+2026-03-08 08:53:41 - app.main - INFO - Loading environment variables...
+2026-03-08 08:53:41 - app.main - INFO - Environment variables loaded
+2026-03-08 08:53:41 - app.main - INFO - Importing routers...
+2026-03-08 08:53:43 - app.main - INFO - Routers imported successfully
+2026-03-08 08:53:43 - app.main - INFO - Initializing database...
+2026-03-08 08:53:43 - app.main - INFO - Database module imported
+2026-03-08 08:53:43 - app.main - INFO - Importing template service...
+2026-03-08 08:53:43 - app.main - INFO - Template service imported
+2026-03-08 08:53:43 - app.main - INFO - Importing tunnel service...
+2026-03-08 08:53:43 - app.main - INFO - Tunnel service imported
+2026-03-08 08:53:43 - app.main - INFO - React frontend found, serving from frontend/dist
+2026-03-08 08:53:43 - app.main - INFO - 🚀 Starting Local AI Chatbot Deployment Console...
+2026-03-08 08:53:43 - app.main - INFO - ✅ Database initialized
+2026-03-08 08:53:43 - app.main - INFO - ✅ Templates loaded
+2026-03-08 08:53:50 - app.main - INFO - 🌐 Public endpoint ready: https://designing-celebs-valium-editorials.trycloudflare.com
+2026-03-08 08:53:50 - app.main - INFO - 📍 Admin Dashboard: http://localhost:8000/admin
+2026-03-08 08:53:50 - app.main - INFO - 📍 API Documentation: http://localhost:8000/docs
+2026-03-08 08:53:50 - app.main - INFO - 👋 Shutting down...
+2026-03-08 08:53:51 - app.main - INFO - === Application Starting ===
+2026-03-08 08:53:51 - app.main - INFO - Log file: D:\JupyterNotebooks\Chatbots\API Management Console\logs\app_20260308.log
+2026-03-08 08:53:51 - app.main - INFO - Python version: 3.14.0 (tags/v3.14.0:ebf955d, Oct  7 2025, 10:15:03) [MSC v.1944 64 bit (AMD64)]
+2026-03-08 08:53:51 - app.main - INFO - Working directory: D:\JupyterNotebooks\Chatbots\API Management Console
+2026-03-08 08:53:51 - app.main - INFO - Loading environment variables...
+2026-03-08 08:53:51 - app.main - INFO - Environment variables loaded
+2026-03-08 08:53:51 - app.main - INFO - Importing routers...
+2026-03-08 08:53:52 - app.main - INFO - Routers imported successfully
+2026-03-08 08:53:52 - app.main - INFO - Initializing database...
+2026-03-08 08:53:52 - app.main - INFO - Database module imported
+2026-03-08 08:53:52 - app.main - INFO - Importing template service...
+2026-03-08 08:53:52 - app.main - INFO - Template service imported
+2026-03-08 08:53:52 - app.main - INFO - Importing tunnel service...
+2026-03-08 08:53:52 - app.main - INFO - Tunnel service imported
+2026-03-08 08:53:52 - app.main - INFO - React frontend found, serving from frontend/dist
+2026-03-08 08:53:52 - app.main - INFO - 🚀 Starting Local AI Chatbot Deployment Console...
+2026-03-08 08:53:52 - app.main - INFO - ✅ Database initialized
+2026-03-08 08:53:52 - app.main - INFO - ✅ Templates loaded
+2026-03-08 08:53:58 - app.main - INFO - 🌐 Public endpoint ready: https://appointments-marion-austin-motorcycle.trycloudflare.com
+2026-03-08 08:53:58 - app.main - INFO - 📍 Admin Dashboard: http://localhost:8000/admin
+2026-03-08 08:53:58 - app.main - INFO - 📍 API Documentation: http://localhost:8000/docs
+2026-03-08 08:53:59 - app.main - INFO - 🤖 Initializing 2 active bot(s) in background...
+2026-03-08 08:53:59 - faiss.loader - DEBUG - Environment variable FAISS_OPT_LEVEL is not set, so let's pick the instruction set according to the current CPU
+2026-03-08 08:53:59 - faiss.loader - INFO - Loading faiss with AVX2 support.
+2026-03-08 08:53:59 - faiss.loader - INFO - Successfully loaded faiss with AVX2 support.
+2026-03-08 08:54:10 - app.services.llm_providers.local_provider - INFO - Loading sentence-transformers model (first time, may take a moment)...
+2026-03-08 08:54:10 - sentence_transformers.SentenceTransformer - INFO - Use pytorch device_name: cpu
+2026-03-08 08:54:10 - sentence_transformers.SentenceTransformer - INFO - Load pretrained SentenceTransformer: all-MiniLM-L6-v2
+2026-03-08 08:54:10 - app.main - INFO - 👋 Shutting down...
+2026-03-08 08:54:16 - app.main - INFO - === Application Starting ===
+2026-03-08 08:54:16 - app.main - INFO - Log file: D:\JupyterNotebooks\Chatbots\API Management Console\logs\app_20260308.log
+2026-03-08 08:54:16 - app.main - INFO - Python version: 3.14.0 (tags/v3.14.0:ebf955d, Oct  7 2025, 10:15:03) [MSC v.1944 64 bit (AMD64)]
+2026-03-08 08:54:16 - app.main - INFO - Working directory: D:\JupyterNotebooks\Chatbots\API Management Console
+2026-03-08 08:54:16 - app.main - INFO - Loading environment variables...
+2026-03-08 08:54:16 - app.main - INFO - Environment variables loaded
+2026-03-08 08:54:16 - app.main - INFO - Importing routers...
+2026-03-08 08:54:17 - app.main - INFO - Routers imported successfully
+2026-03-08 08:54:17 - app.main - INFO - Initializing database...
+2026-03-08 08:54:17 - app.main - INFO - Database module imported
+2026-03-08 08:54:17 - app.main - INFO - Importing template service...
+2026-03-08 08:54:17 - app.main - INFO - Template service imported
+2026-03-08 08:54:17 - app.main - INFO - Importing tunnel service...
+2026-03-08 08:54:17 - app.main - INFO - Tunnel service imported
+2026-03-08 08:54:17 - app.main - INFO - React frontend found, serving from frontend/dist
+2026-03-08 08:54:17 - app.main - INFO - 🚀 Starting Local AI Chatbot Deployment Console...
+2026-03-08 08:54:17 - app.main - INFO - ✅ Database initialized
+2026-03-08 08:54:17 - app.main - INFO - ✅ Templates loaded
+2026-03-08 08:54:23 - app.main - INFO - 🌐 Public endpoint ready: https://cord-summer-bet-bundle.trycloudflare.com
+2026-03-08 08:54:23 - app.main - INFO - 📍 Admin Dashboard: http://localhost:8000/admin
+2026-03-08 08:54:23 - app.main - INFO - 📍 API Documentation: http://localhost:8000/docs
+2026-03-08 08:54:23 - app.main - INFO - 👋 Shutting down...
+2026-03-08 08:54:24 - app.main - INFO - === Application Starting ===
+2026-03-08 08:54:24 - app.main - INFO - Log file: D:\JupyterNotebooks\Chatbots\API Management Console\logs\app_20260308.log
+2026-03-08 08:54:24 - app.main - INFO - Python version: 3.14.0 (tags/v3.14.0:ebf955d, Oct  7 2025, 10:15:03) [MSC v.1944 64 bit (AMD64)]
+2026-03-08 08:54:24 - app.main - INFO - Working directory: D:\JupyterNotebooks\Chatbots\API Management Console
+2026-03-08 08:54:24 - app.main - INFO - Loading environment variables...
+2026-03-08 08:54:24 - app.main - INFO - Environment variables loaded
+2026-03-08 08:54:24 - app.main - INFO - Importing routers...
+2026-03-08 08:54:25 - app.main - INFO - Routers imported successfully
+2026-03-08 08:54:25 - app.main - INFO - Initializing database...
+2026-03-08 08:54:25 - app.main - INFO - Database module imported
+2026-03-08 08:54:25 - app.main - INFO - Importing template service...
+2026-03-08 08:54:25 - app.main - INFO - Template service imported
+2026-03-08 08:54:25 - app.main - INFO - Importing tunnel service...
+2026-03-08 08:54:25 - app.main - INFO - Tunnel service imported
+2026-03-08 08:54:25 - app.main - INFO - React frontend found, serving from frontend/dist
+2026-03-08 08:54:25 - app.main - INFO - 🚀 Starting Local AI Chatbot Deployment Console...
+2026-03-08 08:54:25 - app.main - INFO - ✅ Database initialized
+2026-03-08 08:54:25 - app.main - INFO - ✅ Templates loaded
+2026-03-08 08:54:30 - app.main - INFO - 🌐 Public endpoint ready: https://loading-hong-jackson-immune.trycloudflare.com
+2026-03-08 08:54:30 - app.main - INFO - 📍 Admin Dashboard: http://localhost:8000/admin
+2026-03-08 08:54:30 - app.main - INFO - 📍 API Documentation: http://localhost:8000/docs
+2026-03-08 08:54:31 - app.main - INFO - 🤖 Initializing 2 active bot(s) in background...
+2026-03-08 08:54:31 - faiss.loader - DEBUG - Environment variable FAISS_OPT_LEVEL is not set, so let's pick the instruction set according to the current CPU
+2026-03-08 08:54:31 - faiss.loader - INFO - Loading faiss with AVX2 support.
+2026-03-08 08:54:31 - faiss.loader - INFO - Successfully loaded faiss with AVX2 support.
+2026-03-08 08:54:41 - app.services.llm_providers.local_provider - INFO - Loading sentence-transformers model (first time, may take a moment)...
+2026-03-08 08:54:41 - sentence_transformers.SentenceTransformer - INFO - Use pytorch device_name: cpu
+2026-03-08 08:54:41 - sentence_transformers.SentenceTransformer - INFO - Load pretrained SentenceTransformer: all-MiniLM-L6-v2
+2026-03-08 08:54:42 - app.main - INFO - 👋 Shutting down...
+2026-03-08 08:54:44 - huggingface_hub.utils._http - WARNING - Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+2026-03-08 08:54:47 - app.main - INFO - === Application Starting ===
+2026-03-08 08:54:47 - app.main - INFO - Log file: D:\JupyterNotebooks\Chatbots\API Management Console\logs\app_20260308.log
+2026-03-08 08:54:47 - app.main - INFO - Python version: 3.14.0 (tags/v3.14.0:ebf955d, Oct  7 2025, 10:15:03) [MSC v.1944 64 bit (AMD64)]
+2026-03-08 08:54:47 - app.main - INFO - Working directory: D:\JupyterNotebooks\Chatbots\API Management Console
+2026-03-08 08:54:47 - app.main - INFO - Loading environment variables...
+2026-03-08 08:54:47 - app.main - INFO - Environment variables loaded
+2026-03-08 08:54:47 - app.main - INFO - Importing routers...
+2026-03-08 08:54:48 - app.main - INFO - Routers imported successfully
+2026-03-08 08:54:48 - app.main - INFO - Initializing database...
+2026-03-08 08:54:48 - app.main - INFO - Database module imported
+2026-03-08 08:54:48 - app.main - INFO - Importing template service...
+2026-03-08 08:54:48 - app.main - INFO - Template service imported
+2026-03-08 08:54:48 - app.main - INFO - Importing tunnel service...
+2026-03-08 08:54:48 - app.main - INFO - Tunnel service imported
+2026-03-08 08:54:48 - app.main - INFO - React frontend found, serving from frontend/dist
+2026-03-08 08:54:48 - app.main - INFO - 🚀 Starting Local AI Chatbot Deployment Console...
+2026-03-08 08:54:48 - app.main - INFO - ✅ Database initialized
+2026-03-08 08:54:48 - app.main - INFO - ✅ Templates loaded
+2026-03-08 08:54:54 - app.main - INFO - 🌐 Public endpoint ready: https://retired-structures-partnership-actors.trycloudflare.com
+2026-03-08 08:54:54 - app.main - INFO - 📍 Admin Dashboard: http://localhost:8000/admin
+2026-03-08 08:54:54 - app.main - INFO - 📍 API Documentation: http://localhost:8000/docs
+2026-03-08 08:54:55 - app.main - INFO - 🤖 Initializing 2 active bot(s) in background...
+2026-03-08 08:54:55 - faiss.loader - DEBUG - Environment variable FAISS_OPT_LEVEL is not set, so let's pick the instruction set according to the current CPU
+2026-03-08 08:54:55 - faiss.loader - INFO - Loading faiss with AVX2 support.
+2026-03-08 08:54:55 - faiss.loader - INFO - Successfully loaded faiss with AVX2 support.
+2026-03-08 08:55:06 - app.services.llm_providers.local_provider - INFO - Loading sentence-transformers model (first time, may take a moment)...
+2026-03-08 08:55:06 - sentence_transformers.SentenceTransformer - INFO - Use pytorch device_name: cpu
+2026-03-08 08:55:06 - sentence_transformers.SentenceTransformer - INFO - Load pretrained SentenceTransformer: all-MiniLM-L6-v2
+2026-03-08 08:55:08 - huggingface_hub.utils._http - WARNING - Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+2026-03-08 08:55:12 - app.services.llm_providers.local_provider - INFO - Sentence-transformers model loaded successfully
+2026-03-08 08:55:12 - app.services.llm_providers.local_provider - INFO - Ollama is already running
+2026-03-08 08:55:23 - app.main - INFO -   ✅ Arctic Chatbot (d3909391-417e-4e4a-ba18-ae8f890801e2) initialized
+2026-03-08 08:55:24 - app.services.llm_providers.local_provider - INFO - Ollama is already running
+2026-03-08 08:55:42 - app.main - INFO -   ✅ Arctic Customer Bot (3027bcaf-eeaf-4746-8d55-0390d9f922e6) initialized
+2026-03-08 08:57:48 - app.services.llm_providers.local_provider - INFO - Ollama is already running
+2026-03-08 09:05:44 - app.main - INFO - === Application Starting ===
+2026-03-08 09:05:44 - app.main - INFO - Log file: D:\JupyterNotebooks\Chatbots\API Management Console\logs\app_20260308.log
+2026-03-08 09:05:44 - app.main - INFO - Python version: 3.14.0 (tags/v3.14.0:ebf955d, Oct  7 2025, 10:15:03) [MSC v.1944 64 bit (AMD64)]
+2026-03-08 09:05:44 - app.main - INFO - Working directory: D:\JupyterNotebooks\Chatbots\API Management Console
+2026-03-08 09:05:44 - app.main - INFO - Loading environment variables...
+2026-03-08 09:05:44 - app.main - INFO - Environment variables loaded
+2026-03-08 09:05:44 - app.main - INFO - Importing routers...
+2026-03-08 09:05:48 - app.main - INFO - Routers imported successfully
+2026-03-08 09:05:48 - app.main - INFO - Initializing database...
+2026-03-08 09:05:48 - app.main - INFO - Database module imported
+2026-03-08 09:05:48 - app.main - INFO - Importing template service...
+2026-03-08 09:05:48 - app.main - INFO - Template service imported
+2026-03-08 09:05:48 - app.main - INFO - Importing tunnel service...
+2026-03-08 09:05:48 - app.main - INFO - Tunnel service imported
+2026-03-08 09:05:48 - app.main - INFO - React frontend found, serving from frontend/dist
+2026-03-08 09:05:49 - app.main - INFO - === Application Starting ===
+2026-03-08 09:05:49 - app.main - INFO - Log file: D:\JupyterNotebooks\Chatbots\API Management Console\logs\app_20260308.log
+2026-03-08 09:05:49 - app.main - INFO - Python version: 3.14.0 (tags/v3.14.0:ebf955d, Oct  7 2025, 10:15:03) [MSC v.1944 64 bit (AMD64)]
+2026-03-08 09:05:49 - app.main - INFO - Working directory: D:\JupyterNotebooks\Chatbots\API Management Console
+2026-03-08 09:05:49 - app.main - INFO - Loading environment variables...
+2026-03-08 09:05:49 - app.main - INFO - Environment variables loaded
+2026-03-08 09:05:49 - app.main - INFO - Importing routers...
+2026-03-08 09:05:50 - app.main - INFO - Routers imported successfully
+2026-03-08 09:05:50 - app.main - INFO - Initializing database...
+2026-03-08 09:05:50 - app.main - INFO - Database module imported
+2026-03-08 09:05:50 - app.main - INFO - Importing template service...
+2026-03-08 09:05:50 - app.main - INFO - Template service imported
+2026-03-08 09:05:50 - app.main - INFO - Importing tunnel service...
+2026-03-08 09:05:50 - app.main - INFO - Tunnel service imported
+2026-03-08 09:05:50 - app.main - INFO - React frontend found, serving from frontend/dist
+2026-03-08 09:05:50 - app.main - INFO - 🚀 Starting Local AI Chatbot Deployment Console...
+2026-03-08 09:05:50 - app.main - INFO - ✅ Database initialized
+2026-03-08 09:05:50 - app.main - INFO - ✅ Templates loaded
+2026-03-08 09:05:56 - app.main - INFO - 🌐 Public endpoint ready: https://prison-sheer-cardiovascular-aims.trycloudflare.com
+2026-03-08 09:05:56 - app.main - INFO - 📍 Admin Dashboard: http://localhost:8000/admin
+2026-03-08 09:05:56 - app.main - INFO - 📍 API Documentation: http://localhost:8000/docs
+2026-03-08 09:05:57 - app.main - INFO - 🤖 Initializing 2 active bot(s) in background...
+2026-03-08 09:05:57 - faiss.loader - DEBUG - Environment variable FAISS_OPT_LEVEL is not set, so let's pick the instruction set according to the current CPU
+2026-03-08 09:05:57 - faiss.loader - INFO - Loading faiss with AVX2 support.
+2026-03-08 09:05:57 - faiss.loader - INFO - Successfully loaded faiss with AVX2 support.
+2026-03-08 09:06:23 - app.services.llm_providers.local_provider - INFO - Loading sentence-transformers model (first time, may take a moment)...
+2026-03-08 09:06:23 - sentence_transformers.SentenceTransformer - INFO - Use pytorch device_name: cpu
+2026-03-08 09:06:23 - sentence_transformers.SentenceTransformer - INFO - Load pretrained SentenceTransformer: all-MiniLM-L6-v2
+2026-03-08 09:06:29 - huggingface_hub.utils._http - WARNING - Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+2026-03-08 09:06:32 - app.services.llm_providers.local_provider - INFO - Sentence-transformers model loaded successfully
+2026-03-08 09:06:33 - app.services.llm_providers.local_provider - INFO - Ollama is already running
+2026-03-08 09:06:33 - app.services.llm_providers.local_provider - INFO - Ollama is already running
+2026-03-08 09:06:41 - app.main - INFO -   ✅ Arctic Chatbot (d3909391-417e-4e4a-ba18-ae8f890801e2) initialized
+2026-03-08 09:06:41 - app.services.llm_providers.local_provider - INFO - Ollama is already running
+2026-03-08 09:06:45 - app.main - INFO -   ✅ Arctic Customer Bot (3027bcaf-eeaf-4746-8d55-0390d9f922e6) initialized
+2026-03-08 09:07:08 - app.services.llm_providers.local_provider - INFO - Ollama is already running
+2026-03-08 09:07:59 - app.services.llm_providers.local_provider - INFO - Ollama is already running
+2026-03-08 09:10:05 - python_multipart.multipart - DEBUG - Calling on_part_begin with no data
+2026-03-08 09:10:05 - python_multipart.multipart - DEBUG - Calling on_header_field with data[42:61]
+2026-03-08 09:10:05 - python_multipart.multipart - DEBUG - Calling on_header_value with data[63:114]
+2026-03-08 09:10:05 - python_multipart.multipart - DEBUG - Calling on_header_end with no data
+2026-03-08 09:10:05 - python_multipart.multipart - DEBUG - Calling on_header_field with data[116:128]
+2026-03-08 09:10:05 - python_multipart.multipart - DEBUG - Calling on_header_value with data[130:140]
+2026-03-08 09:10:05 - python_multipart.multipart - DEBUG - Calling on_header_end with no data
+2026-03-08 09:10:05 - python_multipart.multipart - DEBUG - Calling on_headers_finished with no data
+2026-03-08 09:10:05 - python_multipart.multipart - DEBUG - Calling on_part_data with data[144:2916]
+2026-03-08 09:10:05 - python_multipart.multipart - DEBUG - Calling on_part_end with no data
+2026-03-08 09:10:05 - python_multipart.multipart - DEBUG - Calling on_end with no data
+2026-03-08 09:16:36 - app.services.llm_providers.local_provider - INFO - Ollama is already running
+2026-03-08 09:16:51 - app.services.llm_providers.local_provider - INFO - Ollama is already running
+2026-03-08 09:17:19 - app.services.llm_providers.local_provider - INFO - Ollama is already running
+2026-03-08 09:17:31 - app.services.llm_providers.local_provider - INFO - Ollama is already running
+2026-03-08 09:18:48 - app.services.llm_providers.local_provider - INFO - Ollama is already running
+2026-03-08 09:18:58 - app.services.llm_providers.local_provider - INFO - Ollama is already running
+2026-03-08 09:19:08 - app.services.llm_providers.local_provider - INFO - Ollama is already running
+2026-03-08 09:19:22 - app.services.llm_providers.local_provider - INFO - Ollama is already running
+2026-03-08 09:19:38 - app.services.llm_providers.local_provider - INFO - Ollama is already running
+2026-03-08 12:07:11 - app.services.llm_providers.local_provider - INFO - Ollama is already running
+2026-03-08 12:19:47 - app.services.llm_providers.local_provider - INFO - Ollama is already running
+2026-03-08 12:19:58 - app.services.llm_providers.local_provider - INFO - Ollama is already running
+2026-03-08 12:20:05 - app.services.llm_providers.local_provider - INFO - Ollama is already running
+2026-03-08 12:33:57 - app.main - INFO - 👋 Shutting down...
+2026-03-08 12:34:02 - app.main - INFO - === Application Starting ===
+2026-03-08 12:34:02 - app.main - INFO - Log file: D:\JupyterNotebooks\Chatbots\API Management Console\logs\app_20260308.log
+2026-03-08 12:34:02 - app.main - INFO - Python version: 3.14.0 (tags/v3.14.0:ebf955d, Oct  7 2025, 10:15:03) [MSC v.1944 64 bit (AMD64)]
+2026-03-08 12:34:02 - app.main - INFO - Working directory: D:\JupyterNotebooks\Chatbots\API Management Console
+2026-03-08 12:34:02 - app.main - INFO - Loading environment variables...
+2026-03-08 12:34:02 - app.main - INFO - Environment variables loaded
+2026-03-08 12:34:02 - app.main - INFO - Importing routers...
+2026-03-08 12:34:06 - app.main - INFO - Routers imported successfully
+2026-03-08 12:34:06 - app.main - INFO - Initializing database...
+2026-03-08 12:34:06 - app.main - INFO - Database module imported
+2026-03-08 12:34:06 - app.main - INFO - Importing template service...
+2026-03-08 12:34:06 - app.main - INFO - Template service imported
+2026-03-08 12:34:06 - app.main - INFO - Importing tunnel service...
+2026-03-08 12:34:06 - app.main - INFO - Tunnel service imported
+2026-03-08 12:34:06 - app.main - INFO - React frontend found, serving from frontend/dist
+2026-03-08 12:34:06 - app.main - INFO - 🚀 Starting Local AI Chatbot Deployment Console...
+2026-03-08 12:34:06 - app.main - INFO - ✅ Database initialized
+2026-03-08 12:34:06 - app.main - INFO - ✅ Templates loaded
+2026-03-08 12:34:12 - app.main - INFO - 🌐 Public endpoint ready: https://prince-receivers-innocent-shoppers.trycloudflare.com
+2026-03-08 12:34:12 - app.main - INFO - 📍 Admin Dashboard: http://localhost:8000/admin
+2026-03-08 12:34:12 - app.main - INFO - 📍 API Documentation: http://localhost:8000/docs
+2026-03-08 12:34:12 - app.main - INFO - 👋 Shutting down...
+2026-03-08 12:34:13 - app.main - INFO - === Application Starting ===
+2026-03-08 12:34:13 - app.main - INFO - Log file: D:\JupyterNotebooks\Chatbots\API Management Console\logs\app_20260308.log
+2026-03-08 12:34:13 - app.main - INFO - Python version: 3.14.0 (tags/v3.14.0:ebf955d, Oct  7 2025, 10:15:03) [MSC v.1944 64 bit (AMD64)]
+2026-03-08 12:34:13 - app.main - INFO - Working directory: D:\JupyterNotebooks\Chatbots\API Management Console
+2026-03-08 12:34:13 - app.main - INFO - Loading environment variables...
+2026-03-08 12:34:13 - app.main - INFO - Environment variables loaded
+2026-03-08 12:34:13 - app.main - INFO - Importing routers...
+2026-03-08 12:34:15 - app.main - INFO - Routers imported successfully
+2026-03-08 12:34:15 - app.main - INFO - Initializing database...
+2026-03-08 12:34:15 - app.main - INFO - Database module imported
+2026-03-08 12:34:15 - app.main - INFO - Importing template service...
+2026-03-08 12:34:15 - app.main - INFO - Template service imported
+2026-03-08 12:34:15 - app.main - INFO - Importing tunnel service...
+2026-03-08 12:34:15 - app.main - INFO - Tunnel service imported
+2026-03-08 12:34:15 - app.main - INFO - React frontend found, serving from frontend/dist
+2026-03-08 12:34:15 - app.main - INFO - 🚀 Starting Local AI Chatbot Deployment Console...
+2026-03-08 12:34:15 - app.main - INFO - ✅ Database initialized
+2026-03-08 12:34:15 - app.main - INFO - ✅ Templates loaded
+2026-03-08 12:34:20 - app.main - INFO - 🌐 Public endpoint ready: https://excluded-advisory-monica-sorts.trycloudflare.com
+2026-03-08 12:34:20 - app.main - INFO - 📍 Admin Dashboard: http://localhost:8000/admin
+2026-03-08 12:34:20 - app.main - INFO - 📍 API Documentation: http://localhost:8000/docs
+2026-03-08 12:34:20 - app.main - INFO - 👋 Shutting down...
+2026-03-08 12:34:21 - app.main - INFO - === Application Starting ===
+2026-03-08 12:34:21 - app.main - INFO - Log file: D:\JupyterNotebooks\Chatbots\API Management Console\logs\app_20260308.log
+2026-03-08 12:34:21 - app.main - INFO - Python version: 3.14.0 (tags/v3.14.0:ebf955d, Oct  7 2025, 10:15:03) [MSC v.1944 64 bit (AMD64)]
+2026-03-08 12:34:21 - app.main - INFO - Working directory: D:\JupyterNotebooks\Chatbots\API Management Console
+2026-03-08 12:34:21 - app.main - INFO - Loading environment variables...
+2026-03-08 12:34:21 - app.main - INFO - Environment variables loaded
+2026-03-08 12:34:21 - app.main - INFO - Importing routers...
+2026-03-08 12:34:22 - app.main - INFO - Routers imported successfully
+2026-03-08 12:34:22 - app.main - INFO - Initializing database...
+2026-03-08 12:34:22 - app.main - INFO - Database module imported
+2026-03-08 12:34:22 - app.main - INFO - Importing template service...
+2026-03-08 12:34:22 - app.main - INFO - Template service imported
+2026-03-08 12:34:22 - app.main - INFO - Importing tunnel service...
+2026-03-08 12:34:22 - app.main - INFO - Tunnel service imported
+2026-03-08 12:34:22 - app.main - INFO - React frontend found, serving from frontend/dist
+2026-03-08 12:34:22 - app.main - INFO - 🚀 Starting Local AI Chatbot Deployment Console...
+2026-03-08 12:34:22 - app.main - INFO - ✅ Database initialized
+2026-03-08 12:34:22 - app.main - INFO - ✅ Templates loaded
+2026-03-08 12:34:27 - app.main - INFO - 🌐 Public endpoint ready: https://years-camel-conventional-cursor.trycloudflare.com
+2026-03-08 12:34:27 - app.main - INFO - 📍 Admin Dashboard: http://localhost:8000/admin
+2026-03-08 12:34:27 - app.main - INFO - 📍 API Documentation: http://localhost:8000/docs
+2026-03-08 12:34:27 - app.main - INFO - 👋 Shutting down...
+2026-03-08 12:34:28 - app.main - INFO - === Application Starting ===
+2026-03-08 12:34:28 - app.main - INFO - Log file: D:\JupyterNotebooks\Chatbots\API Management Console\logs\app_20260308.log
+2026-03-08 12:34:28 - app.main - INFO - Python version: 3.14.0 (tags/v3.14.0:ebf955d, Oct  7 2025, 10:15:03) [MSC v.1944 64 bit (AMD64)]
+2026-03-08 12:34:28 - app.main - INFO - Working directory: D:\JupyterNotebooks\Chatbots\API Management Console
+2026-03-08 12:34:28 - app.main - INFO - Loading environment variables...
+2026-03-08 12:34:28 - app.main - INFO - Environment variables loaded
+2026-03-08 12:34:28 - app.main - INFO - Importing routers...
+2026-03-08 12:34:29 - app.main - INFO - Routers imported successfully
+2026-03-08 12:34:29 - app.main - INFO - Initializing database...
+2026-03-08 12:34:29 - app.main - INFO - Database module imported
+2026-03-08 12:34:29 - app.main - INFO - Importing template service...
+2026-03-08 12:34:29 - app.main - INFO - Template service imported
+2026-03-08 12:34:29 - app.main - INFO - Importing tunnel service...
+2026-03-08 12:34:29 - app.main - INFO - Tunnel service imported
+2026-03-08 12:34:29 - app.main - INFO - React frontend found, serving from frontend/dist
+2026-03-08 12:34:29 - app.main - INFO - 🚀 Starting Local AI Chatbot Deployment Console...
+2026-03-08 12:34:29 - app.main - INFO - ✅ Database initialized
+2026-03-08 12:34:29 - app.main - INFO - ✅ Templates loaded
+2026-03-08 12:34:34 - app.main - INFO - 🌐 Public endpoint ready: https://calls-ben-favour-archive.trycloudflare.com
+2026-03-08 12:34:34 - app.main - INFO - 📍 Admin Dashboard: http://localhost:8000/admin
+2026-03-08 12:34:34 - app.main - INFO - 📍 API Documentation: http://localhost:8000/docs
+2026-03-08 12:34:35 - app.main - INFO - 🤖 Initializing 2 active bot(s) in background...
+2026-03-08 12:34:35 - faiss.loader - DEBUG - Environment variable FAISS_OPT_LEVEL is not set, so let's pick the instruction set according to the current CPU
+2026-03-08 12:34:35 - faiss.loader - INFO - Loading faiss with AVX2 support.
+2026-03-08 12:34:36 - faiss.loader - INFO - Successfully loaded faiss with AVX2 support.
+2026-03-08 12:35:03 - app.services.llm_providers.local_provider - INFO - Loading sentence-transformers model (first time, may take a moment)...
+2026-03-08 12:35:03 - sentence_transformers.SentenceTransformer - INFO - Use pytorch device_name: cpu
+2026-03-08 12:35:03 - sentence_transformers.SentenceTransformer - INFO - Load pretrained SentenceTransformer: all-MiniLM-L6-v2
+2026-03-08 12:35:09 - app.services.llm_providers.local_provider - INFO - Sentence-transformers model loaded successfully
+2026-03-08 12:35:09 - app.services.llm_providers.local_provider - INFO - Ollama is already running
+2026-03-08 12:35:20 - app.main - INFO -   ✅ Arctic Chatbot (d3909391-417e-4e4a-ba18-ae8f890801e2) initialized
+2026-03-08 12:35:20 - app.main - INFO -   ✅ Arctic Customer Bot (3027bcaf-eeaf-4746-8d55-0390d9f922e6) initialized
+2026-03-08 13:05:33 - app.main - INFO - 👋 Shutting down...
+2026-03-08 13:05:40 - app.main - INFO - === Application Starting ===
+2026-03-08 13:05:40 - app.main - INFO - Log file: D:\JupyterNotebooks\Chatbots\API Management Console\logs\app_20260308.log
+2026-03-08 13:05:40 - app.main - INFO - Python version: 3.14.0 (tags/v3.14.0:ebf955d, Oct  7 2025, 10:15:03) [MSC v.1944 64 bit (AMD64)]
+2026-03-08 13:05:40 - app.main - INFO - Working directory: D:\JupyterNotebooks\Chatbots\API Management Console
+2026-03-08 13:05:40 - app.main - INFO - Loading environment variables...
+2026-03-08 13:05:40 - app.main - INFO - Environment variables loaded
+2026-03-08 13:05:40 - app.main - INFO - Importing routers...
+2026-03-08 13:05:50 - app.main - INFO - Routers imported successfully
+2026-03-08 13:05:50 - app.main - INFO - Initializing database...
+2026-03-08 13:05:50 - app.main - INFO - Database module imported
+2026-03-08 13:05:50 - app.main - INFO - Importing template service...
+2026-03-08 13:05:50 - app.main - INFO - Template service imported
+2026-03-08 13:05:50 - app.main - INFO - Importing tunnel service...
+2026-03-08 13:05:50 - app.main - INFO - Tunnel service imported
+2026-03-08 13:05:50 - app.main - INFO - React frontend found, serving from frontend/dist
+2026-03-08 13:05:50 - app.main - INFO - 🚀 Starting Local AI Chatbot Deployment Console...
+2026-03-08 13:05:50 - app.main - INFO - ✅ Database initialized
+2026-03-08 13:05:50 - app.main - INFO - ✅ Templates loaded
+2026-03-08 13:05:56 - app.main - INFO - 🌐 Public endpoint ready: https://passive-rna-used-cabinets.trycloudflare.com
+2026-03-08 13:05:56 - app.main - INFO - 📍 Admin Dashboard: http://localhost:8000/admin
+2026-03-08 13:05:56 - app.main - INFO - 📍 API Documentation: http://localhost:8000/docs
+2026-03-08 13:05:57 - app.main - INFO - 👋 Shutting down...
+2026-03-08 13:05:58 - app.main - INFO - === Application Starting ===
+2026-03-08 13:05:58 - app.main - INFO - Log file: D:\JupyterNotebooks\Chatbots\API Management Console\logs\app_20260308.log
+2026-03-08 13:05:58 - app.main - INFO - Python version: 3.14.0 (tags/v3.14.0:ebf955d, Oct  7 2025, 10:15:03) [MSC v.1944 64 bit (AMD64)]
+2026-03-08 13:05:58 - app.main - INFO - Working directory: D:\JupyterNotebooks\Chatbots\API Management Console
+2026-03-08 13:05:58 - app.main - INFO - Loading environment variables...
+2026-03-08 13:05:58 - app.main - INFO - Environment variables loaded
+2026-03-08 13:05:58 - app.main - INFO - Importing routers...
+2026-03-08 13:05:59 - app.main - INFO - Routers imported successfully
+2026-03-08 13:05:59 - app.main - INFO - Initializing database...
+2026-03-08 13:05:59 - app.main - INFO - Database module imported
+2026-03-08 13:05:59 - app.main - INFO - Importing template service...
+2026-03-08 13:05:59 - app.main - INFO - Template service imported
+2026-03-08 13:05:59 - app.main - INFO - Importing tunnel service...
+2026-03-08 13:05:59 - app.main - INFO - Tunnel service imported
+2026-03-08 13:05:59 - app.main - INFO - React frontend found, serving from frontend/dist
+2026-03-08 13:05:59 - app.main - INFO - 🚀 Starting Local AI Chatbot Deployment Console...
+2026-03-08 13:05:59 - app.main - INFO - ✅ Database initialized
+2026-03-08 13:05:59 - app.main - INFO - ✅ Templates loaded
+2026-03-08 13:06:05 - app.main - INFO - 🌐 Public endpoint ready: https://orders-lighter-norm-affair.trycloudflare.com
+2026-03-08 13:06:05 - app.main - INFO - 📍 Admin Dashboard: http://localhost:8000/admin
+2026-03-08 13:06:05 - app.main - INFO - 📍 API Documentation: http://localhost:8000/docs
+2026-03-08 13:06:05 - app.main - INFO - 👋 Shutting down...
+2026-03-08 13:06:06 - app.main - INFO - === Application Starting ===
+2026-03-08 13:06:06 - app.main - INFO - Log file: D:\JupyterNotebooks\Chatbots\API Management Console\logs\app_20260308.log
+2026-03-08 13:06:06 - app.main - INFO - Python version: 3.14.0 (tags/v3.14.0:ebf955d, Oct  7 2025, 10:15:03) [MSC v.1944 64 bit (AMD64)]
+2026-03-08 13:06:06 - app.main - INFO - Working directory: D:\JupyterNotebooks\Chatbots\API Management Console
+2026-03-08 13:06:06 - app.main - INFO - Loading environment variables...
+2026-03-08 13:06:06 - app.main - INFO - Environment variables loaded
+2026-03-08 13:06:06 - app.main - INFO - Importing routers...
+2026-03-08 13:06:07 - app.main - INFO - Routers imported successfully
+2026-03-08 13:06:07 - app.main - INFO - Initializing database...
+2026-03-08 13:06:07 - app.main - INFO - Database module imported
+2026-03-08 13:06:07 - app.main - INFO - Importing template service...
+2026-03-08 13:06:07 - app.main - INFO - Template service imported
+2026-03-08 13:06:07 - app.main - INFO - Importing tunnel service...
+2026-03-08 13:06:07 - app.main - INFO - Tunnel service imported
+2026-03-08 13:06:07 - app.main - INFO - React frontend found, serving from frontend/dist
+2026-03-08 13:06:07 - app.main - INFO - 🚀 Starting Local AI Chatbot Deployment Console...
+2026-03-08 13:06:07 - app.main - INFO - ✅ Database initialized
+2026-03-08 13:06:07 - app.main - INFO - ✅ Templates loaded
+2026-03-08 13:06:12 - app.main - INFO - 🌐 Public endpoint ready: https://dec-postcards-lawrence-viewers.trycloudflare.com
+2026-03-08 13:06:12 - app.main - INFO - 📍 Admin Dashboard: http://localhost:8000/admin
+2026-03-08 13:06:12 - app.main - INFO - 📍 API Documentation: http://localhost:8000/docs
+2026-03-08 13:06:12 - app.main - INFO - 👋 Shutting down...
+2026-03-08 13:06:13 - app.main - INFO - === Application Starting ===
+2026-03-08 13:06:13 - app.main - INFO - Log file: D:\JupyterNotebooks\Chatbots\API Management Console\logs\app_20260308.log
+2026-03-08 13:06:13 - app.main - INFO - Python version: 3.14.0 (tags/v3.14.0:ebf955d, Oct  7 2025, 10:15:03) [MSC v.1944 64 bit (AMD64)]
+2026-03-08 13:06:13 - app.main - INFO - Working directory: D:\JupyterNotebooks\Chatbots\API Management Console
+2026-03-08 13:06:13 - app.main - INFO - Loading environment variables...
+2026-03-08 13:06:13 - app.main - INFO - Environment variables loaded
+2026-03-08 13:06:13 - app.main - INFO - Importing routers...
+2026-03-08 13:06:14 - app.main - INFO - Routers imported successfully
+2026-03-08 13:06:14 - app.main - INFO - Initializing database...
+2026-03-08 13:06:14 - app.main - INFO - Database module imported
+2026-03-08 13:06:14 - app.main - INFO - Importing template service...
+2026-03-08 13:06:14 - app.main - INFO - Template service imported
+2026-03-08 13:06:14 - app.main - INFO - Importing tunnel service...
+2026-03-08 13:06:14 - app.main - INFO - Tunnel service imported
+2026-03-08 13:06:14 - app.main - INFO - React frontend found, serving from frontend/dist
+2026-03-08 13:06:14 - app.main - INFO - 🚀 Starting Local AI Chatbot Deployment Console...
+2026-03-08 13:06:14 - app.main - INFO - ✅ Database initialized
+2026-03-08 13:06:14 - app.main - INFO - ✅ Templates loaded
+2026-03-08 13:06:19 - app.main - INFO - 🌐 Public endpoint ready: https://links-ericsson-obtained-outer.trycloudflare.com
+2026-03-08 13:06:19 - app.main - INFO - 📍 Admin Dashboard: http://localhost:8000/admin
+2026-03-08 13:06:19 - app.main - INFO - 📍 API Documentation: http://localhost:8000/docs
+2026-03-08 13:06:19 - app.main - INFO - 👋 Shutting down...
+2026-03-08 13:06:20 - app.main - INFO - === Application Starting ===
+2026-03-08 13:06:20 - app.main - INFO - Log file: D:\JupyterNotebooks\Chatbots\API Management Console\logs\app_20260308.log
+2026-03-08 13:06:20 - app.main - INFO - Python version: 3.14.0 (tags/v3.14.0:ebf955d, Oct  7 2025, 10:15:03) [MSC v.1944 64 bit (AMD64)]
+2026-03-08 13:06:20 - app.main - INFO - Working directory: D:\JupyterNotebooks\Chatbots\API Management Console
+2026-03-08 13:06:20 - app.main - INFO - Loading environment variables...
+2026-03-08 13:06:20 - app.main - INFO - Environment variables loaded
+2026-03-08 13:06:20 - app.main - INFO - Importing routers...
+2026-03-08 13:06:22 - app.main - INFO - Routers imported successfully
+2026-03-08 13:06:22 - app.main - INFO - Initializing database...
+2026-03-08 13:06:22 - app.main - INFO - Database module imported
+2026-03-08 13:06:22 - app.main - INFO - Importing template service...
+2026-03-08 13:06:22 - app.main - INFO - Template service imported
+2026-03-08 13:06:22 - app.main - INFO - Importing tunnel service...
+2026-03-08 13:06:22 - app.main - INFO - Tunnel service imported
+2026-03-08 13:06:22 - app.main - INFO - React frontend found, serving from frontend/dist
+2026-03-08 13:06:22 - app.main - INFO - 🚀 Starting Local AI Chatbot Deployment Console...
+2026-03-08 13:06:22 - app.main - INFO - ✅ Database initialized
+2026-03-08 13:06:22 - app.main - INFO - ✅ Templates loaded
+2026-03-08 13:06:28 - app.main - INFO - 🌐 Public endpoint ready: https://tide-stickers-toys-skins.trycloudflare.com
+2026-03-08 13:06:28 - app.main - INFO - 📍 Admin Dashboard: http://localhost:8000/admin
+2026-03-08 13:06:28 - app.main - INFO - 📍 API Documentation: http://localhost:8000/docs
+2026-03-08 13:06:28 - app.main - INFO - 👋 Shutting down...
+2026-03-08 13:06:29 - app.main - INFO - === Application Starting ===
+2026-03-08 13:06:29 - app.main - INFO - Log file: D:\JupyterNotebooks\Chatbots\API Management Console\logs\app_20260308.log
+2026-03-08 13:06:29 - app.main - INFO - Python version: 3.14.0 (tags/v3.14.0:ebf955d, Oct  7 2025, 10:15:03) [MSC v.1944 64 bit (AMD64)]
+2026-03-08 13:06:29 - app.main - INFO - Working directory: D:\JupyterNotebooks\Chatbots\API Management Console
+2026-03-08 13:06:29 - app.main - INFO - Loading environment variables...
+2026-03-08 13:06:29 - app.main - INFO - Environment variables loaded
+2026-03-08 13:06:29 - app.main - INFO - Importing routers...
+2026-03-08 13:06:30 - app.main - INFO - Routers imported successfully
+2026-03-08 13:06:30 - app.main - INFO - Initializing database...
+2026-03-08 13:06:30 - app.main - INFO - Database module imported
+2026-03-08 13:06:30 - app.main - INFO - Importing template service...
+2026-03-08 13:06:30 - app.main - INFO - Template service imported
+2026-03-08 13:06:30 - app.main - INFO - Importing tunnel service...
+2026-03-08 13:06:30 - app.main - INFO - Tunnel service imported
+2026-03-08 13:06:30 - app.main - INFO - React frontend found, serving from frontend/dist
+2026-03-08 13:06:30 - app.main - INFO - 🚀 Starting Local AI Chatbot Deployment Console...
+2026-03-08 13:06:30 - app.main - INFO - ✅ Database initialized
+2026-03-08 13:06:30 - app.main - INFO - ✅ Templates loaded
+2026-03-08 13:06:35 - app.main - INFO - 🌐 Public endpoint ready: https://claims-contracts-experts-frontier.trycloudflare.com
+2026-03-08 13:06:35 - app.main - INFO - 📍 Admin Dashboard: http://localhost:8000/admin
+2026-03-08 13:06:35 - app.main - INFO - 📍 API Documentation: http://localhost:8000/docs
+2026-03-08 13:06:35 - app.main - INFO - 👋 Shutting down...
+2026-03-08 13:06:36 - app.main - INFO - === Application Starting ===
+2026-03-08 13:06:36 - app.main - INFO - Log file: D:\JupyterNotebooks\Chatbots\API Management Console\logs\app_20260308.log
+2026-03-08 13:06:36 - app.main - INFO - Python version: 3.14.0 (tags/v3.14.0:ebf955d, Oct  7 2025, 10:15:03) [MSC v.1944 64 bit (AMD64)]
+2026-03-08 13:06:36 - app.main - INFO - Working directory: D:\JupyterNotebooks\Chatbots\API Management Console
+2026-03-08 13:06:36 - app.main - INFO - Loading environment variables...
+2026-03-08 13:06:36 - app.main - INFO - Environment variables loaded
+2026-03-08 13:06:36 - app.main - INFO - Importing routers...
+2026-03-08 13:06:37 - app.main - INFO - Routers imported successfully
+2026-03-08 13:06:37 - app.main - INFO - Initializing database...
+2026-03-08 13:06:37 - app.main - INFO - Database module imported
+2026-03-08 13:06:37 - app.main - INFO - Importing template service...
+2026-03-08 13:06:37 - app.main - INFO - Template service imported
+2026-03-08 13:06:37 - app.main - INFO - Importing tunnel service...
+2026-03-08 13:06:37 - app.main - INFO - Tunnel service imported
+2026-03-08 13:06:37 - app.main - INFO - React frontend found, serving from frontend/dist
+2026-03-08 13:06:37 - app.main - INFO - 🚀 Starting Local AI Chatbot Deployment Console...
+2026-03-08 13:06:37 - app.main - INFO - ✅ Database initialized
+2026-03-08 13:06:37 - app.main - INFO - ✅ Templates loaded
+2026-03-08 13:06:43 - app.main - INFO - 🌐 Public endpoint ready: https://clusters-green-nasa-self.trycloudflare.com
+2026-03-08 13:06:43 - app.main - INFO - 📍 Admin Dashboard: http://localhost:8000/admin
+2026-03-08 13:06:43 - app.main - INFO - 📍 API Documentation: http://localhost:8000/docs
+2026-03-08 13:06:44 - app.main - INFO - 🤖 Initializing 2 active bot(s) in background...
+2026-03-08 13:06:44 - faiss.loader - DEBUG - Environment variable FAISS_OPT_LEVEL is not set, so let's pick the instruction set according to the current CPU
+2026-03-08 13:06:44 - faiss.loader - INFO - Loading faiss with AVX2 support.
+2026-03-08 13:06:44 - faiss.loader - INFO - Successfully loaded faiss with AVX2 support.
+2026-03-08 13:07:10 - app.services.llm_providers.local_provider - INFO - Loading sentence-transformers model (first time, may take a moment)...
+2026-03-08 13:07:10 - sentence_transformers.SentenceTransformer - INFO - Use pytorch device_name: cpu
+2026-03-08 13:07:10 - sentence_transformers.SentenceTransformer - INFO - Load pretrained SentenceTransformer: all-MiniLM-L6-v2
+2026-03-08 13:07:14 - huggingface_hub.utils._http - WARNING - Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+2026-03-08 13:07:22 - app.services.llm_providers.local_provider - INFO - Sentence-transformers model loaded successfully
+2026-03-08 13:07:22 - app.services.llm_providers.local_provider - INFO - Ollama is already running
+2026-03-08 13:07:34 - app.main - INFO -   ✅ Arctic Chatbot (d3909391-417e-4e4a-ba18-ae8f890801e2) initialized
+2026-03-08 13:07:34 - app.main - INFO -   ✅ Arctic Customer Bot (3027bcaf-eeaf-4746-8d55-0390d9f922e6) initialized
+2026-03-08 13:09:11 - app.main - INFO - 👋 Shutting down...
+2026-03-08 13:09:13 - app.main - INFO - === Application Starting ===
+2026-03-08 13:09:13 - app.main - INFO - Log file: D:\JupyterNotebooks\Chatbots\API Management Console\logs\app_20260308.log
+2026-03-08 13:09:13 - app.main - INFO - Python version: 3.14.0 (tags/v3.14.0:ebf955d, Oct  7 2025, 10:15:03) [MSC v.1944 64 bit (AMD64)]
+2026-03-08 13:09:13 - app.main - INFO - Working directory: D:\JupyterNotebooks\Chatbots\API Management Console
+2026-03-08 13:09:13 - app.main - INFO - Loading environment variables...
+2026-03-08 13:09:13 - app.main - INFO - Environment variables loaded
+2026-03-08 13:09:13 - app.main - INFO - Importing routers...
+2026-03-08 13:09:15 - app.main - INFO - Routers imported successfully
+2026-03-08 13:09:15 - app.main - INFO - Initializing database...
+2026-03-08 13:09:15 - app.main - INFO - Database module imported
+2026-03-08 13:09:15 - app.main - INFO - Importing template service...
+2026-03-08 13:09:15 - app.main - INFO - Template service imported
+2026-03-08 13:09:15 - app.main - INFO - Importing tunnel service...
+2026-03-08 13:09:15 - app.main - INFO - Tunnel service imported
+2026-03-08 13:09:15 - app.main - INFO - React frontend found, serving from frontend/dist
+2026-03-08 13:09:15 - app.main - INFO - 🚀 Starting Local AI Chatbot Deployment Console...
+2026-03-08 13:09:15 - app.main - INFO - ✅ Database initialized
+2026-03-08 13:09:15 - app.main - INFO - ✅ Templates loaded
+2026-03-08 13:09:19 - app.main - INFO - 🌐 Public endpoint ready: https://glass-old-hospitality-attributes.trycloudflare.com
+2026-03-08 13:09:19 - app.main - INFO - 📍 Admin Dashboard: http://localhost:8000/admin
+2026-03-08 13:09:19 - app.main - INFO - 📍 API Documentation: http://localhost:8000/docs
+2026-03-08 13:09:20 - app.main - INFO - 🤖 Initializing 2 active bot(s) in background...
+2026-03-08 13:09:20 - faiss.loader - DEBUG - Environment variable FAISS_OPT_LEVEL is not set, so let's pick the instruction set according to the current CPU
+2026-03-08 13:09:20 - faiss.loader - INFO - Loading faiss with AVX2 support.
+2026-03-08 13:09:20 - faiss.loader - INFO - Successfully loaded faiss with AVX2 support.
+2026-03-08 13:09:29 - app.services.llm_providers.local_provider - INFO - Loading sentence-transformers model (first time, may take a moment)...
+2026-03-08 13:09:29 - sentence_transformers.SentenceTransformer - INFO - Use pytorch device_name: cpu
+2026-03-08 13:09:29 - sentence_transformers.SentenceTransformer - INFO - Load pretrained SentenceTransformer: all-MiniLM-L6-v2
+2026-03-08 13:09:30 - huggingface_hub.utils._http - WARNING - Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+2026-03-08 13:09:34 - app.services.llm_providers.local_provider - INFO - Sentence-transformers model loaded successfully
+2026-03-08 13:09:34 - app.services.llm_providers.local_provider - INFO - Ollama is already running
+2026-03-08 13:09:36 - app.main - INFO -   ✅ Arctic Chatbot (d3909391-417e-4e4a-ba18-ae8f890801e2) initialized
+2026-03-08 13:09:36 - app.main - INFO -   ✅ Arctic Customer Bot (3027bcaf-eeaf-4746-8d55-0390d9f922e6) initialized
+2026-03-08 13:10:35 - app.main - INFO - 👋 Shutting down...
+2026-03-08 13:10:37 - app.main - INFO - === Application Starting ===
+2026-03-08 13:10:37 - app.main - INFO - Log file: D:\JupyterNotebooks\Chatbots\API Management Console\logs\app_20260308.log
+2026-03-08 13:10:37 - app.main - INFO - Python version: 3.14.0 (tags/v3.14.0:ebf955d, Oct  7 2025, 10:15:03) [MSC v.1944 64 bit (AMD64)]
+2026-03-08 13:10:37 - app.main - INFO - Working directory: D:\JupyterNotebooks\Chatbots\API Management Console
+2026-03-08 13:10:37 - app.main - INFO - Loading environment variables...
+2026-03-08 13:10:37 - app.main - INFO - Environment variables loaded
+2026-03-08 13:10:37 - app.main - INFO - Importing routers...
+2026-03-08 13:10:38 - app.main - INFO - Routers imported successfully
+2026-03-08 13:10:38 - app.main - INFO - Initializing database...
+2026-03-08 13:10:38 - app.main - INFO - Database module imported
+2026-03-08 13:10:38 - app.main - INFO - Importing template service...
+2026-03-08 13:10:38 - app.main - INFO - Template service imported
+2026-03-08 13:10:38 - app.main - INFO - Importing tunnel service...
+2026-03-08 13:10:38 - app.main - INFO - Tunnel service imported
+2026-03-08 13:10:38 - app.main - INFO - React frontend found, serving from frontend/dist
+2026-03-08 13:10:38 - app.main - INFO - 🚀 Starting Local AI Chatbot Deployment Console...
+2026-03-08 13:10:38 - app.main - INFO - ✅ Database initialized
+2026-03-08 13:10:38 - app.main - INFO - ✅ Templates loaded
+2026-03-08 13:10:44 - app.main - INFO - 🌐 Public endpoint ready: https://piano-dot-mike-amendments.trycloudflare.com
+2026-03-08 13:10:44 - app.main - INFO - 📍 Admin Dashboard: http://localhost:8000/admin
+2026-03-08 13:10:44 - app.main - INFO - 📍 API Documentation: http://localhost:8000/docs
+2026-03-08 13:10:44 - app.main - INFO - 👋 Shutting down...
+2026-03-08 13:10:45 - app.main - INFO - === Application Starting ===
+2026-03-08 13:10:45 - app.main - INFO - Log file: D:\JupyterNotebooks\Chatbots\API Management Console\logs\app_20260308.log
+2026-03-08 13:10:45 - app.main - INFO - Python version: 3.14.0 (tags/v3.14.0:ebf955d, Oct  7 2025, 10:15:03) [MSC v.1944 64 bit (AMD64)]
+2026-03-08 13:10:45 - app.main - INFO - Working directory: D:\JupyterNotebooks\Chatbots\API Management Console
+2026-03-08 13:10:45 - app.main - INFO - Loading environment variables...
+2026-03-08 13:10:45 - app.main - INFO - Environment variables loaded
+2026-03-08 13:10:45 - app.main - INFO - Importing routers...
+2026-03-08 13:10:46 - app.main - INFO - Routers imported successfully
+2026-03-08 13:10:46 - app.main - INFO - Initializing database...
+2026-03-08 13:10:46 - app.main - INFO - Database module imported
+2026-03-08 13:10:46 - app.main - INFO - Importing template service...
+2026-03-08 13:10:46 - app.main - INFO - Template service imported
+2026-03-08 13:10:46 - app.main - INFO - Importing tunnel service...
+2026-03-08 13:10:46 - app.main - INFO - Tunnel service imported
+2026-03-08 13:10:46 - app.main - INFO - React frontend found, serving from frontend/dist
+2026-03-08 13:10:46 - app.main - INFO - 🚀 Starting Local AI Chatbot Deployment Console...
+2026-03-08 13:10:46 - app.main - INFO - ✅ Database initialized
+2026-03-08 13:10:46 - app.main - INFO - ✅ Templates loaded
+2026-03-08 13:10:52 - app.main - INFO - 🌐 Public endpoint ready: https://four-labour-affects-february.trycloudflare.com
+2026-03-08 13:10:52 - app.main - INFO - 📍 Admin Dashboard: http://localhost:8000/admin
+2026-03-08 13:10:52 - app.main - INFO - 📍 API Documentation: http://localhost:8000/docs
+2026-03-08 13:10:53 - app.main - INFO - 🤖 Initializing 2 active bot(s) in background...
+2026-03-08 13:10:53 - faiss.loader - DEBUG - Environment variable FAISS_OPT_LEVEL is not set, so let's pick the instruction set according to the current CPU
+2026-03-08 13:10:53 - faiss.loader - INFO - Loading faiss with AVX2 support.
+2026-03-08 13:10:53 - faiss.loader - INFO - Successfully loaded faiss with AVX2 support.
+2026-03-08 13:11:04 - app.services.llm_providers.local_provider - INFO - Loading sentence-transformers model (first time, may take a moment)...
+2026-03-08 13:11:04 - sentence_transformers.SentenceTransformer - INFO - Use pytorch device_name: cpu
+2026-03-08 13:11:04 - sentence_transformers.SentenceTransformer - INFO - Load pretrained SentenceTransformer: all-MiniLM-L6-v2
+2026-03-08 13:11:04 - app.main - INFO - 👋 Shutting down...
+2026-03-08 13:11:09 - huggingface_hub.utils._http - WARNING - Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+2026-03-08 13:11:15 - app.main - INFO - === Application Starting ===
+2026-03-08 13:11:15 - app.main - INFO - Log file: D:\JupyterNotebooks\Chatbots\API Management Console\logs\app_20260308.log
+2026-03-08 13:11:15 - app.main - INFO - Python version: 3.14.0 (tags/v3.14.0:ebf955d, Oct  7 2025, 10:15:03) [MSC v.1944 64 bit (AMD64)]
+2026-03-08 13:11:15 - app.main - INFO - Working directory: D:\JupyterNotebooks\Chatbots\API Management Console
+2026-03-08 13:11:15 - app.main - INFO - Loading environment variables...
+2026-03-08 13:11:15 - app.main - INFO - Environment variables loaded
+2026-03-08 13:11:15 - app.main - INFO - Importing routers...
+2026-03-08 13:11:16 - app.main - INFO - Routers imported successfully
+2026-03-08 13:11:16 - app.main - INFO - Initializing database...
+2026-03-08 13:11:16 - app.main - INFO - Database module imported
+2026-03-08 13:11:16 - app.main - INFO - Importing template service...
+2026-03-08 13:11:16 - app.main - INFO - Template service imported
+2026-03-08 13:11:16 - app.main - INFO - Importing tunnel service...
+2026-03-08 13:11:16 - app.main - INFO - Tunnel service imported
+2026-03-08 13:11:16 - app.main - INFO - React frontend found, serving from frontend/dist
+2026-03-08 13:11:16 - app.main - INFO - 🚀 Starting Local AI Chatbot Deployment Console...
+2026-03-08 13:11:16 - app.main - INFO - ✅ Database initialized
+2026-03-08 13:11:16 - app.main - INFO - ✅ Templates loaded
+2026-03-08 13:11:22 - app.main - INFO - 🌐 Public endpoint ready: https://wiley-strengthening-pizza-invitations.trycloudflare.com
+2026-03-08 13:11:22 - app.main - INFO - 📍 Admin Dashboard: http://localhost:8000/admin
+2026-03-08 13:11:22 - app.main - INFO - 📍 API Documentation: http://localhost:8000/docs
+2026-03-08 13:11:23 - app.main - INFO - 🤖 Initializing 2 active bot(s) in background...
+2026-03-08 13:11:23 - faiss.loader - DEBUG - Environment variable FAISS_OPT_LEVEL is not set, so let's pick the instruction set according to the current CPU
+2026-03-08 13:11:23 - faiss.loader - INFO - Loading faiss with AVX2 support.
+2026-03-08 13:11:23 - faiss.loader - INFO - Successfully loaded faiss with AVX2 support.
+2026-03-08 13:11:34 - app.services.llm_providers.local_provider - INFO - Loading sentence-transformers model (first time, may take a moment)...
+2026-03-08 13:11:34 - sentence_transformers.SentenceTransformer - INFO - Use pytorch device_name: cpu
+2026-03-08 13:11:34 - sentence_transformers.SentenceTransformer - INFO - Load pretrained SentenceTransformer: all-MiniLM-L6-v2
+2026-03-08 13:11:34 - app.main - INFO - 👋 Shutting down...
+2026-03-08 13:11:39 - app.main - INFO - === Application Starting ===
+2026-03-08 13:11:39 - app.main - INFO - Log file: D:\JupyterNotebooks\Chatbots\API Management Console\logs\app_20260308.log
+2026-03-08 13:11:39 - app.main - INFO - Python version: 3.14.0 (tags/v3.14.0:ebf955d, Oct  7 2025, 10:15:03) [MSC v.1944 64 bit (AMD64)]
+2026-03-08 13:11:39 - app.main - INFO - Working directory: D:\JupyterNotebooks\Chatbots\API Management Console
+2026-03-08 13:11:39 - app.main - INFO - Loading environment variables...
+2026-03-08 13:11:39 - app.main - INFO - Environment variables loaded
+2026-03-08 13:11:39 - app.main - INFO - Importing routers...
+2026-03-08 13:11:40 - app.main - INFO - Routers imported successfully
+2026-03-08 13:11:40 - app.main - INFO - Initializing database...
+2026-03-08 13:11:40 - app.main - INFO - Database module imported
+2026-03-08 13:11:40 - app.main - INFO - Importing template service...
+2026-03-08 13:11:40 - app.main - INFO - Template service imported
+2026-03-08 13:11:40 - app.main - INFO - Importing tunnel service...
+2026-03-08 13:11:40 - app.main - INFO - Tunnel service imported
+2026-03-08 13:11:40 - app.main - INFO - React frontend found, serving from frontend/dist
+2026-03-08 13:11:40 - app.main - INFO - 🚀 Starting Local AI Chatbot Deployment Console...
+2026-03-08 13:11:40 - app.main - INFO - ✅ Database initialized
+2026-03-08 13:11:40 - app.main - INFO - ✅ Templates loaded
+2026-03-08 13:11:45 - app.main - INFO - 🌐 Public endpoint ready: https://predictions-traveller-restricted-forever.trycloudflare.com
+2026-03-08 13:11:45 - app.main - INFO - 📍 Admin Dashboard: http://localhost:8000/admin
+2026-03-08 13:11:45 - app.main - INFO - 📍 API Documentation: http://localhost:8000/docs
+2026-03-08 13:11:46 - app.main - INFO - 🤖 Initializing 2 active bot(s) in background...
+2026-03-08 13:11:46 - faiss.loader - DEBUG - Environment variable FAISS_OPT_LEVEL is not set, so let's pick the instruction set according to the current CPU
+2026-03-08 13:11:46 - faiss.loader - INFO - Loading faiss with AVX2 support.
+2026-03-08 13:11:46 - faiss.loader - INFO - Successfully loaded faiss with AVX2 support.
+2026-03-08 13:11:55 - app.services.llm_providers.local_provider - INFO - Loading sentence-transformers model (first time, may take a moment)...
+2026-03-08 13:11:55 - sentence_transformers.SentenceTransformer - INFO - Use pytorch device_name: cpu
+2026-03-08 13:11:55 - sentence_transformers.SentenceTransformer - INFO - Load pretrained SentenceTransformer: all-MiniLM-L6-v2
+2026-03-08 13:11:55 - app.main - INFO - 👋 Shutting down...
+2026-03-08 13:11:58 - huggingface_hub.utils._http - WARNING - Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+2026-03-08 13:12:01 - app.main - INFO - === Application Starting ===
+2026-03-08 13:12:01 - app.main - INFO - Log file: D:\JupyterNotebooks\Chatbots\API Management Console\logs\app_20260308.log
+2026-03-08 13:12:01 - app.main - INFO - Python version: 3.14.0 (tags/v3.14.0:ebf955d, Oct  7 2025, 10:15:03) [MSC v.1944 64 bit (AMD64)]
+2026-03-08 13:12:01 - app.main - INFO - Working directory: D:\JupyterNotebooks\Chatbots\API Management Console
+2026-03-08 13:12:01 - app.main - INFO - Loading environment variables...
+2026-03-08 13:12:01 - app.main - INFO - Environment variables loaded
+2026-03-08 13:12:01 - app.main - INFO - Importing routers...
+2026-03-08 13:12:02 - app.main - INFO - Routers imported successfully
+2026-03-08 13:12:02 - app.main - INFO - Initializing database...
+2026-03-08 13:12:02 - app.main - INFO - Database module imported
+2026-03-08 13:12:02 - app.main - INFO - Importing template service...
+2026-03-08 13:12:02 - app.main - INFO - Template service imported
+2026-03-08 13:12:02 - app.main - INFO - Importing tunnel service...
+2026-03-08 13:12:02 - app.main - INFO - Tunnel service imported
+2026-03-08 13:12:02 - app.main - INFO - React frontend found, serving from frontend/dist
+2026-03-08 13:12:02 - app.main - INFO - 🚀 Starting Local AI Chatbot Deployment Console...
+2026-03-08 13:12:02 - app.main - INFO - ✅ Database initialized
+2026-03-08 13:12:02 - app.main - INFO - ✅ Templates loaded
+2026-03-08 13:12:07 - app.main - INFO - 🌐 Public endpoint ready: https://mathematics-hero-starting-animated.trycloudflare.com
+2026-03-08 13:12:07 - app.main - INFO - 📍 Admin Dashboard: http://localhost:8000/admin
+2026-03-08 13:12:07 - app.main - INFO - 📍 API Documentation: http://localhost:8000/docs
+2026-03-08 13:12:07 - app.main - INFO - 👋 Shutting down...
+2026-03-08 13:12:08 - app.main - INFO - === Application Starting ===
+2026-03-08 13:12:08 - app.main - INFO - Log file: D:\JupyterNotebooks\Chatbots\API Management Console\logs\app_20260308.log
+2026-03-08 13:12:08 - app.main - INFO - Python version: 3.14.0 (tags/v3.14.0:ebf955d, Oct  7 2025, 10:15:03) [MSC v.1944 64 bit (AMD64)]
+2026-03-08 13:12:08 - app.main - INFO - Working directory: D:\JupyterNotebooks\Chatbots\API Management Console
+2026-03-08 13:12:08 - app.main - INFO - Loading environment variables...
+2026-03-08 13:12:08 - app.main - INFO - Environment variables loaded
+2026-03-08 13:12:08 - app.main - INFO - Importing routers...
+2026-03-08 13:12:09 - app.main - INFO - Routers imported successfully
+2026-03-08 13:12:09 - app.main - INFO - Initializing database...
+2026-03-08 13:12:09 - app.main - INFO - Database module imported
+2026-03-08 13:12:09 - app.main - INFO - Importing template service...
+2026-03-08 13:12:09 - app.main - INFO - Template service imported
+2026-03-08 13:12:09 - app.main - INFO - Importing tunnel service...
+2026-03-08 13:12:09 - app.main - INFO - Tunnel service imported
+2026-03-08 13:12:09 - app.main - INFO - React frontend found, serving from frontend/dist
+2026-03-08 13:12:09 - app.main - INFO - 🚀 Starting Local AI Chatbot Deployment Console...
+2026-03-08 13:12:09 - app.main - INFO - ✅ Database initialized
+2026-03-08 13:12:09 - app.main - INFO - ✅ Templates loaded
+2026-03-08 13:12:14 - app.main - INFO - 🌐 Public endpoint ready: https://downloads-exploring-sofa-reef.trycloudflare.com
+2026-03-08 13:12:14 - app.main - INFO - 📍 Admin Dashboard: http://localhost:8000/admin
+2026-03-08 13:12:14 - app.main - INFO - 📍 API Documentation: http://localhost:8000/docs
+2026-03-08 13:12:15 - app.main - INFO - 🤖 Initializing 2 active bot(s) in background...
+2026-03-08 13:12:15 - faiss.loader - DEBUG - Environment variable FAISS_OPT_LEVEL is not set, so let's pick the instruction set according to the current CPU
+2026-03-08 13:12:15 - faiss.loader - INFO - Loading faiss with AVX2 support.
+2026-03-08 13:12:15 - faiss.loader - INFO - Successfully loaded faiss with AVX2 support.
+2026-03-08 13:12:24 - app.services.llm_providers.local_provider - INFO - Loading sentence-transformers model (first time, may take a moment)...
+2026-03-08 13:12:24 - sentence_transformers.SentenceTransformer - INFO - Use pytorch device_name: cpu
+2026-03-08 13:12:24 - sentence_transformers.SentenceTransformer - INFO - Load pretrained SentenceTransformer: all-MiniLM-L6-v2
+2026-03-08 13:12:26 - huggingface_hub.utils._http - WARNING - Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+2026-03-08 13:12:30 - app.services.llm_providers.local_provider - INFO - Sentence-transformers model loaded successfully
+2026-03-08 13:12:31 - app.services.llm_providers.local_provider - INFO - Ollama is already running
+2026-03-08 13:12:32 - app.main - INFO -   ✅ Arctic Chatbot (d3909391-417e-4e4a-ba18-ae8f890801e2) initialized
+2026-03-08 13:12:32 - app.main - INFO -   ✅ Arctic Customer Bot (3027bcaf-eeaf-4746-8d55-0390d9f922e6) initialized
+2026-03-08 13:14:04 - app.main - INFO - 👋 Shutting down...
+2026-03-08 13:14:06 - app.main - INFO - === Application Starting ===
+2026-03-08 13:14:06 - app.main - INFO - Log file: D:\JupyterNotebooks\Chatbots\API Management Console\logs\app_20260308.log
+2026-03-08 13:14:06 - app.main - INFO - Python version: 3.14.0 (tags/v3.14.0:ebf955d, Oct  7 2025, 10:15:03) [MSC v.1944 64 bit (AMD64)]
+2026-03-08 13:14:06 - app.main - INFO - Working directory: D:\JupyterNotebooks\Chatbots\API Management Console
+2026-03-08 13:14:06 - app.main - INFO - Loading environment variables...
+2026-03-08 13:14:06 - app.main - INFO - Environment variables loaded
+2026-03-08 13:14:06 - app.main - INFO - Importing routers...
+2026-03-08 13:14:07 - app.main - INFO - Routers imported successfully
+2026-03-08 13:14:07 - app.main - INFO - Initializing database...
+2026-03-08 13:14:07 - app.main - INFO - Database module imported
+2026-03-08 13:14:07 - app.main - INFO - Importing template service...
+2026-03-08 13:14:07 - app.main - INFO - Template service imported
+2026-03-08 13:14:07 - app.main - INFO - Importing tunnel service...
+2026-03-08 13:14:07 - app.main - INFO - Tunnel service imported
+2026-03-08 13:14:07 - app.main - INFO - React frontend found, serving from frontend/dist
+2026-03-08 13:14:07 - app.main - INFO - 🚀 Starting Local AI Chatbot Deployment Console...
+2026-03-08 13:14:07 - app.main - INFO - ✅ Database initialized
+2026-03-08 13:14:07 - app.main - INFO - ✅ Templates loaded
+2026-03-08 13:14:12 - app.main - INFO - 🌐 Public endpoint ready: https://reference-count-premium-martial.trycloudflare.com
+2026-03-08 13:14:12 - app.main - INFO - 📍 Admin Dashboard: http://localhost:8000/admin
+2026-03-08 13:14:12 - app.main - INFO - 📍 API Documentation: http://localhost:8000/docs
+2026-03-08 13:14:12 - app.main - INFO - 👋 Shutting down...
+2026-03-08 13:14:13 - app.main - INFO - === Application Starting ===
+2026-03-08 13:14:13 - app.main - INFO - Log file: D:\JupyterNotebooks\Chatbots\API Management Console\logs\app_20260308.log
+2026-03-08 13:14:13 - app.main - INFO - Python version: 3.14.0 (tags/v3.14.0:ebf955d, Oct  7 2025, 10:15:03) [MSC v.1944 64 bit (AMD64)]
+2026-03-08 13:14:13 - app.main - INFO - Working directory: D:\JupyterNotebooks\Chatbots\API Management Console
+2026-03-08 13:14:13 - app.main - INFO - Loading environment variables...
+2026-03-08 13:14:13 - app.main - INFO - Environment variables loaded
+2026-03-08 13:14:13 - app.main - INFO - Importing routers...
+2026-03-08 13:14:14 - app.main - INFO - Routers imported successfully
+2026-03-08 13:14:14 - app.main - INFO - Initializing database...
+2026-03-08 13:14:14 - app.main - INFO - Database module imported
+2026-03-08 13:14:14 - app.main - INFO - Importing template service...
+2026-03-08 13:14:14 - app.main - INFO - Template service imported
+2026-03-08 13:14:14 - app.main - INFO - Importing tunnel service...
+2026-03-08 13:14:14 - app.main - INFO - Tunnel service imported
+2026-03-08 13:14:14 - app.main - INFO - React frontend found, serving from frontend/dist
+2026-03-08 13:14:14 - app.main - INFO - 🚀 Starting Local AI Chatbot Deployment Console...
+2026-03-08 13:14:14 - app.main - INFO - ✅ Database initialized
+2026-03-08 13:14:14 - app.main - INFO - ✅ Templates loaded
+2026-03-08 13:14:18 - app.main - INFO - 🌐 Public endpoint ready: https://healthy-angels-impact-bay.trycloudflare.com
+2026-03-08 13:14:18 - app.main - INFO - 📍 Admin Dashboard: http://localhost:8000/admin
+2026-03-08 13:14:18 - app.main - INFO - 📍 API Documentation: http://localhost:8000/docs
+2026-03-08 13:14:19 - app.main - INFO - 🤖 Initializing 2 active bot(s) in background...
+2026-03-08 13:14:19 - faiss.loader - DEBUG - Environment variable FAISS_OPT_LEVEL is not set, so let's pick the instruction set according to the current CPU
+2026-03-08 13:14:19 - faiss.loader - INFO - Loading faiss with AVX2 support.
+2026-03-08 13:14:19 - faiss.loader - INFO - Successfully loaded faiss with AVX2 support.
+2026-03-08 13:14:30 - app.services.llm_providers.local_provider - INFO - Loading sentence-transformers model (first time, may take a moment)...
+2026-03-08 13:14:30 - sentence_transformers.SentenceTransformer - INFO - Use pytorch device_name: cpu
+2026-03-08 13:14:30 - sentence_transformers.SentenceTransformer - INFO - Load pretrained SentenceTransformer: all-MiniLM-L6-v2
+2026-03-08 13:14:32 - huggingface_hub.utils._http - WARNING - Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+2026-03-08 13:14:41 - app.services.llm_providers.local_provider - INFO - Sentence-transformers model loaded successfully
+2026-03-08 13:14:42 - app.services.llm_providers.local_provider - INFO - Ollama is already running
+2026-03-08 13:14:43 - app.main - INFO -   ✅ Arctic Chatbot (d3909391-417e-4e4a-ba18-ae8f890801e2) initialized
+2026-03-08 13:14:43 - app.main - INFO -   ✅ Arctic Customer Bot (3027bcaf-eeaf-4746-8d55-0390d9f922e6) initialized
+2026-03-08 13:17:56 - app.main - INFO - 👋 Shutting down...
+2026-03-08 13:17:58 - app.main - INFO - === Application Starting ===
+2026-03-08 13:17:58 - app.main - INFO - Log file: D:\JupyterNotebooks\Chatbots\API Management Console\logs\app_20260308.log
+2026-03-08 13:17:58 - app.main - INFO - Python version: 3.14.0 (tags/v3.14.0:ebf955d, Oct  7 2025, 10:15:03) [MSC v.1944 64 bit (AMD64)]
+2026-03-08 13:17:58 - app.main - INFO - Working directory: D:\JupyterNotebooks\Chatbots\API Management Console
+2026-03-08 13:17:58 - app.main - INFO - Loading environment variables...
+2026-03-08 13:17:58 - app.main - INFO - Environment variables loaded
+2026-03-08 13:17:58 - app.main - INFO - Importing routers...
+2026-03-08 13:17:59 - app.main - INFO - Routers imported successfully
+2026-03-08 13:17:59 - app.main - INFO - Initializing database...
+2026-03-08 13:17:59 - app.main - INFO - Database module imported
+2026-03-08 13:17:59 - app.main - INFO - Importing template service...
+2026-03-08 13:17:59 - app.main - INFO - Template service imported
+2026-03-08 13:17:59 - app.main - INFO - Importing tunnel service...
+2026-03-08 13:17:59 - app.main - INFO - Tunnel service imported
+2026-03-08 13:17:59 - app.main - INFO - React frontend found, serving from frontend/dist
+2026-03-08 13:17:59 - app.main - INFO - 🚀 Starting Local AI Chatbot Deployment Console...
+2026-03-08 13:17:59 - app.main - INFO - ✅ Database initialized
+2026-03-08 13:17:59 - app.main - INFO - ✅ Templates loaded
+2026-03-08 13:18:05 - app.main - INFO - 🌐 Public endpoint ready: https://chips-life-pennsylvania-closely.trycloudflare.com
+2026-03-08 13:18:05 - app.main - INFO - 📍 Admin Dashboard: http://localhost:8000/admin
+2026-03-08 13:18:05 - app.main - INFO - 📍 API Documentation: http://localhost:8000/docs
+2026-03-08 13:18:06 - app.main - INFO - 🤖 Initializing 2 active bot(s) in background...
+2026-03-08 13:18:06 - faiss.loader - DEBUG - Environment variable FAISS_OPT_LEVEL is not set, so let's pick the instruction set according to the current CPU
+2026-03-08 13:18:06 - faiss.loader - INFO - Loading faiss with AVX2 support.
+2026-03-08 13:18:06 - faiss.loader - INFO - Successfully loaded faiss with AVX2 support.
+2026-03-08 13:18:17 - app.services.llm_providers.local_provider - INFO - Loading sentence-transformers model (first time, may take a moment)...
+2026-03-08 13:18:17 - sentence_transformers.SentenceTransformer - INFO - Use pytorch device_name: cpu
+2026-03-08 13:18:17 - sentence_transformers.SentenceTransformer - INFO - Load pretrained SentenceTransformer: all-MiniLM-L6-v2
+2026-03-08 13:18:17 - app.main - INFO - 👋 Shutting down...
+2026-03-08 13:18:18 - huggingface_hub.utils._http - WARNING - Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+2026-03-08 13:18:23 - app.main - INFO - === Application Starting ===
+2026-03-08 13:18:23 - app.main - INFO - Log file: D:\JupyterNotebooks\Chatbots\API Management Console\logs\app_20260308.log
+2026-03-08 13:18:23 - app.main - INFO - Python version: 3.14.0 (tags/v3.14.0:ebf955d, Oct  7 2025, 10:15:03) [MSC v.1944 64 bit (AMD64)]
+2026-03-08 13:18:23 - app.main - INFO - Working directory: D:\JupyterNotebooks\Chatbots\API Management Console
+2026-03-08 13:18:23 - app.main - INFO - Loading environment variables...
+2026-03-08 13:18:23 - app.main - INFO - Environment variables loaded
+2026-03-08 13:18:23 - app.main - INFO - Importing routers...
+2026-03-08 13:18:24 - app.main - INFO - Routers imported successfully
+2026-03-08 13:18:24 - app.main - INFO - Initializing database...
+2026-03-08 13:18:24 - app.main - INFO - Database module imported
+2026-03-08 13:18:24 - app.main - INFO - Importing template service...
+2026-03-08 13:18:24 - app.main - INFO - Template service imported
+2026-03-08 13:18:24 - app.main - INFO - Importing tunnel service...
+2026-03-08 13:18:24 - app.main - INFO - Tunnel service imported
+2026-03-08 13:18:24 - app.main - INFO - React frontend found, serving from frontend/dist
+2026-03-08 13:18:24 - app.main - INFO - 🚀 Starting Local AI Chatbot Deployment Console...
+2026-03-08 13:18:24 - app.main - INFO - ✅ Database initialized
+2026-03-08 13:18:24 - app.main - INFO - ✅ Templates loaded
+2026-03-08 13:18:30 - app.main - INFO - 🌐 Public endpoint ready: https://press-marco-mpegs-upgrades.trycloudflare.com
+2026-03-08 13:18:30 - app.main - INFO - 📍 Admin Dashboard: http://localhost:8000/admin
+2026-03-08 13:18:30 - app.main - INFO - 📍 API Documentation: http://localhost:8000/docs
+2026-03-08 13:18:30 - app.main - INFO - 👋 Shutting down...
+2026-03-08 13:18:31 - app.main - INFO - === Application Starting ===
+2026-03-08 13:18:31 - app.main - INFO - Log file: D:\JupyterNotebooks\Chatbots\API Management Console\logs\app_20260308.log
+2026-03-08 13:18:31 - app.main - INFO - Python version: 3.14.0 (tags/v3.14.0:ebf955d, Oct  7 2025, 10:15:03) [MSC v.1944 64 bit (AMD64)]
+2026-03-08 13:18:31 - app.main - INFO - Working directory: D:\JupyterNotebooks\Chatbots\API Management Console
+2026-03-08 13:18:31 - app.main - INFO - Loading environment variables...
+2026-03-08 13:18:31 - app.main - INFO - Environment variables loaded
+2026-03-08 13:18:31 - app.main - INFO - Importing routers...
+2026-03-08 13:18:32 - app.main - INFO - Routers imported successfully
+2026-03-08 13:18:32 - app.main - INFO - Initializing database...
+2026-03-08 13:18:32 - app.main - INFO - Database module imported
+2026-03-08 13:18:32 - app.main - INFO - Importing template service...
+2026-03-08 13:18:32 - app.main - INFO - Template service imported
+2026-03-08 13:18:32 - app.main - INFO - Importing tunnel service...
+2026-03-08 13:18:32 - app.main - INFO - Tunnel service imported
+2026-03-08 13:18:32 - app.main - INFO - React frontend found, serving from frontend/dist
+2026-03-08 13:18:32 - app.main - INFO - 🚀 Starting Local AI Chatbot Deployment Console...
+2026-03-08 13:18:32 - app.main - INFO - ✅ Database initialized
+2026-03-08 13:18:32 - app.main - INFO - ✅ Templates loaded
+2026-03-08 13:18:37 - app.main - INFO - 🌐 Public endpoint ready: https://framework-described-exemption-era.trycloudflare.com
+2026-03-08 13:18:37 - app.main - INFO - 📍 Admin Dashboard: http://localhost:8000/admin
+2026-03-08 13:18:37 - app.main - INFO - 📍 API Documentation: http://localhost:8000/docs
+2026-03-08 13:18:37 - app.main - INFO - 👋 Shutting down...
+2026-03-08 13:18:39 - app.main - INFO - === Application Starting ===
+2026-03-08 13:18:39 - app.main - INFO - Log file: D:\JupyterNotebooks\Chatbots\API Management Console\logs\app_20260308.log
+2026-03-08 13:18:39 - app.main - INFO - Python version: 3.14.0 (tags/v3.14.0:ebf955d, Oct  7 2025, 10:15:03) [MSC v.1944 64 bit (AMD64)]
+2026-03-08 13:18:39 - app.main - INFO - Working directory: D:\JupyterNotebooks\Chatbots\API Management Console
+2026-03-08 13:18:39 - app.main - INFO - Loading environment variables...
+2026-03-08 13:18:39 - app.main - INFO - Environment variables loaded
+2026-03-08 13:18:39 - app.main - INFO - Importing routers...
+2026-03-08 13:18:40 - app.main - INFO - Routers imported successfully
+2026-03-08 13:18:40 - app.main - INFO - Initializing database...
+2026-03-08 13:18:40 - app.main - INFO - Database module imported
+2026-03-08 13:18:40 - app.main - INFO - Importing template service...
+2026-03-08 13:18:40 - app.main - INFO - Template service imported
+2026-03-08 13:18:40 - app.main - INFO - Importing tunnel service...
+2026-03-08 13:18:40 - app.main - INFO - Tunnel service imported
+2026-03-08 13:18:40 - app.main - INFO - React frontend found, serving from frontend/dist
+2026-03-08 13:18:40 - app.main - INFO - 🚀 Starting Local AI Chatbot Deployment Console...
+2026-03-08 13:18:40 - app.main - INFO - ✅ Database initialized
+2026-03-08 13:18:40 - app.main - INFO - ✅ Templates loaded
+2026-03-08 13:18:45 - app.main - INFO - 🌐 Public endpoint ready: https://shortcuts-old-estimation-constraint.trycloudflare.com
+2026-03-08 13:18:45 - app.main - INFO - 📍 Admin Dashboard: http://localhost:8000/admin
+2026-03-08 13:18:45 - app.main - INFO - 📍 API Documentation: http://localhost:8000/docs
+2026-03-08 13:18:46 - app.main - INFO - 👋 Shutting down...
+2026-03-08 13:18:46 - app.main - INFO - === Application Starting ===
+2026-03-08 13:18:46 - app.main - INFO - Log file: D:\JupyterNotebooks\Chatbots\API Management Console\logs\app_20260308.log
+2026-03-08 13:18:46 - app.main - INFO - Python version: 3.14.0 (tags/v3.14.0:ebf955d, Oct  7 2025, 10:15:03) [MSC v.1944 64 bit (AMD64)]
+2026-03-08 13:18:46 - app.main - INFO - Working directory: D:\JupyterNotebooks\Chatbots\API Management Console
+2026-03-08 13:18:46 - app.main - INFO - Loading environment variables...
+2026-03-08 13:18:46 - app.main - INFO - Environment variables loaded
+2026-03-08 13:18:46 - app.main - INFO - Importing routers...
+2026-03-08 13:18:48 - app.main - INFO - Routers imported successfully
+2026-03-08 13:18:48 - app.main - INFO - Initializing database...
+2026-03-08 13:18:48 - app.main - INFO - Database module imported
+2026-03-08 13:18:48 - app.main - INFO - Importing template service...
+2026-03-08 13:18:48 - app.main - INFO - Template service imported
+2026-03-08 13:18:48 - app.main - INFO - Importing tunnel service...
+2026-03-08 13:18:48 - app.main - INFO - Tunnel service imported
+2026-03-08 13:18:48 - app.main - INFO - React frontend found, serving from frontend/dist
+2026-03-08 13:18:48 - app.main - INFO - 🚀 Starting Local AI Chatbot Deployment Console...
+2026-03-08 13:18:48 - app.main - INFO - ✅ Database initialized
+2026-03-08 13:18:48 - app.main - INFO - ✅ Templates loaded
+2026-03-08 13:18:52 - app.main - INFO - 🌐 Public endpoint ready: https://training-gentleman-breaking-implies.trycloudflare.com
+2026-03-08 13:18:52 - app.main - INFO - 📍 Admin Dashboard: http://localhost:8000/admin
+2026-03-08 13:18:52 - app.main - INFO - 📍 API Documentation: http://localhost:8000/docs
+2026-03-08 13:18:53 - app.main - INFO - 🤖 Initializing 2 active bot(s) in background...
+2026-03-08 13:18:53 - faiss.loader - DEBUG - Environment variable FAISS_OPT_LEVEL is not set, so let's pick the instruction set according to the current CPU
+2026-03-08 13:18:53 - faiss.loader - INFO - Loading faiss with AVX2 support.
+2026-03-08 13:18:53 - faiss.loader - INFO - Successfully loaded faiss with AVX2 support.
+2026-03-08 13:19:03 - app.services.llm_providers.local_provider - INFO - Loading sentence-transformers model (first time, may take a moment)...
+2026-03-08 13:19:03 - sentence_transformers.SentenceTransformer - INFO - Use pytorch device_name: cpu
+2026-03-08 13:19:03 - sentence_transformers.SentenceTransformer - INFO - Load pretrained SentenceTransformer: all-MiniLM-L6-v2
+2026-03-08 13:19:04 - huggingface_hub.utils._http - WARNING - Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+2026-03-08 13:19:07 - app.services.llm_providers.local_provider - INFO - Sentence-transformers model loaded successfully
+2026-03-08 13:19:07 - app.services.llm_providers.local_provider - INFO - Ollama is already running
+2026-03-08 13:19:09 - app.main - INFO -   ✅ Arctic Chatbot (d3909391-417e-4e4a-ba18-ae8f890801e2) initialized
+2026-03-08 13:19:09 - app.main - INFO -   ✅ Arctic Customer Bot (3027bcaf-eeaf-4746-8d55-0390d9f922e6) initialized
+2026-03-08 14:27:40 - app.main - INFO - 👋 Shutting down...
+2026-03-08 14:27:52 - app.main - INFO - === Application Starting ===
+2026-03-08 14:27:52 - app.main - INFO - Log file: D:\JupyterNotebooks\Chatbots\API Management Console\logs\app_20260308.log
+2026-03-08 14:27:52 - app.main - INFO - Python version: 3.14.0 (tags/v3.14.0:ebf955d, Oct  7 2025, 10:15:03) [MSC v.1944 64 bit (AMD64)]
+2026-03-08 14:27:52 - app.main - INFO - Working directory: D:\JupyterNotebooks\Chatbots\API Management Console
+2026-03-08 14:27:52 - app.main - INFO - Loading environment variables...
+2026-03-08 14:27:52 - app.main - INFO - Environment variables loaded
+2026-03-08 14:27:52 - app.main - INFO - Importing routers...
+2026-03-08 14:27:57 - app.main - INFO - Routers imported successfully
+2026-03-08 14:27:57 - app.main - INFO - Initializing database...
+2026-03-08 14:27:57 - app.main - INFO - Database module imported
+2026-03-08 14:27:57 - app.main - INFO - Importing template service...
+2026-03-08 14:27:57 - app.main - INFO - Template service imported
+2026-03-08 14:27:57 - app.main - INFO - Importing tunnel service...
+2026-03-08 14:27:57 - app.main - INFO - Tunnel service imported
+2026-03-08 14:27:57 - app.main - INFO - React frontend found, serving from frontend/dist
+2026-03-08 14:27:59 - app.main - INFO - === Application Starting ===
+2026-03-08 14:27:59 - app.main - INFO - Log file: D:\JupyterNotebooks\Chatbots\API Management Console\logs\app_20260308.log
+2026-03-08 14:27:59 - app.main - INFO - Python version: 3.14.0 (tags/v3.14.0:ebf955d, Oct  7 2025, 10:15:03) [MSC v.1944 64 bit (AMD64)]
+2026-03-08 14:27:59 - app.main - INFO - Working directory: D:\JupyterNotebooks\Chatbots\API Management Console
+2026-03-08 14:27:59 - app.main - INFO - Loading environment variables...
+2026-03-08 14:27:59 - app.main - INFO - Environment variables loaded
+2026-03-08 14:27:59 - app.main - INFO - Importing routers...
+2026-03-08 14:28:00 - app.main - INFO - Routers imported successfully
+2026-03-08 14:28:00 - app.main - INFO - Initializing database...
+2026-03-08 14:28:00 - app.main - INFO - Database module imported
+2026-03-08 14:28:00 - app.main - INFO - Importing template service...
+2026-03-08 14:28:00 - app.main - INFO - Template service imported
+2026-03-08 14:28:00 - app.main - INFO - Importing tunnel service...
+2026-03-08 14:28:00 - app.main - INFO - Tunnel service imported
+2026-03-08 14:28:00 - app.main - INFO - React frontend found, serving from frontend/dist
+2026-03-08 14:28:00 - app.main - INFO - 🚀 Starting Local AI Chatbot Deployment Console...
+2026-03-08 14:28:00 - app.main - INFO - ✅ Database initialized
+2026-03-08 14:28:00 - app.main - INFO - ✅ Templates loaded
+2026-03-08 14:28:07 - app.main - INFO - 🌐 Public endpoint ready: https://get-mixer-invisible-freeware.trycloudflare.com
+2026-03-08 14:28:07 - app.main - INFO - 📍 Admin Dashboard: http://localhost:8000/admin
+2026-03-08 14:28:07 - app.main - INFO - 📍 API Documentation: http://localhost:8000/docs
+2026-03-08 14:28:08 - app.main - INFO - 🤖 Initializing 2 active bot(s) in background...
+2026-03-08 14:28:08 - faiss.loader - DEBUG - Environment variable FAISS_OPT_LEVEL is not set, so let's pick the instruction set according to the current CPU
+2026-03-08 14:28:08 - faiss.loader - INFO - Loading faiss with AVX2 support.
+2026-03-08 14:28:09 - faiss.loader - INFO - Successfully loaded faiss with AVX2 support.
+2026-03-08 14:28:57 - app.services.llm_providers.local_provider - INFO - Loading sentence-transformers model (first time, may take a moment)...
+2026-03-08 14:28:57 - sentence_transformers.SentenceTransformer - INFO - Use pytorch device_name: cpu
+2026-03-08 14:28:57 - sentence_transformers.SentenceTransformer - INFO - Load pretrained SentenceTransformer: all-MiniLM-L6-v2
+2026-03-08 14:29:10 - app.services.llm_providers.local_provider - INFO - Sentence-transformers model loaded successfully
+2026-03-08 14:29:11 - app.services.llm_providers.local_provider - INFO - Ollama is already running
+2026-03-08 14:29:24 - app.main - INFO -   ✅ Arctic Chatbot (d3909391-417e-4e4a-ba18-ae8f890801e2) initialized
+2026-03-08 14:29:24 - app.main - INFO -   ✅ Arctic Customer Bot (3027bcaf-eeaf-4746-8d55-0390d9f922e6) initialized
+2026-03-08 14:42:02 - app.main - INFO - 👋 Shutting down...
+2026-03-08 14:57:18 - app.main - INFO - === Application Starting ===
+2026-03-08 14:57:18 - app.main - INFO - Log file: D:\JupyterNotebooks\Chatbots\API Management Console\logs\app_20260308.log
+2026-03-08 14:57:18 - app.main - INFO - Python version: 3.14.0 (tags/v3.14.0:ebf955d, Oct  7 2025, 10:15:03) [MSC v.1944 64 bit (AMD64)]
+2026-03-08 14:57:18 - app.main - INFO - Working directory: D:\JupyterNotebooks\Chatbots\API Management Console
+2026-03-08 14:57:18 - app.main - INFO - Loading environment variables...
+2026-03-08 14:57:18 - app.main - INFO - Environment variables loaded
+2026-03-08 14:57:18 - app.main - INFO - Importing routers...
+2026-03-08 14:57:19 - app.main - INFO - Routers imported successfully
+2026-03-08 14:57:19 - app.main - INFO - Initializing database...
+2026-03-08 14:57:19 - app.main - INFO - Database module imported
+2026-03-08 14:57:19 - app.main - INFO - Importing template service...
+2026-03-08 14:57:19 - app.main - INFO - Template service imported
+2026-03-08 14:57:19 - app.main - INFO - Importing tunnel service...
+2026-03-08 14:57:19 - app.main - INFO - Tunnel service imported
+2026-03-08 14:57:19 - app.main - INFO - React frontend found, serving from frontend/dist
+2026-03-08 14:57:19 - asyncio - DEBUG - Using proactor: IocpProactor
+2026-03-08 14:57:19 - asyncio - DEBUG - Using proactor: IocpProactor
+2026-03-08 14:57:19 - asyncio - DEBUG - Using proactor: IocpProactor
+2026-03-08 14:58:08 - app.main - INFO - === Application Starting ===
+2026-03-08 14:58:08 - app.main - INFO - Log file: D:\JupyterNotebooks\Chatbots\API Management Console\logs\app_20260308.log
+2026-03-08 14:58:08 - app.main - INFO - Python version: 3.14.0 (tags/v3.14.0:ebf955d, Oct  7 2025, 10:15:03) [MSC v.1944 64 bit (AMD64)]
+2026-03-08 14:58:08 - app.main - INFO - Working directory: D:\JupyterNotebooks\Chatbots\API Management Console
+2026-03-08 14:58:08 - app.main - INFO - Loading environment variables...
+2026-03-08 14:58:08 - app.main - INFO - Environment variables loaded
+2026-03-08 14:58:08 - app.main - INFO - Importing routers...
+2026-03-08 14:58:12 - app.main - INFO - Routers imported successfully
+2026-03-08 14:58:12 - app.main - INFO - Initializing database...
+2026-03-08 14:58:12 - app.main - INFO - Database module imported
+2026-03-08 14:58:12 - app.main - INFO - Importing template service...
+2026-03-08 14:58:12 - app.main - INFO - Template service imported
+2026-03-08 14:58:12 - app.main - INFO - Importing tunnel service...
+2026-03-08 14:58:12 - app.main - INFO - Tunnel service imported
+2026-03-08 14:58:12 - app.main - INFO - React frontend found, serving from frontend/dist
+2026-03-08 14:58:13 - app.main - INFO - === Application Starting ===
+2026-03-08 14:58:13 - app.main - INFO - Log file: D:\JupyterNotebooks\Chatbots\API Management Console\logs\app_20260308.log
+2026-03-08 14:58:13 - app.main - INFO - Python version: 3.14.0 (tags/v3.14.0:ebf955d, Oct  7 2025, 10:15:03) [MSC v.1944 64 bit (AMD64)]
+2026-03-08 14:58:13 - app.main - INFO - Working directory: D:\JupyterNotebooks\Chatbots\API Management Console
+2026-03-08 14:58:13 - app.main - INFO - Loading environment variables...
+2026-03-08 14:58:13 - app.main - INFO - Environment variables loaded
+2026-03-08 14:58:13 - app.main - INFO - Importing routers...
+2026-03-08 14:58:14 - app.main - INFO - Routers imported successfully
+2026-03-08 14:58:14 - app.main - INFO - Initializing database...
+2026-03-08 14:58:14 - app.main - INFO - Database module imported
+2026-03-08 14:58:14 - app.main - INFO - Importing template service...
+2026-03-08 14:58:14 - app.main - INFO - Template service imported
+2026-03-08 14:58:14 - app.main - INFO - Importing tunnel service...
+2026-03-08 14:58:14 - app.main - INFO - Tunnel service imported
+2026-03-08 14:58:14 - app.main - INFO - React frontend found, serving from frontend/dist
+2026-03-08 14:58:14 - app.main - INFO - 🚀 Starting Local AI Chatbot Deployment Console...
+2026-03-08 14:58:14 - app.main - INFO - ✅ Database initialized
+2026-03-08 14:58:14 - app.main - INFO - ✅ Templates loaded
+2026-03-08 14:58:20 - app.main - INFO - 🌐 Public endpoint ready: https://availability-wow-rail-parameters.trycloudflare.com
+2026-03-08 14:58:20 - app.main - INFO - 📍 Admin Dashboard: http://localhost:8000/admin
+2026-03-08 14:58:20 - app.main - INFO - 📍 API Documentation: http://localhost:8000/docs
+2026-03-08 14:58:21 - app.main - INFO - 🤖 Initializing 2 active bot(s) in background...
+2026-03-08 14:58:21 - app.main - INFO -   ✅ Arctic Customer Bot (3027bcaf-eeaf-4746-8d55-0390d9f922e6) initialized
+2026-03-08 14:58:23 - app.main - WARNING -   ⚠️ Arctic - Google API Test (a82abf91-4529-4680-854d-2e72e578e70f) init failed: Gemini API error: 429 - {
+  "error": {
+    "code": 429,
+    "message": "You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 0, model: gemini-2.0-flash-lite\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 0, model: gemini-2.0-flash-lite\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_input_token_count, limit: 0, model: gemini-2.0-flash-lite\nPlease retry in 36.415473491s.",
+    "status": "RESOURCE_EXHAUSTED",
+    "details": [
+      {
+        "@type": "type.googleapis.com/google.rpc.Help",
+        "links": [
+          {
+            "description": "Learn more about Gemini API quotas",
+            "url": "https://ai.google.dev/gemini-api/docs/rate-limits"
+          }
+        ]
+      },
+      {
+        "@type": "type.googleapis.com/google.rpc.QuotaFailure",
+        "violations": [
+          {
+            "quotaMetric": "generativelanguage.googleapis.com/generate_content_free_tier_requests",
+            "quotaId": "GenerateRequestsPerDayPerProjectPerModel-FreeTier",
+            "quotaDimensions": {
+              "location": "global",
+              "model": "gemini-2.0-flash-lite"
+            }
+          },
+          {
+            "quotaMetric": "generativelanguage.googleapis.com/generate_content_free_tier_requests",
+            "quotaId": "GenerateRequestsPerMinutePerProjectPerModel-FreeTier",
+            "quotaDimensions": {
+              "location": "global",
+              "model": "gemini-2.0-flash-lite"
+            }
+          },
+          {
+            "quotaMetric": "generativelanguage.googleapis.com/generate_content_free_tier_input_token_count",
+            "quotaId": "GenerateContentInputTokensPerModelPerMinute-FreeTier",
+            "quotaDimensions": {
+              "model": "gemini-2.0-flash-lite",
+              "location": "global"
+            }
+          }
+        ]
+      },
+      {
+        "@type": "type.googleapis.com/google.rpc.RetryInfo",
+        "retryDelay": "36s"
+      }
+    ]
+  }
+}
+
+2026-03-08 14:58:26 - faiss.loader - DEBUG - Environment variable FAISS_OPT_LEVEL is not set, so let's pick the instruction set according to the current CPU
+2026-03-08 14:58:26 - faiss.loader - INFO - Loading faiss with AVX2 support.
+2026-03-08 14:58:27 - faiss.loader - INFO - Successfully loaded faiss with AVX2 support.
+2026-03-08 14:59:26 - app.routers.chat - ERROR - Chat processing error for bot a82abf91-4529-4680-854d-2e72e578e70f: Gemini API error: 429 - {
+  "error": {
+    "code": 429,
+    "message": "You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 0, model: gemini-2.0-flash-lite\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 0, model: gemini-2.0-flash-lite\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_input_token_count, limit: 0, model: gemini-2.0-flash-lite\nPlease retry in 33.903077459s.",
+    "status": "RESOURCE_EXHAUSTED",
+    "details": [
+      {
+        "@type": "type.googleapis.com/google.rpc.Help",
+        "links": [
+          {
+            "description": "Learn more about Gemini API quotas",
+            "url": "https://ai.google.dev/gemini-api/docs/rate-limits"
+          }
+        ]
+      },
+      {
+        "@type": "type.googleapis.com/google.rpc.QuotaFailure",
+        "violations": [
+          {
+            "quotaMetric": "generativelanguage.googleapis.com/generate_content_free_tier_requests",
+            "quotaId": "GenerateRequestsPerDayPerProjectPerModel-FreeTier",
+            "quotaDimensions": {
+              "model": "gemini-2.0-flash-lite",
+              "location": "global"
+            }
+          },
+          {
+            "quotaMetric": "generativelanguage.googleapis.com/generate_content_free_tier_requests",
+            "quotaId": "GenerateRequestsPerMinutePerProjectPerModel-FreeTier",
+            "quotaDimensions": {
+              "model": "gemini-2.0-flash-lite",
+              "location": "global"
+            }
+          },
+          {
+            "quotaMetric": "generativelanguage.googleapis.com/generate_content_free_tier_input_token_count",
+            "quotaId": "GenerateContentInputTokensPerModelPerMinute-FreeTier",
+            "quotaDimensions": {
+              "location": "global",
+              "model": "gemini-2.0-flash-lite"
+            }
+          }
+        ]
+      },
+      {
+        "@type": "type.googleapis.com/google.rpc.RetryInfo",
+        "retryDelay": "33s"
+      }
+    ]
+  }
+}
+Traceback (most recent call last):
+  File "D:\JupyterNotebooks\Chatbots\API Management Console\app\services\llm_providers\gemini_provider.py", line 107, in chat
+    response.raise_for_status()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "D:\JupyterNotebooks\Chatbots\API Management Console\venv\Lib\site-packages\httpx\_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Client error '429 Too Many Requests' for url 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-lite:generateContent?key=AIzaSyCpWEep3imrM0GPxuhFDPaoCSdp3heXArk'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\JupyterNotebooks\Chatbots\API Management Console\app\routers\chat.py", line 69, in chat
+    result = await bot_service.chat(
+             ^^^^^^^^^^^^^^^^^^^^^^^
+    ...<4 lines>...
+    )
+    ^
+  File "D:\JupyterNotebooks\Chatbots\API Management Console\app\services\bot_service.py", line 434, in chat
+    response = await provider.chat(
+               ^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "D:\JupyterNotebooks\Chatbots\API Management Console\app\services\llm_providers\gemini_provider.py", line 133, in chat
+    raise RuntimeError(f"Gemini API error: {exc.response.status_code} - {detail}")
+RuntimeError: Gemini API error: 429 - {
+  "error": {
+    "code": 429,
+    "message": "You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 0, model: gemini-2.0-flash-lite\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 0, model: gemini-2.0-flash-lite\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_input_token_count, limit: 0, model: gemini-2.0-flash-lite\nPlease retry in 33.903077459s.",
+    "status": "RESOURCE_EXHAUSTED",
+    "details": [
+      {
+        "@type": "type.googleapis.com/google.rpc.Help",
+        "links": [
+          {
+            "description": "Learn more about Gemini API quotas",
+            "url": "https://ai.google.dev/gemini-api/docs/rate-limits"
+          }
+        ]
+      },
+      {
+        "@type": "type.googleapis.com/google.rpc.QuotaFailure",
+        "violations": [
+          {
+            "quotaMetric": "generativelanguage.googleapis.com/generate_content_free_tier_requests",
+            "quotaId": "GenerateRequestsPerDayPerProjectPerModel-FreeTier",
+            "quotaDimensions": {
+              "model": "gemini-2.0-flash-lite",
+              "location": "global"
+            }
+          },
+          {
+            "quotaMetric": "generativelanguage.googleapis.com/generate_content_free_tier_requests",
+            "quotaId": "GenerateRequestsPerMinutePerProjectPerModel-FreeTier",
+            "quotaDimensions": {
+              "model": "gemini-2.0-flash-lite",
+              "location": "global"
+            }
+          },
+          {
+            "quotaMetric": "generativelanguage.googleapis.com/generate_content_free_tier_input_token_count",
+            "quotaId": "GenerateContentInputTokensPerModelPerMinute-FreeTier",
+            "quotaDimensions": {
+              "location": "global",
+              "model": "gemini-2.0-flash-lite"
+            }
+          }
+        ]
+      },
+      {
+        "@type": "type.googleapis.com/google.rpc.RetryInfo",
+        "retryDelay": "33s"
+      }
+    ]
+  }
+}
+
+2026-03-08 15:25:40 - app.main - INFO - 👋 Shutting down...
+2026-03-08 15:25:45 - app.main - INFO - === Application Starting ===
+2026-03-08 15:25:45 - app.main - INFO - Log file: D:\JupyterNotebooks\Chatbots\API Management Console\logs\app_20260308.log
+2026-03-08 15:25:45 - app.main - INFO - Python version: 3.14.0 (tags/v3.14.0:ebf955d, Oct  7 2025, 10:15:03) [MSC v.1944 64 bit (AMD64)]
+2026-03-08 15:25:45 - app.main - INFO - Working directory: D:\JupyterNotebooks\Chatbots\API Management Console
+2026-03-08 15:25:45 - app.main - INFO - Loading environment variables...
+2026-03-08 15:25:45 - app.main - INFO - Environment variables loaded
+2026-03-08 15:25:45 - app.main - INFO - Importing routers...
+2026-03-08 15:25:52 - app.main - INFO - Routers imported successfully
+2026-03-08 15:25:52 - app.main - INFO - Initializing database...
+2026-03-08 15:25:52 - app.main - INFO - Database module imported
+2026-03-08 15:25:52 - app.main - INFO - Importing template service...
+2026-03-08 15:25:52 - app.main - INFO - Template service imported
+2026-03-08 15:25:52 - app.main - INFO - Importing tunnel service...
+2026-03-08 15:25:52 - app.main - INFO - Tunnel service imported
+2026-03-08 15:25:52 - app.main - INFO - React frontend found, serving from frontend/dist
+2026-03-08 15:25:52 - app.main - INFO - 🚀 Starting Local AI Chatbot Deployment Console...
+2026-03-08 15:25:52 - app.main - INFO - ✅ Database initialized
+2026-03-08 15:25:52 - app.main - INFO - ✅ Templates loaded
+2026-03-08 15:25:59 - app.main - INFO - 🌐 Public endpoint ready: https://figured-moment-roger-classified.trycloudflare.com
+2026-03-08 15:25:59 - app.main - INFO - 📍 Admin Dashboard: http://localhost:8000/admin
+2026-03-08 15:25:59 - app.main - INFO - 📍 API Documentation: http://localhost:8000/docs
+2026-03-08 15:25:59 - app.main - INFO - 👋 Shutting down...
+2026-03-08 15:26:01 - app.main - INFO - === Application Starting ===
+2026-03-08 15:26:01 - app.main - INFO - Log file: D:\JupyterNotebooks\Chatbots\API Management Console\logs\app_20260308.log
+2026-03-08 15:26:01 - app.main - INFO - Python version: 3.14.0 (tags/v3.14.0:ebf955d, Oct  7 2025, 10:15:03) [MSC v.1944 64 bit (AMD64)]
+2026-03-08 15:26:01 - app.main - INFO - Working directory: D:\JupyterNotebooks\Chatbots\API Management Console
+2026-03-08 15:26:01 - app.main - INFO - Loading environment variables...
+2026-03-08 15:26:01 - app.main - INFO - Environment variables loaded
+2026-03-08 15:26:01 - app.main - INFO - Importing routers...
+2026-03-08 15:26:02 - app.main - INFO - Routers imported successfully
+2026-03-08 15:26:02 - app.main - INFO - Initializing database...
+2026-03-08 15:26:02 - app.main - INFO - Database module imported
+2026-03-08 15:26:02 - app.main - INFO - Importing template service...
+2026-03-08 15:26:02 - app.main - INFO - Template service imported
+2026-03-08 15:26:02 - app.main - INFO - Importing tunnel service...
+2026-03-08 15:26:02 - app.main - INFO - Tunnel service imported
+2026-03-08 15:26:02 - app.main - INFO - Importing API gateway service...
+2026-03-08 15:26:02 - app.main - INFO - API gateway service imported
+2026-03-08 15:26:02 - app.main - INFO - React frontend found, serving from frontend/dist
+2026-03-08 15:26:02 - app.main - INFO - 🚀 Starting Local AI Chatbot Deployment Console...
+2026-03-08 15:26:02 - app.main - INFO - ✅ Database initialized
+2026-03-08 15:26:02 - app.main - INFO - ✅ Templates loaded
+2026-03-08 15:26:02 - app.services.api_gateway_service - INFO - API gateway started on http://127.0.0.1:58938 -> http://127.0.0.1:8000
+2026-03-08 15:26:02 - app.main - INFO - 🔒 API-only gateway active on: http://127.0.0.1:58938
+2026-03-08 15:26:07 - app.main - INFO - 🌐 Public endpoint ready: https://scotia-catch-modelling-extensions.trycloudflare.com
+2026-03-08 15:26:07 - app.main - INFO - 📍 Admin Dashboard: http://localhost:8000/admin
+2026-03-08 15:26:07 - app.main - INFO - 📍 API Documentation: http://localhost:8000/docs
+2026-03-08 15:26:09 - app.main - INFO - 🤖 Initializing 2 active bot(s) in background...
+2026-03-08 15:26:09 - app.main - INFO -   ✅ Arctic Customer Bot (3027bcaf-eeaf-4746-8d55-0390d9f922e6) initialized
+2026-03-08 15:26:10 - app.main - INFO - 👋 Shutting down...
+2026-03-08 15:26:11 - app.main - INFO - === Application Starting ===
+2026-03-08 15:26:11 - app.main - INFO - Log file: D:\JupyterNotebooks\Chatbots\API Management Console\logs\app_20260308.log
+2026-03-08 15:26:11 - app.main - INFO - Python version: 3.14.0 (tags/v3.14.0:ebf955d, Oct  7 2025, 10:15:03) [MSC v.1944 64 bit (AMD64)]
+2026-03-08 15:26:11 - app.main - INFO - Working directory: D:\JupyterNotebooks\Chatbots\API Management Console
+2026-03-08 15:26:11 - app.main - INFO - Loading environment variables...
+2026-03-08 15:26:11 - app.main - INFO - Environment variables loaded
+2026-03-08 15:26:12 - app.main - INFO - Importing routers...
+2026-03-08 15:26:14 - app.main - INFO - Routers imported successfully
+2026-03-08 15:26:14 - app.main - INFO - Initializing database...
+2026-03-08 15:26:14 - app.main - INFO - Database module imported
+2026-03-08 15:26:14 - app.main - INFO - Importing template service...
+2026-03-08 15:26:14 - app.main - INFO - Template service imported
+2026-03-08 15:26:14 - app.main - INFO - Importing tunnel service...
+2026-03-08 15:26:14 - app.main - INFO - Tunnel service imported
+2026-03-08 15:26:14 - app.main - INFO - Importing API gateway service...
+2026-03-08 15:26:14 - app.main - INFO - API gateway service imported
+2026-03-08 15:26:14 - app.main - INFO - React frontend found, serving from frontend/dist
+2026-03-08 15:26:14 - app.main - INFO - 🚀 Starting Local AI Chatbot Deployment Console...
+2026-03-08 15:26:14 - app.main - INFO - ✅ Database initialized
+2026-03-08 15:26:14 - app.main - INFO - ✅ Templates loaded
+2026-03-08 15:26:14 - app.services.api_gateway_service - INFO - API gateway started on http://127.0.0.1:58957 -> http://127.0.0.1:8000
+2026-03-08 15:26:14 - app.main - INFO - 🔒 API-only gateway active on: http://127.0.0.1:58957
+2026-03-08 15:26:21 - app.main - INFO - 🌐 Public endpoint ready: https://weight-live-karen-intelligence.trycloudflare.com
+2026-03-08 15:26:21 - app.main - INFO - 📍 Admin Dashboard: http://localhost:8000/admin
+2026-03-08 15:26:21 - app.main - INFO - 📍 API Documentation: http://localhost:8000/docs
+2026-03-08 15:26:22 - app.main - INFO - 🤖 Initializing 2 active bot(s) in background...
+2026-03-08 15:26:22 - app.main - INFO -   ✅ Arctic Customer Bot (3027bcaf-eeaf-4746-8d55-0390d9f922e6) initialized
+2026-03-08 15:26:25 - app.main - WARNING -   ⚠️ Arctic - Google API Test (a82abf91-4529-4680-854d-2e72e578e70f) init failed: Gemini API error: 429 - {
+  "error": {
+    "code": 429,
+    "message": "You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 0, model: gemini-2.0-flash-lite\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 0, model: gemini-2.0-flash-lite\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_input_token_count, limit: 0, model: gemini-2.0-flash-lite\nPlease retry in 34.601470927s.",
+    "status": "RESOURCE_EXHAUSTED",
+    "details": [
+      {
+        "@type": "type.googleapis.com/google.rpc.Help",
+        "links": [
+          {
+            "description": "Learn more about Gemini API quotas",
+            "url": "https://ai.google.dev/gemini-api/docs/rate-limits"
+          }
+        ]
+      },
+      {
+        "@type": "type.googleapis.com/google.rpc.QuotaFailure",
+        "violations": [
+          {
+            "quotaMetric": "generativelanguage.googleapis.com/generate_content_free_tier_requests",
+            "quotaId": "GenerateRequestsPerDayPerProjectPerModel-FreeTier",
+            "quotaDimensions": {
+              "location": "global",
+              "model": "gemini-2.0-flash-lite"
+            }
+          },
+          {
+            "quotaMetric": "generativelanguage.googleapis.com/generate_content_free_tier_requests",
+            "quotaId": "GenerateRequestsPerMinutePerProjectPerModel-FreeTier",
+            "quotaDimensions": {
+              "location": "global",
+              "model": "gemini-2.0-flash-lite"
+            }
+          },
+          {
+            "quotaMetric": "generativelanguage.googleapis.com/generate_content_free_tier_input_token_count",
+            "quotaId": "GenerateContentInputTokensPerModelPerMinute-FreeTier",
+            "quotaDimensions": {
+              "location": "global",
+              "model": "gemini-2.0-flash-lite"
+            }
+          }
+        ]
+      },
+      {
+        "@type": "type.googleapis.com/google.rpc.RetryInfo",
+        "retryDelay": "34s"
+      }
+    ]
+  }
+}
+
+2026-03-08 15:26:35 - app.main - INFO - 👋 Shutting down...
+2026-03-08 15:26:39 - app.main - INFO - === Application Starting ===
+2026-03-08 15:26:39 - app.main - INFO - Log file: D:\JupyterNotebooks\Chatbots\API Management Console\logs\app_20260308.log
+2026-03-08 15:26:39 - app.main - INFO - Python version: 3.14.0 (tags/v3.14.0:ebf955d, Oct  7 2025, 10:15:03) [MSC v.1944 64 bit (AMD64)]
+2026-03-08 15:26:39 - app.main - INFO - Working directory: D:\JupyterNotebooks\Chatbots\API Management Console
+2026-03-08 15:26:39 - app.main - INFO - Loading environment variables...
+2026-03-08 15:26:39 - app.main - INFO - Environment variables loaded
+2026-03-08 15:26:40 - app.main - INFO - Importing routers...
+2026-03-08 15:27:01 - app.main - INFO - Routers imported successfully
+2026-03-08 15:27:01 - app.main - INFO - Initializing database...
+2026-03-08 15:27:01 - app.main - INFO - Database module imported
+2026-03-08 15:27:01 - app.main - INFO - Importing template service...
+2026-03-08 15:27:01 - app.main - INFO - Template service imported
+2026-03-08 15:27:01 - app.main - INFO - Importing tunnel service...
+2026-03-08 15:27:01 - app.main - INFO - Tunnel service imported
+2026-03-08 15:27:01 - app.main - INFO - Importing API gateway service...
+2026-03-08 15:27:01 - app.main - INFO - API gateway service imported
+2026-03-08 15:27:01 - app.main - INFO - React frontend found, serving from frontend/dist
+2026-03-08 15:27:01 - app.main - INFO - 🚀 Starting Local AI Chatbot Deployment Console...
+2026-03-08 15:27:01 - app.main - INFO - ✅ Database initialized
+2026-03-08 15:27:01 - app.main - INFO - ✅ Templates loaded
+2026-03-08 15:27:02 - app.services.api_gateway_service - INFO - API gateway started on http://127.0.0.1:64184 -> http://127.0.0.1:8000
+2026-03-08 15:27:02 - app.main - INFO - 🔒 API-only gateway active on: http://127.0.0.1:64184
+2026-03-08 15:27:08 - app.main - INFO - 🌐 Public endpoint ready: https://mechanics-mattress-angel-dressed.trycloudflare.com
+2026-03-08 15:27:08 - app.main - INFO - 📍 Admin Dashboard: http://localhost:8000/admin
+2026-03-08 15:27:08 - app.main - INFO - 📍 API Documentation: http://localhost:8000/docs
+2026-03-08 15:27:09 - app.main - INFO - 🤖 Initializing 2 active bot(s) in background...
+2026-03-08 15:27:10 - app.main - INFO -   ✅ Arctic Customer Bot (3027bcaf-eeaf-4746-8d55-0390d9f922e6) initialized
+2026-03-08 15:27:12 - app.main - WARNING -   ⚠️ Arctic - Google API Test (a82abf91-4529-4680-854d-2e72e578e70f) init failed: Gemini API error: 429 - {
+  "error": {
+    "code": 429,
+    "message": "You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_input_token_count, limit: 0, model: gemini-2.0-flash-lite\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 0, model: gemini-2.0-flash-lite\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 0, model: gemini-2.0-flash-lite\nPlease retry in 47.228699368s.",
+    "status": "RESOURCE_EXHAUSTED",
+    "details": [
+      {
+        "@type": "type.googleapis.com/google.rpc.Help",
+        "links": [
+          {
+            "description": "Learn more about Gemini API quotas",
+            "url": "https://ai.google.dev/gemini-api/docs/rate-limits"
+          }
+        ]
+      },
+      {
+        "@type": "type.googleapis.com/google.rpc.QuotaFailure",
+        "violations": [
+          {
+            "quotaMetric": "generativelanguage.googleapis.com/generate_content_free_tier_input_token_count",
+            "quotaId": "GenerateContentInputTokensPerModelPerMinute-FreeTier",
+            "quotaDimensions": {
+              "location": "global",
+              "model": "gemini-2.0-flash-lite"
+            }
+          },
+          {
+            "quotaMetric": "generativelanguage.googleapis.com/generate_content_free_tier_requests",
+            "quotaId": "GenerateRequestsPerMinutePerProjectPerModel-FreeTier",
+            "quotaDimensions": {
+              "location": "global",
+              "model": "gemini-2.0-flash-lite"
+            }
+          },
+          {
+            "quotaMetric": "generativelanguage.googleapis.com/generate_content_free_tier_requests",
+            "quotaId": "GenerateRequestsPerDayPerProjectPerModel-FreeTier",
+            "quotaDimensions": {
+              "location": "global",
+              "model": "gemini-2.0-flash-lite"
+            }
+          }
+        ]
+      },
+      {
+        "@type": "type.googleapis.com/google.rpc.RetryInfo",
+        "retryDelay": "47s"
+      }
+    ]
+  }
+}
+
+2026-03-08 15:27:55 - app.main - INFO - 👋 Shutting down...
+2026-03-08 15:28:09 - app.main - INFO - === Application Starting ===
+2026-03-08 15:28:09 - app.main - INFO - Log file: D:\JupyterNotebooks\Chatbots\API Management Console\logs\app_20260308.log
+2026-03-08 15:28:09 - app.main - INFO - Python version: 3.14.0 (tags/v3.14.0:ebf955d, Oct  7 2025, 10:15:03) [MSC v.1944 64 bit (AMD64)]
+2026-03-08 15:28:09 - app.main - INFO - Working directory: D:\JupyterNotebooks\Chatbots\API Management Console
+2026-03-08 15:28:09 - app.main - INFO - Loading environment variables...
+2026-03-08 15:28:09 - app.main - INFO - Environment variables loaded
+2026-03-08 15:28:09 - app.main - INFO - Importing routers...
+2026-03-08 15:28:50 - app.main - INFO - Routers imported successfully
+2026-03-08 15:28:50 - app.main - INFO - Initializing database...
+2026-03-08 15:28:50 - app.main - INFO - Database module imported
+2026-03-08 15:28:50 - app.main - INFO - Importing template service...
+2026-03-08 15:28:50 - app.main - INFO - Template service imported
+2026-03-08 15:28:50 - app.main - INFO - Importing tunnel service...
+2026-03-08 15:28:50 - app.main - INFO - Tunnel service imported
+2026-03-08 15:28:50 - app.main - INFO - Importing API gateway service...
+2026-03-08 15:28:50 - app.main - INFO - API gateway service imported
+2026-03-08 15:28:50 - app.main - INFO - React frontend found, serving from frontend/dist
+2026-03-08 15:28:50 - app.main - INFO - 🚀 Starting Local AI Chatbot Deployment Console...
+2026-03-08 15:28:50 - app.main - INFO - ✅ Database initialized
+2026-03-08 15:28:50 - app.main - INFO - ✅ Templates loaded
+2026-03-08 15:28:50 - app.services.api_gateway_service - INFO - API gateway started on http://127.0.0.1:50785 -> http://127.0.0.1:8000
+2026-03-08 15:28:50 - app.main - INFO - 🔒 API-only gateway active on: http://127.0.0.1:50785
+2026-03-08 15:28:56 - app.main - INFO - 🌐 Public endpoint ready: https://gives-rings-excellent-consensus.trycloudflare.com
+2026-03-08 15:28:56 - app.main - INFO - 📍 Admin Dashboard: http://localhost:8000/admin
+2026-03-08 15:28:56 - app.main - INFO - 📍 API Documentation: http://localhost:8000/docs
+2026-03-08 15:28:57 - app.main - INFO - 🤖 Initializing 2 active bot(s) in background...
+2026-03-08 15:28:57 - app.main - INFO -   ✅ Arctic Customer Bot (3027bcaf-eeaf-4746-8d55-0390d9f922e6) initialized
+2026-03-08 15:29:01 - app.main - WARNING -   ⚠️ Arctic - Google API Test (a82abf91-4529-4680-854d-2e72e578e70f) init failed: Gemini API error: 429 - {
+  "error": {
+    "code": 429,
+    "message": "You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_input_token_count, limit: 0, model: gemini-2.0-flash-lite\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 0, model: gemini-2.0-flash-lite\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 0, model: gemini-2.0-flash-lite\nPlease retry in 58.27489705s.",
+    "status": "RESOURCE_EXHAUSTED",
+    "details": [
+      {
+        "@type": "type.googleapis.com/google.rpc.Help",
+        "links": [
+          {
+            "description": "Learn more about Gemini API quotas",
+            "url": "https://ai.google.dev/gemini-api/docs/rate-limits"
+          }
+        ]
+      },
+      {
+        "@type": "type.googleapis.com/google.rpc.QuotaFailure",
+        "violations": [
+          {
+            "quotaMetric": "generativelanguage.googleapis.com/generate_content_free_tier_input_token_count",
+            "quotaId": "GenerateContentInputTokensPerModelPerMinute-FreeTier",
+            "quotaDimensions": {
+              "location": "global",
+              "model": "gemini-2.0-flash-lite"
+            }
+          },
+          {
+            "quotaMetric": "generativelanguage.googleapis.com/generate_content_free_tier_requests",
+            "quotaId": "GenerateRequestsPerMinutePerProjectPerModel-FreeTier",
+            "quotaDimensions": {
+              "model": "gemini-2.0-flash-lite",
+              "location": "global"
+            }
+          },
+          {
+            "quotaMetric": "generativelanguage.googleapis.com/generate_content_free_tier_requests",
+            "quotaId": "GenerateRequestsPerDayPerProjectPerModel-FreeTier",
+            "quotaDimensions": {
+              "location": "global",
+              "model": "gemini-2.0-flash-lite"
+            }
+          }
+        ]
+      },
+      {
+        "@type": "type.googleapis.com/google.rpc.RetryInfo",
+        "retryDelay": "58s"
+      }
+    ]
+  }
+}
+
+2026-03-08 15:36:23 - app.main - INFO - 👋 Shutting down...
+2026-03-08 15:36:49 - app.main - INFO - === Application Starting ===
+2026-03-08 15:36:49 - app.main - INFO - Log file: D:\JupyterNotebooks\Chatbots\API Management Console\logs\app_20260308.log
+2026-03-08 15:36:49 - app.main - INFO - Python version: 3.14.0 (tags/v3.14.0:ebf955d, Oct  7 2025, 10:15:03) [MSC v.1944 64 bit (AMD64)]
+2026-03-08 15:36:49 - app.main - INFO - Working directory: D:\JupyterNotebooks\Chatbots\API Management Console
+2026-03-08 15:36:49 - app.main - INFO - Loading environment variables...
+2026-03-08 15:36:49 - app.main - INFO - Environment variables loaded
+2026-03-08 15:36:49 - app.main - INFO - Importing routers...
+2026-03-08 15:36:55 - app.main - INFO - Routers imported successfully
+2026-03-08 15:36:55 - app.main - INFO - Initializing database...
+2026-03-08 15:36:55 - app.main - INFO - Database module imported
+2026-03-08 15:36:55 - app.main - INFO - Importing template service...
+2026-03-08 15:36:55 - app.main - INFO - Template service imported
+2026-03-08 15:36:55 - app.main - INFO - Importing tunnel service...
+2026-03-08 15:36:55 - app.main - INFO - Tunnel service imported
+2026-03-08 15:36:55 - app.main - INFO - Importing API gateway service...
+2026-03-08 15:36:55 - app.main - INFO - API gateway service imported
+2026-03-08 15:36:55 - app.main - INFO - React frontend found, serving from frontend/dist
+2026-03-08 15:36:57 - app.main - INFO - === Application Starting ===
+2026-03-08 15:36:57 - app.main - INFO - Log file: D:\JupyterNotebooks\Chatbots\API Management Console\logs\app_20260308.log
+2026-03-08 15:36:57 - app.main - INFO - Python version: 3.14.0 (tags/v3.14.0:ebf955d, Oct  7 2025, 10:15:03) [MSC v.1944 64 bit (AMD64)]
+2026-03-08 15:36:57 - app.main - INFO - Working directory: D:\JupyterNotebooks\Chatbots\API Management Console
+2026-03-08 15:36:57 - app.main - INFO - Loading environment variables...
+2026-03-08 15:36:57 - app.main - INFO - Environment variables loaded
+2026-03-08 15:36:57 - app.main - INFO - Importing routers...
+2026-03-08 15:36:58 - app.main - INFO - Routers imported successfully
+2026-03-08 15:36:58 - app.main - INFO - Initializing database...
+2026-03-08 15:36:58 - app.main - INFO - Database module imported
+2026-03-08 15:36:58 - app.main - INFO - Importing template service...
+2026-03-08 15:36:58 - app.main - INFO - Template service imported
+2026-03-08 15:36:58 - app.main - INFO - Importing tunnel service...
+2026-03-08 15:36:58 - app.main - INFO - Tunnel service imported
+2026-03-08 15:36:58 - app.main - INFO - Importing API gateway service...
+2026-03-08 15:36:58 - app.main - INFO - API gateway service imported
+2026-03-08 15:36:58 - app.main - INFO - React frontend found, serving from frontend/dist
+2026-03-08 15:36:58 - app.main - INFO - 🚀 Starting Local AI Chatbot Deployment Console...
+2026-03-08 15:36:58 - app.main - INFO - ✅ Database initialized
+2026-03-08 15:36:58 - app.main - INFO - ✅ Templates loaded
+2026-03-08 15:36:58 - app.services.api_gateway_service - INFO - API gateway started on http://127.0.0.1:63054 -> http://127.0.0.1:8000
+2026-03-08 15:36:58 - app.main - INFO - 🔒 API-only gateway active on: http://127.0.0.1:63054
+2026-03-08 15:37:01 - app.main - INFO - 🌐 Public endpoint ready: https://loud-books-itch.loca.lt
+2026-03-08 15:37:01 - app.main - INFO - 📍 Admin Dashboard: http://localhost:8000/admin
+2026-03-08 15:37:01 - app.main - INFO - 📍 API Documentation: http://localhost:8000/docs
+2026-03-08 15:37:02 - app.main - INFO - 🤖 Initializing 2 active bot(s) in background...
+2026-03-08 15:37:02 - app.main - INFO -   ✅ Arctic Customer Bot (3027bcaf-eeaf-4746-8d55-0390d9f922e6) initialized
+2026-03-08 15:37:04 - app.main - WARNING -   ⚠️ Arctic - Google API Test (a82abf91-4529-4680-854d-2e72e578e70f) init failed: Gemini API error: 429 - {
+  "error": {
+    "code": 429,
+    "message": "You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 0, model: gemini-2.0-flash-lite\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 0, model: gemini-2.0-flash-lite\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_input_token_count, limit: 0, model: gemini-2.0-flash-lite\nPlease retry in 55.936575769s.",
+    "status": "RESOURCE_EXHAUSTED",
+    "details": [
+      {
+        "@type": "type.googleapis.com/google.rpc.Help",
+        "links": [
+          {
+            "description": "Learn more about Gemini API quotas",
+            "url": "https://ai.google.dev/gemini-api/docs/rate-limits"
+          }
+        ]
+      },
+      {
+        "@type": "type.googleapis.com/google.rpc.QuotaFailure",
+        "violations": [
+          {
+            "quotaMetric": "generativelanguage.googleapis.com/generate_content_free_tier_requests",
+            "quotaId": "GenerateRequestsPerDayPerProjectPerModel-FreeTier",
+            "quotaDimensions": {
+              "location": "global",
+              "model": "gemini-2.0-flash-lite"
+            }
+          },
+          {
+            "quotaMetric": "generativelanguage.googleapis.com/generate_content_free_tier_requests",
+            "quotaId": "GenerateRequestsPerMinutePerProjectPerModel-FreeTier",
+            "quotaDimensions": {
+              "location": "global",
+              "model": "gemini-2.0-flash-lite"
+            }
+          },
+          {
+            "quotaMetric": "generativelanguage.googleapis.com/generate_content_free_tier_input_token_count",
+            "quotaId": "GenerateContentInputTokensPerModelPerMinute-FreeTier",
+            "quotaDimensions": {
+              "model": "gemini-2.0-flash-lite",
+              "location": "global"
+            }
+          }
+        ]
+      },
+      {
+        "@type": "type.googleapis.com/google.rpc.RetryInfo",
+        "retryDelay": "55s"
+      }
+    ]
+  }
+}
+
+2026-03-08 15:37:08 - faiss.loader - DEBUG - Environment variable FAISS_OPT_LEVEL is not set, so let's pick the instruction set according to the current CPU
+2026-03-08 15:37:08 - faiss.loader - INFO - Loading faiss with AVX2 support.
+2026-03-08 15:37:09 - faiss.loader - INFO - Successfully loaded faiss with AVX2 support.
+2026-03-08 15:37:13 - app.routers.chat - ERROR - Chat processing error for bot a82abf91-4529-4680-854d-2e72e578e70f: Gemini API error: 429 - {
+  "error": {
+    "code": 429,
+    "message": "You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_input_token_count, limit: 0, model: gemini-2.0-flash-lite\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 0, model: gemini-2.0-flash-lite\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 0, model: gemini-2.0-flash-lite\nPlease retry in 47.020646844s.",
+    "status": "RESOURCE_EXHAUSTED",
+    "details": [
+      {
+        "@type": "type.googleapis.com/google.rpc.Help",
+        "links": [
+          {
+            "description": "Learn more about Gemini API quotas",
+            "url": "https://ai.google.dev/gemini-api/docs/rate-limits"
+          }
+        ]
+      },
+      {
+        "@type": "type.googleapis.com/google.rpc.QuotaFailure",
+        "violations": [
+          {
+            "quotaMetric": "generativelanguage.googleapis.com/generate_content_free_tier_input_token_count",
+            "quotaId": "GenerateContentInputTokensPerModelPerMinute-FreeTier",
+            "quotaDimensions": {
+              "model": "gemini-2.0-flash-lite",
+              "location": "global"
+            }
+          },
+          {
+            "quotaMetric": "generativelanguage.googleapis.com/generate_content_free_tier_requests",
+            "quotaId": "GenerateRequestsPerMinutePerProjectPerModel-FreeTier",
+            "quotaDimensions": {
+              "location": "global",
+              "model": "gemini-2.0-flash-lite"
+            }
+          },
+          {
+            "quotaMetric": "generativelanguage.googleapis.com/generate_content_free_tier_requests",
+            "quotaId": "GenerateRequestsPerDayPerProjectPerModel-FreeTier",
+            "quotaDimensions": {
+              "model": "gemini-2.0-flash-lite",
+              "location": "global"
+            }
+          }
+        ]
+      },
+      {
+        "@type": "type.googleapis.com/google.rpc.RetryInfo",
+        "retryDelay": "47s"
+      }
+    ]
+  }
+}
+Traceback (most recent call last):
+  File "D:\JupyterNotebooks\Chatbots\API Management Console\app\services\llm_providers\gemini_provider.py", line 107, in chat
+    response.raise_for_status()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "D:\JupyterNotebooks\Chatbots\API Management Console\venv\Lib\site-packages\httpx\_models.py", line 829, in raise_for_status
+    raise HTTPStatusError(message, request=request, response=self)
+httpx.HTTPStatusError: Client error '429 Too Many Requests' for url 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-lite:generateContent?key=AIzaSyCpWEep3imrM0GPxuhFDPaoCSdp3heXArk'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\JupyterNotebooks\Chatbots\API Management Console\app\routers\chat.py", line 69, in chat
+    result = await bot_service.chat(
+             ^^^^^^^^^^^^^^^^^^^^^^^
+    ...<4 lines>...
+    )
+    ^
+  File "D:\JupyterNotebooks\Chatbots\API Management Console\app\services\bot_service.py", line 434, in chat
+    response = await provider.chat(
+               ^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "D:\JupyterNotebooks\Chatbots\API Management Console\app\services\llm_providers\gemini_provider.py", line 133, in chat
+    raise RuntimeError(f"Gemini API error: {exc.response.status_code} - {detail}")
+RuntimeError: Gemini API error: 429 - {
+  "error": {
+    "code": 429,
+    "message": "You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_input_token_count, limit: 0, model: gemini-2.0-flash-lite\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 0, model: gemini-2.0-flash-lite\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 0, model: gemini-2.0-flash-lite\nPlease retry in 47.020646844s.",
+    "status": "RESOURCE_EXHAUSTED",
+    "details": [
+      {
+        "@type": "type.googleapis.com/google.rpc.Help",
+        "links": [
+          {
+            "description": "Learn more about Gemini API quotas",
+            "url": "https://ai.google.dev/gemini-api/docs/rate-limits"
+          }
+        ]
+      },
+      {
+        "@type": "type.googleapis.com/google.rpc.QuotaFailure",
+        "violations": [
+          {
+            "quotaMetric": "generativelanguage.googleapis.com/generate_content_free_tier_input_token_count",
+            "quotaId": "GenerateContentInputTokensPerModelPerMinute-FreeTier",
+            "quotaDimensions": {
+              "model": "gemini-2.0-flash-lite",
+              "location": "global"
+            }
+          },
+          {
+            "quotaMetric": "generativelanguage.googleapis.com/generate_content_free_tier_requests",
+            "quotaId": "GenerateRequestsPerMinutePerProjectPerModel-FreeTier",
+            "quotaDimensions": {
+              "location": "global",
+              "model": "gemini-2.0-flash-lite"
+            }
+          },
+          {
+            "quotaMetric": "generativelanguage.googleapis.com/generate_content_free_tier_requests",
+            "quotaId": "GenerateRequestsPerDayPerProjectPerModel-FreeTier",
+            "quotaDimensions": {
+              "model": "gemini-2.0-flash-lite",
+              "location": "global"
+            }
+          }
+        ]
+      },
+      {
+        "@type": "type.googleapis.com/google.rpc.RetryInfo",
+        "retryDelay": "47s"
+      }
+    ]
+  }
+}
+
+2026-03-08 15:39:07 - app.services.llm_providers.local_provider - INFO - Loading sentence-transformers model (first time, may take a moment)...
+2026-03-08 15:39:07 - sentence_transformers.SentenceTransformer - INFO - Use pytorch device_name: cpu
+2026-03-08 15:39:07 - sentence_transformers.SentenceTransformer - INFO - Load pretrained SentenceTransformer: all-MiniLM-L6-v2
+2026-03-08 15:39:10 - huggingface_hub.utils._http - WARNING - Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+2026-03-08 15:39:19 - app.services.llm_providers.local_provider - INFO - Sentence-transformers model loaded successfully
+2026-03-08 15:39:20 - app.services.llm_providers.local_provider - INFO - Ollama is already running
+2026-03-08 15:39:47 - app.services.llm_providers.local_provider - INFO - Ollama is already running
+2026-03-08 16:07:05 - app.main - INFO - 👋 Shutting down...
+2026-03-08 16:07:41 - app.main - INFO - === Application Starting ===
+2026-03-08 16:07:41 - app.main - INFO - Log file: D:\JupyterNotebooks\Chatbots\API Management Console\logs\app_20260308.log
+2026-03-08 16:07:41 - app.main - INFO - Python version: 3.14.0 (tags/v3.14.0:ebf955d, Oct  7 2025, 10:15:03) [MSC v.1944 64 bit (AMD64)]
+2026-03-08 16:07:41 - app.main - INFO - Working directory: D:\JupyterNotebooks\Chatbots\API Management Console
+2026-03-08 16:07:41 - app.main - INFO - Loading environment variables...
+2026-03-08 16:07:41 - app.main - INFO - Environment variables loaded
+2026-03-08 16:07:41 - app.main - INFO - Importing routers...
+2026-03-08 16:07:46 - app.main - INFO - Routers imported successfully
+2026-03-08 16:07:46 - app.main - INFO - Initializing database...
+2026-03-08 16:07:46 - app.main - INFO - Database module imported
+2026-03-08 16:07:46 - app.main - INFO - Importing template service...
+2026-03-08 16:07:46 - app.main - INFO - Template service imported
+2026-03-08 16:07:46 - app.main - INFO - Importing tunnel service...
+2026-03-08 16:07:46 - app.main - INFO - Tunnel service imported
+2026-03-08 16:07:46 - app.main - INFO - Importing API gateway service...
+2026-03-08 16:07:46 - app.main - INFO - API gateway service imported
+2026-03-08 16:07:46 - app.main - INFO - React frontend found, serving from frontend/dist
+2026-03-08 16:07:48 - app.main - INFO - === Application Starting ===
+2026-03-08 16:07:48 - app.main - INFO - Log file: D:\JupyterNotebooks\Chatbots\API Management Console\logs\app_20260308.log
+2026-03-08 16:07:48 - app.main - INFO - Python version: 3.14.0 (tags/v3.14.0:ebf955d, Oct  7 2025, 10:15:03) [MSC v.1944 64 bit (AMD64)]
+2026-03-08 16:07:48 - app.main - INFO - Working directory: D:\JupyterNotebooks\Chatbots\API Management Console
+2026-03-08 16:07:48 - app.main - INFO - Loading environment variables...
+2026-03-08 16:07:48 - app.main - INFO - Environment variables loaded
+2026-03-08 16:07:48 - app.main - INFO - Importing routers...
+2026-03-08 16:07:49 - app.main - INFO - Routers imported successfully
+2026-03-08 16:07:49 - app.main - INFO - Initializing database...
+2026-03-08 16:07:49 - app.main - INFO - Database module imported
+2026-03-08 16:07:49 - app.main - INFO - Importing template service...
+2026-03-08 16:07:49 - app.main - INFO - Template service imported
+2026-03-08 16:07:49 - app.main - INFO - Importing tunnel service...
+2026-03-08 16:07:49 - app.main - INFO - Tunnel service imported
+2026-03-08 16:07:49 - app.main - INFO - Importing API gateway service...
+2026-03-08 16:07:49 - app.main - INFO - API gateway service imported
+2026-03-08 16:07:49 - app.main - INFO - React frontend found, serving from frontend/dist
+2026-03-08 16:07:49 - app.main - INFO - 🚀 Starting Local AI Chatbot Deployment Console...
+2026-03-08 16:07:49 - app.main - INFO - ✅ Database initialized
+2026-03-08 16:07:49 - app.main - INFO - ✅ Templates loaded
+2026-03-08 16:07:49 - app.services.api_gateway_service - INFO - API gateway started on http://127.0.0.1:57112 -> http://127.0.0.1:8000
+2026-03-08 16:07:49 - app.main - INFO - 🔒 API-only gateway active on: http://127.0.0.1:57112
+2026-03-08 16:07:53 - app.main - INFO - 🌐 Public endpoint ready: https://arcticbot245.loca.lt
+2026-03-08 16:07:53 - app.main - INFO - 📍 Admin Dashboard: http://localhost:8000/admin
+2026-03-08 16:07:53 - app.main - INFO - 📍 API Documentation: http://localhost:8000/docs
+2026-03-08 16:07:54 - app.main - INFO - 🤖 Initializing 2 active bot(s) in background...
+2026-03-08 16:07:54 - faiss.loader - DEBUG - Environment variable FAISS_OPT_LEVEL is not set, so let's pick the instruction set according to the current CPU
+2026-03-08 16:07:54 - faiss.loader - INFO - Loading faiss with AVX2 support.
+2026-03-08 16:07:54 - faiss.loader - INFO - Successfully loaded faiss with AVX2 support.
+2026-03-08 16:08:29 - app.services.llm_providers.local_provider - INFO - Loading sentence-transformers model (first time, may take a moment)...
+2026-03-08 16:08:29 - sentence_transformers.SentenceTransformer - INFO - Use pytorch device_name: cpu
+2026-03-08 16:08:29 - sentence_transformers.SentenceTransformer - INFO - Load pretrained SentenceTransformer: all-MiniLM-L6-v2
+2026-03-08 16:08:34 - huggingface_hub.utils._http - WARNING - Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+2026-03-08 16:08:35 - app.services.llm_providers.local_provider - INFO - Sentence-transformers model loaded successfully
+2026-03-08 16:08:36 - app.services.llm_providers.local_provider - INFO - Ollama is already running
+2026-03-08 16:08:37 - app.services.llm_providers.local_provider - INFO - Ollama is already running
+2026-03-08 16:08:54 - app.services.api_gateway_service - DEBUG - api-gateway: "OPTIONS /api/bot/3027bcaf-eeaf-4746-8d55-0390d9f922e6/chat HTTP/1.1" 403 -
+2026-03-08 16:09:00 - app.main - INFO -   ✅ Arctic Customer Bot (3027bcaf-eeaf-4746-8d55-0390d9f922e6) initialized
+2026-03-08 16:09:01 - app.main - WARNING -   ⚠️ Arctic - Google API Test (a82abf91-4529-4680-854d-2e72e578e70f) init failed: Gemini API error: 429 - {
+  "error": {
+    "code": 429,
+    "message": "You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. \n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 0, model: gemini-2.0-flash-lite\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 0, model: gemini-2.0-flash-lite\n* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_input_token_count, limit: 0, model: gemini-2.0-flash-lite\nPlease retry in 58.060104386s.",
+    "status": "RESOURCE_EXHAUSTED",
+    "details": [
+      {
+        "@type": "type.googleapis.com/google.rpc.Help",
+        "links": [
+          {
+            "description": "Learn more about Gemini API quotas",
+            "url": "https://ai.google.dev/gemini-api/docs/rate-limits"
+          }
+        ]
+      },
+      {
+        "@type": "type.googleapis.com/google.rpc.QuotaFailure",
+        "violations": [
+          {
+            "quotaMetric": "generativelanguage.googleapis.com/generate_content_free_tier_requests",
+            "quotaId": "GenerateRequestsPerDayPerProjectPerModel-FreeTier",
+            "quotaDimensions": {
+              "model": "gemini-2.0-flash-lite",
+              "location": "global"
+            }
+          },
+          {
+            "quotaMetric": "generativelanguage.googleapis.com/generate_content_free_tier_requests",
+            "quotaId": "GenerateRequestsPerMinutePerProjectPerModel-FreeTier",
+            "quotaDimensions": {
+              "location": "global",
+              "model": "gemini-2.0-flash-lite"
+            }
+          },
+          {
+            "quotaMetric": "generativelanguage.googleapis.com/generate_content_free_tier_input_token_count",
+            "quotaId": "GenerateContentInputTokensPerModelPerMinute-FreeTier",
+            "quotaDimensions": {
+              "model": "gemini-2.0-flash-lite",
+              "location": "global"
+            }
+          }
+        ]
+      },
+      {
+        "@type": "type.googleapis.com/google.rpc.RetryInfo",
+        "retryDelay": "58s"
+      }
+    ]
+  }
+}
+
+2026-03-08 16:11:03 - app.services.llm_providers.local_provider - INFO - Ollama is already running
+2026-03-08 16:11:24 - app.main - INFO - 👋 Shutting down...
+2026-03-08 16:11:26 - app.main - INFO - === Application Starting ===
+2026-03-08 16:11:26 - app.main - INFO - Log file: D:\JupyterNotebooks\Chatbots\API Management Console\logs\app_20260308.log
+2026-03-08 16:11:26 - app.main - INFO - Python version: 3.14.0 (tags/v3.14.0:ebf955d, Oct  7 2025, 10:15:03) [MSC v.1944 64 bit (AMD64)]
+2026-03-08 16:11:26 - app.main - INFO - Working directory: D:\JupyterNotebooks\Chatbots\API Management Console
+2026-03-08 16:11:26 - app.main - INFO - Loading environment variables...
+2026-03-08 16:11:26 - app.main - INFO - Environment variables loaded
+2026-03-08 16:11:26 - app.main - INFO - Importing routers...
+2026-03-08 16:11:27 - app.main - INFO - Routers imported successfully
+2026-03-08 16:11:27 - app.main - INFO - Initializing database...
+2026-03-08 16:11:27 - app.main - INFO - Database module imported
+2026-03-08 16:11:27 - app.main - INFO - Importing template service...
+2026-03-08 16:11:27 - app.main - INFO - Template service imported
+2026-03-08 16:11:27 - app.main - INFO - Importing tunnel service...
+2026-03-08 16:11:27 - app.main - INFO - Tunnel service imported
+2026-03-08 16:11:27 - app.main - INFO - Importing API gateway service...
+2026-03-08 16:11:27 - app.main - INFO - API gateway service imported
+2026-03-08 16:11:27 - app.main - INFO - React frontend found, serving from frontend/dist
+2026-03-08 16:11:27 - app.main - INFO - 🚀 Starting Local AI Chatbot Deployment Console...
+2026-03-08 16:11:27 - app.main - INFO - ✅ Database initialized
+2026-03-08 16:11:27 - app.main - INFO - ✅ Templates loaded
+2026-03-08 16:11:27 - app.services.api_gateway_service - INFO - API gateway started on http://127.0.0.1:50172 -> http://127.0.0.1:8000
+2026-03-08 16:11:27 - app.main - INFO - 🔒 API-only gateway active on: http://127.0.0.1:50172
+2026-03-08 16:11:30 - app.main - INFO - 🌐 Public endpoint ready: https://arcticbot245.loca.lt
+2026-03-08 16:11:30 - app.main - INFO - 📍 Admin Dashboard: http://localhost:8000/admin
+2026-03-08 16:11:30 - app.main - INFO - 📍 API Documentation: http://localhost:8000/docs
+2026-03-08 16:11:32 - app.main - INFO - 👋 Shutting down...
+2026-03-08 16:11:33 - app.main - INFO - === Application Starting ===
+2026-03-08 16:11:33 - app.main - INFO - Log file: D:\JupyterNotebooks\Chatbots\API Management Console\logs\app_20260308.log
+2026-03-08 16:11:33 - app.main - INFO - Python version: 3.14.0 (tags/v3.14.0:ebf955d, Oct  7 2025, 10:15:03) [MSC v.1944 64 bit (AMD64)]
+2026-03-08 16:11:33 - app.main - INFO - Working directory: D:\JupyterNotebooks\Chatbots\API Management Console
+2026-03-08 16:11:33 - app.main - INFO - Loading environment variables...
+2026-03-08 16:11:33 - app.main - INFO - Environment variables loaded
+2026-03-08 16:11:33 - app.main - INFO - Importing routers...
+2026-03-08 16:11:34 - app.main - INFO - Routers imported successfully
+2026-03-08 16:11:34 - app.main - INFO - Initializing database...
+2026-03-08 16:11:34 - app.main - INFO - Database module imported
+2026-03-08 16:11:34 - app.main - INFO - Importing template service...
+2026-03-08 16:11:34 - app.main - INFO - Template service imported
+2026-03-08 16:11:34 - app.main - INFO - Importing tunnel service...
+2026-03-08 16:11:34 - app.main - INFO - Tunnel service imported
+2026-03-08 16:11:34 - app.main - INFO - Importing API gateway service...
+2026-03-08 16:11:34 - app.main - INFO - API gateway service imported
+2026-03-08 16:11:34 - app.main - INFO - React frontend found, serving from frontend/dist
+2026-03-08 16:11:34 - app.main - INFO - 🚀 Starting Local AI Chatbot Deployment Console...
+2026-03-08 16:11:34 - app.main - INFO - ✅ Database initialized
+2026-03-08 16:11:34 - app.main - INFO - ✅ Templates loaded
+2026-03-08 16:11:34 - app.services.api_gateway_service - INFO - API gateway started on http://127.0.0.1:50206 -> http://127.0.0.1:8000
+2026-03-08 16:11:34 - app.main - INFO - 🔒 API-only gateway active on: http://127.0.0.1:50206
+2026-03-08 16:11:37 - app.main - INFO - 🌐 Public endpoint ready: https://arcticbot245.loca.lt
+2026-03-08 16:11:37 - app.main - INFO - 📍 Admin Dashboard: http://localhost:8000/admin
+2026-03-08 16:11:37 - app.main - INFO - 📍 API Documentation: http://localhost:8000/docs
+2026-03-08 16:11:38 - app.main - INFO - 🤖 Initializing 2 active bot(s) in background...
+2026-03-08 16:11:38 - faiss.loader - DEBUG - Environment variable FAISS_OPT_LEVEL is not set, so let's pick the instruction set according to the current CPU
+2026-03-08 16:11:38 - faiss.loader - INFO - Loading faiss with AVX2 support.
+2026-03-08 16:11:38 - faiss.loader - INFO - Successfully loaded faiss with AVX2 support.
+2026-03-08 16:11:57 - app.services.llm_providers.local_provider - INFO - Loading sentence-transformers model (first time, may take a moment)...
+2026-03-08 16:11:57 - sentence_transformers.SentenceTransformer - INFO - Use pytorch device_name: cpu
+2026-03-08 16:11:57 - sentence_transformers.SentenceTransformer - INFO - Load pretrained SentenceTransformer: all-MiniLM-L6-v2
+2026-03-08 16:12:01 - huggingface_hub.utils._http - WARNING - Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+2026-03-08 16:12:02 - app.services.llm_providers.local_provider - INFO - Sentence-transformers model loaded successfully
+2026-03-08 16:12:03 - app.services.llm_providers.local_provider - INFO - Ollama is already running
+2026-03-08 16:12:06 - app.services.llm_providers.local_provider - INFO - Ollama is already running
+2026-03-08 16:12:09 - app.main - INFO -   ✅ Arctic Customer Bot (3027bcaf-eeaf-4746-8d55-0390d9f922e6) initialized
+2026-03-08 16:12:11 - app.main - INFO -   ✅ Arctic - Google API Test (a82abf91-4529-4680-854d-2e72e578e70f) initialized
+2026-03-08 16:12:17 - app.services.api_gateway_service - DEBUG - api-gateway: "OPTIONS /api/bot/3027bcaf-eeaf-4746-8d55-0390d9f922e6/chat HTTP/1.1" 403 -
+2026-03-08 16:12:41 - app.services.api_gateway_service - DEBUG - api-gateway: "OPTIONS /api/bot/3027bcaf-eeaf-4746-8d55-0390d9f922e6/chat HTTP/1.1" 403 -
+2026-03-08 16:13:22 - app.main - INFO - 👋 Shutting down...
+2026-03-08 16:13:30 - app.main - INFO - === Application Starting ===
+2026-03-08 16:13:30 - app.main - INFO - Log file: D:\JupyterNotebooks\Chatbots\API Management Console\logs\app_20260308.log
+2026-03-08 16:13:30 - app.main - INFO - Python version: 3.14.0 (tags/v3.14.0:ebf955d, Oct  7 2025, 10:15:03) [MSC v.1944 64 bit (AMD64)]
+2026-03-08 16:13:30 - app.main - INFO - Working directory: D:\JupyterNotebooks\Chatbots\API Management Console
+2026-03-08 16:13:30 - app.main - INFO - Loading environment variables...
+2026-03-08 16:13:30 - app.main - INFO - Environment variables loaded
+2026-03-08 16:13:30 - app.main - INFO - Importing routers...
+2026-03-08 16:13:31 - app.main - INFO - Routers imported successfully
+2026-03-08 16:13:31 - app.main - INFO - Initializing database...
+2026-03-08 16:13:31 - app.main - INFO - Database module imported
+2026-03-08 16:13:31 - app.main - INFO - Importing template service...
+2026-03-08 16:13:31 - app.main - INFO - Template service imported
+2026-03-08 16:13:31 - app.main - INFO - Importing tunnel service...
+2026-03-08 16:13:31 - app.main - INFO - Tunnel service imported
+2026-03-08 16:13:31 - app.main - INFO - Importing API gateway service...
+2026-03-08 16:13:31 - app.main - INFO - API gateway service imported
+2026-03-08 16:13:31 - app.main - INFO - React frontend found, serving from frontend/dist
+2026-03-08 16:13:33 - app.main - INFO - === Application Starting ===
+2026-03-08 16:13:33 - app.main - INFO - Log file: D:\JupyterNotebooks\Chatbots\API Management Console\logs\app_20260308.log
+2026-03-08 16:13:33 - app.main - INFO - Python version: 3.14.0 (tags/v3.14.0:ebf955d, Oct  7 2025, 10:15:03) [MSC v.1944 64 bit (AMD64)]
+2026-03-08 16:13:33 - app.main - INFO - Working directory: D:\JupyterNotebooks\Chatbots\API Management Console
+2026-03-08 16:13:33 - app.main - INFO - Loading environment variables...
+2026-03-08 16:13:33 - app.main - INFO - Environment variables loaded
+2026-03-08 16:13:33 - app.main - INFO - Importing routers...
+2026-03-08 16:13:34 - app.main - INFO - Routers imported successfully
+2026-03-08 16:13:34 - app.main - INFO - Initializing database...
+2026-03-08 16:13:34 - app.main - INFO - Database module imported
+2026-03-08 16:13:34 - app.main - INFO - Importing template service...
+2026-03-08 16:13:34 - app.main - INFO - Template service imported
+2026-03-08 16:13:34 - app.main - INFO - Importing tunnel service...
+2026-03-08 16:13:34 - app.main - INFO - Tunnel service imported
+2026-03-08 16:13:34 - app.main - INFO - Importing API gateway service...
+2026-03-08 16:13:34 - app.main - INFO - API gateway service imported
+2026-03-08 16:13:34 - app.main - INFO - React frontend found, serving from frontend/dist
+2026-03-08 16:13:34 - app.main - INFO - 🚀 Starting Local AI Chatbot Deployment Console...
+2026-03-08 16:13:34 - app.main - INFO - ✅ Database initialized
+2026-03-08 16:13:34 - app.main - INFO - ✅ Templates loaded
+2026-03-08 16:13:34 - app.services.api_gateway_service - INFO - API gateway started on http://127.0.0.1:59039 -> http://127.0.0.1:8000
+2026-03-08 16:13:34 - app.main - INFO - 🔒 API-only gateway active on: http://127.0.0.1:59039
+2026-03-08 16:13:36 - app.main - INFO - 🌐 Public endpoint ready: https://arcticbot245.loca.lt
+2026-03-08 16:13:36 - app.main - INFO - 📍 Admin Dashboard: http://localhost:8000/admin
+2026-03-08 16:13:36 - app.main - INFO - 📍 API Documentation: http://localhost:8000/docs
+2026-03-08 16:13:37 - app.main - INFO - 🤖 Initializing 2 active bot(s) in background...
+2026-03-08 16:13:37 - faiss.loader - DEBUG - Environment variable FAISS_OPT_LEVEL is not set, so let's pick the instruction set according to the current CPU
+2026-03-08 16:13:37 - faiss.loader - INFO - Loading faiss with AVX2 support.
+2026-03-08 16:13:37 - faiss.loader - INFO - Successfully loaded faiss with AVX2 support.
+2026-03-08 16:13:47 - app.services.llm_providers.local_provider - INFO - Loading sentence-transformers model (first time, may take a moment)...
+2026-03-08 16:13:47 - sentence_transformers.SentenceTransformer - INFO - Use pytorch device_name: cpu
+2026-03-08 16:13:47 - sentence_transformers.SentenceTransformer - INFO - Load pretrained SentenceTransformer: all-MiniLM-L6-v2
+2026-03-08 16:13:48 - huggingface_hub.utils._http - WARNING - Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+2026-03-08 16:13:51 - app.services.llm_providers.local_provider - INFO - Sentence-transformers model loaded successfully
+2026-03-08 16:13:52 - app.services.llm_providers.local_provider - INFO - Ollama is already running
+2026-03-08 16:13:52 - app.services.llm_providers.local_provider - INFO - Ollama is already running
+2026-03-08 16:13:59 - app.main - INFO -   ✅ Arctic Customer Bot (3027bcaf-eeaf-4746-8d55-0390d9f922e6) initialized
+2026-03-08 16:14:02 - app.main - INFO -   ✅ Arctic - Google API Test (a82abf91-4529-4680-854d-2e72e578e70f) initialized
+2026-03-08 16:14:11 - app.services.api_gateway_service - DEBUG - api-gateway: "OPTIONS /api/bot/3027bcaf-eeaf-4746-8d55-0390d9f922e6/chat HTTP/1.1" 403 -
+2026-03-08 16:14:19 - app.services.api_gateway_service - DEBUG - api-gateway: "OPTIONS /api/bot/3027bcaf-eeaf-4746-8d55-0390d9f922e6/chat HTTP/1.1" 403 -
+2026-03-08 16:15:36 - app.services.api_gateway_service - DEBUG - api-gateway: "OPTIONS /api/bot/3027bcaf-eeaf-4746-8d55-0390d9f922e6/chat HTTP/1.1" 403 -
+2026-03-08 16:15:37 - app.services.api_gateway_service - DEBUG - api-gateway: "OPTIONS /api/bot/3027bcaf-eeaf-4746-8d55-0390d9f922e6/chat?token=2b7e8c9f4a1d6e3f5b8c7d2a9e4f6b1c HTTP/1.1" 204 -
+2026-03-08 16:15:50 - app.main - INFO - 👋 Shutting down...
+2026-03-08 16:15:52 - app.main - INFO - === Application Starting ===
+2026-03-08 16:15:52 - app.main - INFO - Log file: D:\JupyterNotebooks\Chatbots\API Management Console\logs\app_20260308.log
+2026-03-08 16:15:52 - app.main - INFO - Python version: 3.14.0 (tags/v3.14.0:ebf955d, Oct  7 2025, 10:15:03) [MSC v.1944 64 bit (AMD64)]
+2026-03-08 16:15:52 - app.main - INFO - Working directory: D:\JupyterNotebooks\Chatbots\API Management Console
+2026-03-08 16:15:52 - app.main - INFO - Loading environment variables...
+2026-03-08 16:15:52 - app.main - INFO - Environment variables loaded
+2026-03-08 16:15:52 - app.main - INFO - Importing routers...
+2026-03-08 16:15:53 - app.main - INFO - Routers imported successfully
+2026-03-08 16:15:53 - app.main - INFO - Initializing database...
+2026-03-08 16:15:53 - app.main - INFO - Database module imported
+2026-03-08 16:15:53 - app.main - INFO - Importing template service...
+2026-03-08 16:15:53 - app.main - INFO - Template service imported
+2026-03-08 16:15:53 - app.main - INFO - Importing tunnel service...
+2026-03-08 16:15:53 - app.main - INFO - Tunnel service imported
+2026-03-08 16:15:53 - app.main - INFO - Importing API gateway service...
+2026-03-08 16:15:53 - app.main - INFO - API gateway service imported
+2026-03-08 16:15:53 - app.main - INFO - React frontend found, serving from frontend/dist
+2026-03-08 16:15:53 - app.main - INFO - 🚀 Starting Local AI Chatbot Deployment Console...
+2026-03-08 16:15:53 - app.main - INFO - ✅ Database initialized
+2026-03-08 16:15:53 - app.main - INFO - ✅ Templates loaded
+2026-03-08 16:15:53 - app.services.api_gateway_service - INFO - API gateway started on http://127.0.0.1:55248 -> http://127.0.0.1:8000
+2026-03-08 16:15:53 - app.main - INFO - 🔒 API-only gateway active on: http://127.0.0.1:55248
+2026-03-08 16:15:56 - app.main - INFO - 🌐 Public endpoint ready: https://arcticbot245.loca.lt
+2026-03-08 16:15:56 - app.main - INFO - 📍 Admin Dashboard: http://localhost:8000/admin
+2026-03-08 16:15:56 - app.main - INFO - 📍 API Documentation: http://localhost:8000/docs
+2026-03-08 16:15:56 - app.main - INFO - 👋 Shutting down...
+2026-03-08 17:32:05 - app.main - INFO - === Application Starting ===
+2026-03-08 17:32:05 - app.main - INFO - Log file: D:\JupyterNotebooks\Chatbots\API Management Console\logs\app_20260308.log
+2026-03-08 17:32:05 - app.main - INFO - Python version: 3.14.0 (tags/v3.14.0:ebf955d, Oct  7 2025, 10:15:03) [MSC v.1944 64 bit (AMD64)]
+2026-03-08 17:32:05 - app.main - INFO - Working directory: D:\JupyterNotebooks\Chatbots\API Management Console
+2026-03-08 17:32:05 - app.main - INFO - Loading environment variables...
+2026-03-08 17:32:05 - app.main - INFO - Environment variables loaded
+2026-03-08 17:32:05 - app.main - INFO - Importing routers...
+2026-03-08 17:32:07 - app.main - INFO - Routers imported successfully
+2026-03-08 17:32:07 - app.main - INFO - Initializing database...
+2026-03-08 17:32:07 - app.main - INFO - Database module imported
+2026-03-08 17:32:07 - app.main - INFO - Importing template service...
+2026-03-08 17:32:07 - app.main - INFO - Template service imported
+2026-03-08 17:32:07 - app.main - INFO - Importing tunnel service...
+2026-03-08 17:32:07 - app.main - INFO - Tunnel service imported
+2026-03-08 17:32:07 - app.main - INFO - Importing API gateway service...
+2026-03-08 17:32:07 - app.main - INFO - API gateway service imported
+2026-03-08 17:32:07 - app.main - INFO - React frontend found, serving from frontend/dist
+2026-03-08 17:32:09 - app.main - INFO - === Application Starting ===
+2026-03-08 17:32:09 - app.main - INFO - Log file: D:\JupyterNotebooks\Chatbots\API Management Console\logs\app_20260308.log
+2026-03-08 17:32:09 - app.main - INFO - Python version: 3.14.0 (tags/v3.14.0:ebf955d, Oct  7 2025, 10:15:03) [MSC v.1944 64 bit (AMD64)]
+2026-03-08 17:32:09 - app.main - INFO - Working directory: D:\JupyterNotebooks\Chatbots\API Management Console
+2026-03-08 17:32:09 - app.main - INFO - Loading environment variables...
+2026-03-08 17:32:09 - app.main - INFO - Environment variables loaded
+2026-03-08 17:32:09 - app.main - INFO - Importing routers...
+2026-03-08 17:32:10 - app.main - INFO - Routers imported successfully
+2026-03-08 17:32:10 - app.main - INFO - Initializing database...
+2026-03-08 17:32:10 - app.main - INFO - Database module imported
+2026-03-08 17:32:10 - app.main - INFO - Importing template service...
+2026-03-08 17:32:10 - app.main - INFO - Template service imported
+2026-03-08 17:32:10 - app.main - INFO - Importing tunnel service...
+2026-03-08 17:32:10 - app.main - INFO - Tunnel service imported
+2026-03-08 17:32:10 - app.main - INFO - Importing API gateway service...
+2026-03-08 17:32:10 - app.main - INFO - API gateway service imported
+2026-03-08 17:32:10 - app.main - INFO - React frontend found, serving from frontend/dist
+2026-03-08 17:32:10 - app.main - INFO - 🚀 Starting Local AI Chatbot Deployment Console...
+2026-03-08 17:32:10 - app.main - INFO - ✅ Database initialized
+2026-03-08 17:32:10 - app.main - INFO - ✅ Templates loaded
+2026-03-08 17:32:10 - app.services.api_gateway_service - INFO - API gateway started on http://127.0.0.1:52919 -> http://127.0.0.1:8000
+2026-03-08 17:32:10 - app.main - INFO - 🔒 API-only gateway active on: http://127.0.0.1:52919
+2026-03-08 17:32:13 - app.main - INFO - 🌐 Public endpoint ready: https://arcticbot245.loca.lt
+2026-03-08 17:32:13 - app.main - INFO - 📍 Admin Dashboard: http://localhost:8000/admin
+2026-03-08 17:32:13 - app.main - INFO - 📍 API Documentation: http://localhost:8000/docs
+2026-03-08 17:32:14 - app.main - INFO - 🤖 Initializing 2 active bot(s) in background...
+2026-03-08 17:32:14 - faiss.loader - DEBUG - Environment variable FAISS_OPT_LEVEL is not set, so let's pick the instruction set according to the current CPU
+2026-03-08 17:32:14 - faiss.loader - INFO - Loading faiss with AVX2 support.
+2026-03-08 17:32:14 - faiss.loader - INFO - Successfully loaded faiss with AVX2 support.
+2026-03-08 17:32:50 - app.services.llm_providers.local_provider - INFO - Loading sentence-transformers model (first time, may take a moment)...
+2026-03-08 17:32:50 - sentence_transformers.SentenceTransformer - INFO - Use pytorch device_name: cpu
+2026-03-08 17:32:50 - sentence_transformers.SentenceTransformer - INFO - Load pretrained SentenceTransformer: all-MiniLM-L6-v2
+2026-03-08 17:32:52 - huggingface_hub.utils._http - WARNING - Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+2026-03-08 17:32:54 - app.services.llm_providers.local_provider - INFO - Sentence-transformers model loaded successfully
+2026-03-08 17:32:55 - app.services.llm_providers.local_provider - INFO - Ollama is already running
+2026-03-08 17:33:18 - app.main - INFO -   ✅ Arctic Customer Bot (3027bcaf-eeaf-4746-8d55-0390d9f922e6) initialized
+2026-03-08 17:33:20 - app.main - INFO -   ✅ Arctic - Google API Test (a82abf91-4529-4680-854d-2e72e578e70f) initialized
+2026-03-08 17:33:31 - app.services.api_gateway_service - DEBUG - api-gateway: "OPTIONS /api/bot/a82abf91-4529-4680-854d-2e72e578e70f/chat HTTP/1.1" 204 -
+2026-03-08 17:33:52 - app.services.api_gateway_service - DEBUG - api-gateway: "OPTIONS /api/bot/a82abf91-4529-4680-854d-2e72e578e70f/chat HTTP/1.1" 204 -
+2026-03-08 17:36:59 - app.services.llm_providers.local_provider - INFO - Ollama is already running
+2026-03-08 17:37:19 - app.services.llm_providers.local_provider - INFO - Ollama is already running
+2026-03-08 17:39:49 - python_multipart.multipart - DEBUG - Calling on_part_begin with no data
+2026-03-08 17:39:49 - python_multipart.multipart - DEBUG - Calling on_header_field with data[42:61]
+2026-03-08 17:39:49 - python_multipart.multipart - DEBUG - Calling on_header_value with data[63:114]
+2026-03-08 17:39:49 - python_multipart.multipart - DEBUG - Calling on_header_end with no data
+2026-03-08 17:39:49 - python_multipart.multipart - DEBUG - Calling on_header_field with data[116:128]
+2026-03-08 17:39:49 - python_multipart.multipart - DEBUG - Calling on_header_value with data[130:140]
+2026-03-08 17:39:49 - python_multipart.multipart - DEBUG - Calling on_header_end with no data
+2026-03-08 17:39:49 - python_multipart.multipart - DEBUG - Calling on_headers_finished with no data
+2026-03-08 17:39:49 - python_multipart.multipart - DEBUG - Calling on_part_data with data[144:2916]
+2026-03-08 17:39:49 - python_multipart.multipart - DEBUG - Calling on_part_end with no data
+2026-03-08 17:39:49 - python_multipart.multipart - DEBUG - Calling on_end with no data
+2026-03-08 17:39:58 - app.services.api_gateway_service - DEBUG - api-gateway: "POST /api/bot/a82abf91-4529-4680-854d-2e72e578e70f/chat HTTP/1.1" 403 -
+2026-03-08 17:39:58 - app.services.api_gateway_service - DEBUG - api-gateway: "POST /api/bot/a82abf91-4529-4680-854d-2e72e578e70f/chat HTTP/1.1" 403 -
+2026-03-08 17:40:05 - app.services.api_gateway_service - DEBUG - api-gateway: "POST /api/bot/a82abf91-4529-4680-854d-2e72e578e70f/chat HTTP/1.1" 403 -
+2026-03-08 17:42:10 - app.main - INFO - 👋 Shutting down...
+2026-03-08 17:42:14 - app.main - INFO - === Application Starting ===
+2026-03-08 17:42:14 - app.main - INFO - Log file: D:\JupyterNotebooks\Chatbots\API Management Console\logs\app_20260308.log
+2026-03-08 17:42:14 - app.main - INFO - Python version: 3.14.0 (tags/v3.14.0:ebf955d, Oct  7 2025, 10:15:03) [MSC v.1944 64 bit (AMD64)]
+2026-03-08 17:42:14 - app.main - INFO - Working directory: D:\JupyterNotebooks\Chatbots\API Management Console
+2026-03-08 17:42:14 - app.main - INFO - Loading environment variables...
+2026-03-08 17:42:14 - app.main - INFO - Environment variables loaded
+2026-03-08 17:42:14 - app.main - INFO - Importing routers...
+2026-03-08 17:42:19 - app.main - INFO - Routers imported successfully
+2026-03-08 17:42:19 - app.main - INFO - Initializing database...
+2026-03-08 17:42:19 - app.main - INFO - Database module imported
+2026-03-08 17:42:19 - app.main - INFO - Importing template service...
+2026-03-08 17:42:19 - app.main - INFO - Template service imported
+2026-03-08 17:42:19 - app.main - INFO - Importing tunnel service...
+2026-03-08 17:42:19 - app.main - INFO - Tunnel service imported
+2026-03-08 17:42:19 - app.main - INFO - Importing API gateway service...
+2026-03-08 17:42:19 - app.main - INFO - API gateway service imported
+2026-03-08 17:42:19 - app.main - INFO - React frontend found, serving from frontend/dist
+2026-03-08 17:42:19 - app.main - INFO - 🚀 Starting Local AI Chatbot Deployment Console...
+2026-03-08 17:42:19 - app.main - INFO - ✅ Database initialized
+2026-03-08 17:42:19 - app.main - INFO - ✅ Templates loaded
+2026-03-08 17:42:19 - app.services.api_gateway_service - INFO - API gateway started on http://127.0.0.1:60620 -> http://127.0.0.1:8000
+2026-03-08 17:42:19 - app.main - INFO - 🔒 API-only gateway active on: http://127.0.0.1:60620
+2026-03-08 17:42:22 - app.main - INFO - 🌐 Public endpoint ready: https://arcticbot245.loca.lt
+2026-03-08 17:42:22 - app.main - INFO - 📍 Admin Dashboard: http://localhost:8000/admin
+2026-03-08 17:42:22 - app.main - INFO - 📍 API Documentation: http://localhost:8000/docs
+2026-03-08 17:42:23 - app.main - INFO - 🤖 Initializing 2 active bot(s) in background...
+2026-03-08 17:42:23 - faiss.loader - DEBUG - Environment variable FAISS_OPT_LEVEL is not set, so let's pick the instruction set according to the current CPU
+2026-03-08 17:42:23 - faiss.loader - INFO - Loading faiss with AVX2 support.
+2026-03-08 17:42:23 - faiss.loader - INFO - Successfully loaded faiss with AVX2 support.
+2026-03-08 17:42:57 - app.services.llm_providers.local_provider - INFO - Loading sentence-transformers model (first time, may take a moment)...
+2026-03-08 17:42:57 - sentence_transformers.SentenceTransformer - INFO - Use pytorch device_name: cpu
+2026-03-08 17:42:57 - sentence_transformers.SentenceTransformer - INFO - Load pretrained SentenceTransformer: all-MiniLM-L6-v2
+2026-03-08 17:42:58 - huggingface_hub.utils._http - WARNING - Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+2026-03-08 17:43:01 - app.services.llm_providers.local_provider - INFO - Sentence-transformers model loaded successfully
+2026-03-08 17:43:02 - app.services.llm_providers.local_provider - INFO - Ollama is already running
+2026-03-08 17:43:26 - app.main - INFO -   ✅ Arctic Customer Bot (3027bcaf-eeaf-4746-8d55-0390d9f922e6) initialized
+2026-03-08 17:43:29 - app.main - INFO -   ✅ Arctic - Google API Test (a82abf91-4529-4680-854d-2e72e578e70f) initialized
+2026-03-08 17:49:48 - app.main - INFO - 👋 Shutting down...

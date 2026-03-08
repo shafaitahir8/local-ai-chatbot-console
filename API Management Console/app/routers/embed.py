@@ -490,7 +490,7 @@ def get_embed_html(bot: Bot) -> str:
             const startTime = Date.now();
             
             try {{
-                const response = await fetch(API_BASE + '/bot/' + BOT_ID + '/chat', {{
+                const response = await fetch(API_BASE + '/api/bot/' + BOT_ID + '/chat', {{
                     method: 'POST',
                     headers: {{
                         'Content-Type': 'application/json'

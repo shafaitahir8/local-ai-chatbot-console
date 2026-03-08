@@ -12,6 +12,7 @@ class ProviderType(str, Enum):
     OPENAI = "openai"
     LOCAL = "local"
     CLAUDE = "claude"
+    GEMINI = "gemini"
 
 
 # ============== Bot Schemas ==============
@@ -67,6 +68,8 @@ class BotResponse(BaseModel):
     is_active: bool
     message_limit: Optional[int]
     messages_used: int
+    token_usage: int = 0
+    avg_latency: float = 0
     expiration_date: Optional[datetime]
     accent_color: str
     welcome_message: str
@@ -186,6 +189,7 @@ class MessageLogResponse(BaseModel):
 # ============== Template Schemas ==============
 
 class TemplateResponse(BaseModel):
+    template_id: Optional[str] = None
     name: str
     provider: str
     required_fields: List[str]

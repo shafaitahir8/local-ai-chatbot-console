@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import { getSystemStatus, updatePassword, logout } from "@/lib/api";
@@ -35,6 +35,16 @@ export function SettingsView() {
     { label: "FAISS Index", status: status?.faiss || "Unknown", ok: status?.faiss === "Loaded" },
     { label: "OpenAI API", status: status?.openai || "Not configured", ok: status?.openai === "Configured" },
     { label: "Local LLM", status: status?.local_llm || "Not configured", ok: status?.local_llm === "Configured" || status?.local_llm === "Running" },
+    {
+      label: "API Gateway",
+      status: status?.api_gateway_running ? `Running (:${status?.api_gateway_port || "?"})` : "Unavailable",
+      ok: !!status?.api_gateway_running,
+    },
+    {
+      label: "Public Tunnel",
+      status: status?.cloudflare_tunnel || "Unavailable",
+      ok: status?.cloudflare_tunnel === "Running",
+    },
   ];
 
   return (
@@ -82,12 +92,23 @@ export function SettingsView() {
             <label className="font-mono text-xs font-semibold text-foreground">Public Access</label>
           </div>
           <p className="font-mono text-[10px] text-muted-foreground mb-3">
-            Expose your bots publicly using ngrok or Cloudflare Tunnel
+            Expose your bots publicly. For a fixed URL across restarts, use a named Cloudflare tunnel.
           </p>
           <div className="bg-secondary border border-border rounded-md p-3 space-y-2">
+            <code className="font-mono text-[10px] text-primary block">$ npx localtunnel --port 8000 --subdomain yourname</code>
+            <code className="font-mono text-[10px] text-muted-foreground block"># or</code>
             <code className="font-mono text-[10px] text-primary block">$ ngrok http 8000</code>
             <code className="font-mono text-[10px] text-muted-foreground block"># or</code>
             <code className="font-mono text-[10px] text-primary block">$ cloudflared tunnel --url http://localhost:8000</code>
+            <code className="font-mono text-[10px] text-muted-foreground block"># stable URL mode (.env)</code>
+            <code className="font-mono text-[10px] text-primary block">CLOUDFLARE_TUNNEL_TOKEN=...</code>
+            <code className="font-mono text-[10px] text-primary block">CLOUDFLARE_PUBLIC_BASE_URL=https://chat.yourdomain.com</code>
+            <code className="font-mono text-[10px] text-primary block">TUNNEL_SHARED_SECRET=optional-strong-secret</code>
+            {status?.public_base_url && (
+              <code className="font-mono text-[10px] text-success block">
+                Active URL: {status.public_base_url}
+              </code>
+            )}
           </div>
         </motion.div>
 
