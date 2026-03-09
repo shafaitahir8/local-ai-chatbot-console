@@ -98,6 +98,9 @@ class ChatResponse(BaseModel):
     session_id: str
     tokens_used: int
     latency_ms: int
+    retry_count: int = 0
+    fallback_used: bool = False
+    status_message: Optional[str] = None
 
 
 class BotStatusResponse(BaseModel):
@@ -105,6 +108,10 @@ class BotStatusResponse(BaseModel):
     name: str
     is_available: bool
     reason: Optional[str] = None
+    welcome_message: Optional[str] = None
+    startup_welcome_ready: bool = False
+    startup_welcome_message: Optional[str] = None
+    startup_welcome_generated_at: Optional[str] = None
 
 
 # ============== Knowledge Base Schemas ==============

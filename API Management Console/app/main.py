@@ -185,25 +185,86 @@ async def lifespan(app: FastAPI):
         try:
             from .models.database import SessionLocal, Bot as BotModel
             from .services.bot_service import bot_service
+
             db = SessionLocal()
             try:
-                active_bots = db.query(BotModel).filter(BotModel.is_active == True).all()
-                logger.info(f"🤖 Initializing {len(active_bots)} active bot(s) in background...")
-                print(f"🤖 Initializing {len(active_bots)} active bot(s) in background...")
-                for bot_record in active_bots:
-                    try:
-                        await bot_service.chat(db, bot_record.id, "Begin Initialization", session_id="system-init")
-                        logger.info(f"  ✅ {bot_record.name} ({bot_record.id}) initialized")
-                        print(f"  ✅ {bot_record.name} initialized")
-                    except Exception as bot_err:
-                        logger.warning(f"  ⚠️ {bot_record.name} ({bot_record.id}) init failed: {bot_err}")
-                        print(f"  ⚠️ {bot_record.name} init failed: {bot_err}")
+                warmup_all = os.getenv("BOT_WARMUP_ALL_PROVIDERS", "false").strip().lower() in {"1", "true", "yes"}
+                warmup_query = db.query(BotModel).filter(BotModel.is_active == True)
+                if not warmup_all:
+                    warmup_query = warmup_query.filter(BotModel.provider_type == "local")
+                bots_to_warm = [
+                    {
+                        "id": bot_record.id,
+                        "name": bot_record.name,
+                        "provider": bot_record.provider_type,
+                    }
+                    for bot_record in warmup_query.all()
+                ]
             finally:
                 db.close()
+
+            if not bots_to_warm:
+                logger.info("No eligible bots for startup warmup")
+                print("No eligible bots for startup warmup")
+                return
+
+            warmup_concurrency = max(1, int(os.getenv("BOT_WARMUP_CONCURRENCY", "4")))
+            logger.info(
+                "Prewarming %s bot(s) in parallel (concurrency=%s) with prompt: %s",
+                len(bots_to_warm),
+                warmup_concurrency,
+                "Hi, send a welcome message",
+            )
+            print(
+                f"Prewarming {len(bots_to_warm)} bot(s) in parallel "
+                f"(concurrency={warmup_concurrency})..."
+            )
+
+            semaphore = asyncio.Semaphore(warmup_concurrency)
+
+            async def _warm_single(bot_meta: dict):
+                async with semaphore:
+                    warm_db = SessionLocal()
+                    try:
+                        result = await bot_service.warmup_bot(
+                            warm_db,
+                            bot_meta["id"],
+                            prompt="Hi, send a welcome message",
+                        )
+                        if result.get("status") == "ready":
+                            logger.info(
+                                "Warmup complete: %s (%s) in %sms",
+                                bot_meta["name"],
+                                bot_meta["id"],
+                                result.get("latency_ms", 0),
+                            )
+                            print(
+                                f"{bot_meta['name']} warmup complete "
+                                f"({result.get('latency_ms', 0)}ms)"
+                            )
+                        else:
+                            logger.info(
+                                "Warmup skipped: %s (%s) reason=%s",
+                                bot_meta["name"],
+                                bot_meta["id"],
+                                result.get("reason"),
+                            )
+                    except Exception as bot_err:
+                        logger.warning(
+                            "Warmup failed: %s (%s): %s",
+                            bot_meta["name"],
+                            bot_meta["id"],
+                            bot_err,
+                        )
+                        print(f"{bot_meta['name']} warmup failed: {bot_err}")
+                    finally:
+                        warm_db.close()
+
+            await asyncio.gather(*[_warm_single(bot_meta) for bot_meta in bots_to_warm])
         except Exception as e:
             logger.warning(f"Bot initialization skipped: {e}")
-            print(f"⚠️ Bot initialization skipped: {e}")
-    
+            print(f"Bot initialization skipped: {e}")
+
     init_task = asyncio.create_task(_init_bots())
     
     yield
@@ -1871,3 +1932,4 @@ if __name__ == "__main__":
         port=8000,
         reload=True
     )
+

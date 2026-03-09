@@ -1,0 +1,42 @@
+{
+  "bot_id": "3027bcaf-eeaf-4746-8d55-0390d9f922e6",
+  "bot_name": "Arctic Customer Bot",
+  "session_id": "smoke-local-001",
+  "provider_type": "local",
+  "model": "llama3.2:3b",
+  "created_at": "2026-03-09T12:24:21.709979Z",
+  "updated_at": "2026-03-09T12:24:36.816520Z",
+  "messages": [
+    {
+      "role": "user",
+      "content": "Smoke test message from Codex",
+      "timestamp": "2026-03-09T12:24:21.709979Z"
+    },
+    {
+      "role": "assistant",
+      "content": "Hello, I'm the technical support lead for Arctic Studio. How can I assist you today? Are you a current client with a HubSpot issue that needs attention, or perhaps a prospect looking for guidance on custom HubSpot development?",
+      "timestamp": "2026-03-09T12:24:21.709979Z",
+      "tokens_used": 888,
+      "latency_ms": 52666,
+      "retries_used": 0,
+      "fallback_used": false,
+      "rag_used": true
+    },
+    {
+      "role": "user",
+      "content": "Second smoke test for latency",
+      "timestamp": "2026-03-09T12:24:36.816520Z"
+    },
+    {
+      "role": "assistant",
+      "content": "Hello again, I'm the technical support lead for Arctic Studio. It looks like we've already had a smoke test conversation. To further ensure we're on the same page, could you please provide more details about your issue or question? Are you experiencing any performance issues, or would you like to discuss general HubSpot or custom development topics?",
+      "timestamp": "2026-03-09T12:24:36.816520Z",
+      "tokens_used": 971,
+      "latency_ms": 5101,
+      "retries_used": 0,
+      "fallback_used": false,
+      "rag_used": true
+    }
+  ],
+  "message_count": 4
+}

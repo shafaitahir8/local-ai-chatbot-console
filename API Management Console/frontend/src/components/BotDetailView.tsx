@@ -172,11 +172,26 @@ export function BotDetailView({ bot, onBack, onSave, onClone }: BotDetailViewPro
     }
   };
 
-  const embedSnippet = `<iframe src="${window.location.origin}/embed/${bot.id}" width="100%" height="600" frameborder="0"></iframe>`;
-  const apiEndpoint = `${window.location.origin}/api/bot/${bot.id}/chat`;
   const publicBaseUrl = systemStatus?.public_base_url?.replace(/\/$/, "");
   const cloudflareStable = systemStatus?.cloudflare_stable ?? false;
-  const cloudflareEndpoint = publicBaseUrl ? `${publicBaseUrl}/api/bot/${bot.id}/chat` : null;
+  const tunnelTokenRequired = systemStatus?.tunnel_token_required ?? false;
+  const tunnelToken = (systemStatus?.tunnel_token || "").trim();
+  const withOptionalToken = (url: string) => {
+    if (!tunnelToken) return url;
+    const separator = url.includes("?") ? "&" : "?";
+    return `${url}${separator}token=${encodeURIComponent(tunnelToken)}`;
+  };
+
+  const localApiEndpoint = `${window.location.origin}/api/bot/${bot.id}/chat`;
+  const localEmbedUrl = `${window.location.origin}/embed/${bot.id}`;
+  const cloudflareEndpoint = publicBaseUrl
+    ? withOptionalToken(`${publicBaseUrl}/api/bot/${bot.id}/chat`)
+    : null;
+  const apiEndpoint = cloudflareEndpoint || localApiEndpoint;
+  const embedUrl = publicBaseUrl
+    ? withOptionalToken(`${publicBaseUrl}/embed/${bot.id}`)
+    : localEmbedUrl;
+  const embedSnippet = `<iframe src="${embedUrl}" width="100%" height="600" frameborder="0"></iframe>`;
 
   const copyToClipboard = (text: string, label: string) => {
     navigator.clipboard.writeText(text).then(() => {
@@ -446,12 +461,22 @@ export function BotDetailView({ bot, onBack, onSave, onClone }: BotDetailViewPro
 
             <div>
               <div className="flex items-center justify-between mb-1">
-                <span className="font-mono text-[10px] text-muted-foreground">API</span>
+                <span className="font-mono text-[10px] text-muted-foreground">API (Use Anywhere)</span>
                 <button onClick={() => copyToClipboard(apiEndpoint, "API endpoint")} className="text-muted-foreground hover:text-foreground transition-colors">
                   <Copy className="w-3 h-3" />
                 </button>
               </div>
               <code className="block bg-secondary border border-border rounded px-2 py-1.5 font-mono text-[10px] text-primary break-all">{apiEndpoint}</code>
+              {!cloudflareEndpoint && (
+                <p className="font-mono text-[10px] text-warning mt-1">
+                  Public tunnel is not ready yet. This fallback local endpoint only works on this machine.
+                </p>
+              )}
+              {cloudflareEndpoint && tunnelTokenRequired && (
+                <p className="font-mono text-[10px] text-accent mt-1">
+                  Token has been appended automatically to this endpoint.
+                </p>
+              )}
             </div>
 
             <div>
@@ -466,7 +491,7 @@ export function BotDetailView({ bot, onBack, onSave, onClone }: BotDetailViewPro
                 </button>
               </div>
               <code className="block bg-secondary border border-border rounded px-2 py-1.5 font-mono text-[10px] text-primary break-all">
-                {cloudflareEndpoint || "Cloudflare tunnel not ready yet. It starts automatically with server startup."}
+                {cloudflareEndpoint || "Public tunnel not ready yet. It starts automatically with server startup."}
               </code>
               {!cloudflareStable && cloudflareEndpoint && (
                 <p className="font-mono text-[10px] text-warning mt-1">

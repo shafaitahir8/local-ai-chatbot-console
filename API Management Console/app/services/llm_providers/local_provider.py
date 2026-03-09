@@ -6,6 +6,7 @@ import os
 import subprocess
 import asyncio
 import logging
+import threading
 from typing import List, Optional, AsyncIterator
 from concurrent.futures import ThreadPoolExecutor
 import httpx
@@ -17,6 +18,8 @@ logger = logging.getLogger(__name__)
 _sentence_model = None
 _sentence_model_lock = asyncio.Lock()
 _thread_executor = ThreadPoolExecutor(max_workers=2)
+_model_download_lock = threading.Lock()
+_model_download_processes: dict[str, subprocess.Popen] = {}
 
 
 class LocalProvider(BaseLLMProvider):
@@ -73,6 +76,12 @@ class LocalProvider(BaseLLMProvider):
         super().__init__(api_key, model)
         self.base_url = base_url or os.getenv("LOCAL_LLM_URL", self.DEFAULT_BASE_URL)
         self.model = model or "qwen2.5:1.5b"  # Default to low-VRAM model
+        self.request_timeout = float(os.getenv("LOCAL_LLM_TIMEOUT_SECONDS", "300"))
+        self.auto_pull_missing_models = os.getenv("LOCAL_LLM_AUTO_PULL_MISSING", "true").strip().lower() not in {
+            "0",
+            "false",
+            "no",
+        }
         self._client: Optional[httpx.AsyncClient] = None
         self._is_ollama = "11434" in self.base_url or "ollama" in self.base_url.lower()
     
@@ -86,7 +95,7 @@ class LocalProvider(BaseLLMProvider):
             self._client = httpx.AsyncClient(
                 base_url=self.base_url,
                 headers=headers,
-                timeout=120.0
+                timeout=self.request_timeout
             )
         return self._client
     
@@ -193,6 +202,44 @@ class LocalProvider(BaseLLMProvider):
         except Exception as e:
             logger.error(f"Failed to check model availability: {e}")
             return False
+
+    def _is_model_download_in_progress(self, model_name: str) -> bool:
+        """Check whether a background ollama pull is already running for a model."""
+        with _model_download_lock:
+            process = _model_download_processes.get(model_name)
+            if not process:
+                return False
+            if process.poll() is None:
+                return True
+            _model_download_processes.pop(model_name, None)
+            return False
+
+    def _start_model_download(self, model_name: str) -> bool:
+        """Start ollama pull in background for a missing model."""
+        if self._is_model_download_in_progress(model_name):
+            return False
+
+        popen_kwargs = {
+            "stdout": subprocess.DEVNULL,
+            "stderr": subprocess.DEVNULL,
+        }
+        if os.name == "nt":
+            popen_kwargs["creationflags"] = subprocess.CREATE_NO_WINDOW  # type: ignore[attr-defined]
+
+        try:
+            process = subprocess.Popen(["ollama", "pull", model_name], **popen_kwargs)
+            with _model_download_lock:
+                _model_download_processes[model_name] = process
+            logger.warning(
+                "Model '%s' is missing. Started background download via `ollama pull %s` (pid=%s).",
+                model_name,
+                model_name,
+                process.pid,
+            )
+            return True
+        except Exception as e:
+            logger.error("Failed to start background download for model '%s': %s", model_name, e)
+            return False
     
     async def chat(
         self,
@@ -215,6 +262,11 @@ class LocalProvider(BaseLLMProvider):
                 # Check if model is available
                 model_available = await self._ensure_model_available(self.model)
                 if not model_available:
+                    if self.auto_pull_missing_models:
+                        if self._is_model_download_in_progress(self.model):
+                            raise RuntimeError(f"MODEL_DOWNLOAD_IN_PROGRESS::{self.model}")
+                        if self._start_model_download(self.model):
+                            raise RuntimeError(f"MODEL_DOWNLOAD_STARTED::{self.model}")
                     raise RuntimeError(
                         f"Model '{self.model}' is not installed. "
                         f"Please install it with: ollama pull {self.model}"

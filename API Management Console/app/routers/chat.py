@@ -2,7 +2,6 @@
 Public Chat API routes - exposed for client applications.
 """
 
-from typing import Optional
 import logging
 from fastapi import APIRouter, Depends, HTTPException, status, Request
 from sqlalchemy.orm import Session
@@ -59,18 +58,21 @@ async def chat(
         
         return ChatResponse(
             response=reason,
-            session_id=chat_request.session_id or "",
+            session_id=(chat_request.session_id or "").strip() or bot_service.create_session_id(),
             tokens_used=0,
-            latency_ms=0
+            latency_ms=0,
+            retry_count=0,
+            fallback_used=False,
+            status_message="bot_unavailable"
         )
     
     try:
         # Process chat
         result = await bot_service.chat(
-            db,
-            bot_id,
-            chat_request.message,
-            chat_request.session_id
+            db=db,
+            bot_id=bot_id,
+            message=chat_request.message,
+            session_id=chat_request.session_id
         )
         
         # Log analytics if enabled
@@ -93,7 +95,10 @@ async def chat(
             response=result['response'],
             session_id=result['session_id'],
             tokens_used=result['tokens_used'],
-            latency_ms=result['latency_ms']
+            latency_ms=result['latency_ms'],
+            retry_count=result.get('retry_count', 0),
+            fallback_used=result.get('fallback_used', False),
+            status_message=result.get('status_message', "completed")
         )
         
     except Exception as e:
@@ -107,9 +112,12 @@ async def chat(
                     "Google Gemini quota is exhausted for this API key/project. "
                     "Enable billing or increase quota, then try again."
                 ),
-                session_id=chat_request.session_id or "",
+                session_id=(chat_request.session_id or "").strip() or bot_service.create_session_id(),
                 tokens_used=0,
-                latency_ms=0
+                latency_ms=0,
+                retry_count=0,
+                fallback_used=False,
+                status_message="gemini_quota_exhausted"
             )
         if "Gemini API error: 401" in error_message or "Gemini API key is required" in error_message:
             return ChatResponse(
@@ -117,9 +125,40 @@ async def chat(
                     "Google Gemini API key is invalid or missing. "
                     "Update the key in bot settings and retry."
                 ),
-                session_id=chat_request.session_id or "",
+                session_id=(chat_request.session_id or "").strip() or bot_service.create_session_id(),
                 tokens_used=0,
-                latency_ms=0
+                latency_ms=0,
+                retry_count=0,
+                fallback_used=False,
+                status_message="gemini_auth_error"
+            )
+        if error_message.startswith("MODEL_DOWNLOAD_STARTED::"):
+            model_name = error_message.split("::", 1)[1]
+            return ChatResponse(
+                response=(
+                    f"The local model '{model_name}' was not installed. "
+                    "I started downloading it now. Please try again in a few minutes."
+                ),
+                session_id=(chat_request.session_id or "").strip() or bot_service.create_session_id(),
+                tokens_used=0,
+                latency_ms=0,
+                retry_count=0,
+                fallback_used=False,
+                status_message="model_download_started"
+            )
+        if error_message.startswith("MODEL_DOWNLOAD_IN_PROGRESS::"):
+            model_name = error_message.split("::", 1)[1]
+            return ChatResponse(
+                response=(
+                    f"The local model '{model_name}' is still downloading. "
+                    "Please wait and try again shortly."
+                ),
+                session_id=(chat_request.session_id or "").strip() or bot_service.create_session_id(),
+                tokens_used=0,
+                latency_ms=0,
+                retry_count=0,
+                fallback_used=False,
+                status_message="model_download_in_progress"
             )
 
         raise HTTPException(
@@ -155,12 +194,18 @@ async def get_bot_status(
             reason = "Bot has expired"
         elif bot.message_limit and bot.messages_used >= bot.message_limit:
             reason = "Message limit reached"
+
+    startup_welcome = bot_service.get_startup_welcome_message(bot_id)
     
     return BotStatusResponse(
         bot_id=bot_id,
         name=bot.name,
         is_available=is_available,
-        reason=reason
+        reason=reason,
+        welcome_message=bot.welcome_message,
+        startup_welcome_ready=bool(startup_welcome.get("ready")),
+        startup_welcome_message=startup_welcome.get("message"),
+        startup_welcome_generated_at=startup_welcome.get("generated_at"),
     )
 
 

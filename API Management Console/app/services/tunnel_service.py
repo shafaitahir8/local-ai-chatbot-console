@@ -5,6 +5,7 @@ Cloudflare tunnel lifecycle service.
 from __future__ import annotations
 
 import asyncio
+import json
 import logging
 import os
 import re
@@ -22,7 +23,13 @@ logger = logging.getLogger(__name__)
 
 
 class TunnelService:
-    """Starts and tracks public tunnel providers for local server exposure."""
+    """Starts and tracks public tunnel providers for local server exposure.
+
+    Supported providers:
+    - cloudflare (quick tunnel or named tunnel)
+    - localtunnel
+    - ngrok (including reserved/static domain mode)
+    """
 
     HOSTNAME_REGEX = re.compile(r'userHostname="(https://[-a-z0-9]+\.trycloudflare\.com)"')
     URL_REGEX = re.compile(r"(https://[a-zA-Z0-9.-]+)")
@@ -48,6 +55,12 @@ class TunnelService:
             return local_bin
 
         return shutil.which("cloudflared")
+
+    def _find_ngrok(self) -> Optional[str]:
+        env_path = os.getenv("NGROK_PATH", "").strip()
+        if env_path and os.path.exists(env_path):
+            return env_path
+        return shutil.which("ngrok")
 
     @staticmethod
     def _pick_free_port() -> int:
@@ -93,6 +106,8 @@ class TunnelService:
         self.provider = os.getenv("TUNNEL_PROVIDER", "cloudflare").strip().lower() or "cloudflare"
         if self.provider == "localtunnel":
             return await self._ensure_localtunnel_started(origin_url)
+        if self.provider == "ngrok":
+            return await self._ensure_ngrok_started(origin_url)
 
         named_tunnel_token = os.getenv("CLOUDFLARE_TUNNEL_TOKEN", "").strip()
         named_public_base = (
@@ -314,6 +329,98 @@ class TunnelService:
         self.source = "error"
         return False
 
+    async def _ensure_ngrok_started(self, origin_url: str) -> bool:
+        executable = self._find_ngrok()
+        if not executable:
+            self.public_base_url = None
+            self.last_error = "ngrok binary not found"
+            self.source = "unavailable"
+            return False
+
+        host, port = self._parse_origin(origin_url)
+        static_domain = (
+            os.getenv("NGROK_STATIC_DOMAIN", "").strip()
+            or os.getenv("NGROK_DOMAIN", "").strip()
+        )
+        authtoken = os.getenv("NGROK_AUTHTOKEN", "").strip()
+        api_url = os.getenv("NGROK_API_URL", "http://127.0.0.1:4040/api/tunnels").strip()
+
+        if authtoken:
+            try:
+                subprocess.run(
+                    [executable, "config", "add-authtoken", authtoken],
+                    stdout=subprocess.DEVNULL,
+                    stderr=subprocess.DEVNULL,
+                    check=False,
+                )
+            except Exception:
+                # Continue; user may already have token configured globally.
+                pass
+
+        args = [executable, "http", str(port), "--host-header", f"{host}:{port}"]
+        if static_domain:
+            args.extend(["--domain", static_domain])
+
+        creationflags = 0
+        if os.name == "nt":
+            creationflags = subprocess.CREATE_NO_WINDOW  # type: ignore[attr-defined]
+
+        try:
+            self.process = subprocess.Popen(
+                args,
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL,
+                creationflags=creationflags,
+            )
+        except Exception as exc:
+            self.process = None
+            self.public_base_url = None
+            self.last_error = f"failed to start ngrok: {exc}"
+            self.source = "error"
+            return False
+
+        for _ in range(80):
+            if self.process.poll() is not None:
+                self.public_base_url = None
+                self.last_error = "ngrok process exited during startup"
+                self.source = "error"
+                return False
+            try:
+                with urllib.request.urlopen(api_url, timeout=1.5) as response:
+                    payload = json.loads(response.read().decode("utf-8", errors="ignore"))
+                tunnels = payload.get("tunnels", []) if isinstance(payload, dict) else []
+                public_urls = []
+                for tunnel in tunnels:
+                    if isinstance(tunnel, dict):
+                        url = str(tunnel.get("public_url", "")).strip()
+                        if url.startswith("https://"):
+                            public_urls.append(url.rstrip("/"))
+                if public_urls:
+                    selected = public_urls[0]
+                    if static_domain:
+                        normalized_domain = static_domain
+                        if normalized_domain.startswith("http://") or normalized_domain.startswith("https://"):
+                            parsed_domain = urllib.parse.urlparse(normalized_domain).hostname or ""
+                            normalized_domain = parsed_domain
+                        normalized_domain = normalized_domain.strip().strip("/")
+                        static_url = f"https://{normalized_domain}".rstrip("/")
+                        if any(normalized_domain in u for u in public_urls):
+                            selected = next((u for u in public_urls if normalized_domain in u), static_url)
+                        else:
+                            selected = static_url
+                    self.public_base_url = selected
+                    self.last_error = None
+                    self.source = "ngrok_static_domain" if static_domain else "ngrok"
+                    return True
+            except Exception:
+                pass
+            await asyncio.sleep(0.5)
+
+        self.public_base_url = None
+        self.last_error = "ngrok started but did not expose a public URL in time"
+        self.source = "error"
+        return False
+
     async def shutdown(self) -> None:
         """Stop managed cloudflared process."""
         if not self.process:
@@ -330,7 +437,14 @@ class TunnelService:
         finally:
             self.process = None
             self.metrics_port = None
-            if self.source in {"cloudflared", "localtunnel", "localtunnel_subdomain", "cloudflared_named"}:
+            if self.source in {
+                "cloudflared",
+                "localtunnel",
+                "localtunnel_subdomain",
+                "cloudflared_named",
+                "ngrok",
+                "ngrok_static_domain",
+            }:
                 self.public_base_url = None
             self._reader_thread = None
 
@@ -342,15 +456,30 @@ class TunnelService:
             "public_base_url": self.public_base_url,
             "source": self.source,
             "provider": self.provider,
-            "stable": self.source in {"cloudflared_named", "env", "localtunnel_subdomain"},
+            "stable": self.source in {"cloudflared_named", "env", "localtunnel_subdomain", "ngrok_static_domain"},
             "last_error": self.last_error,
             "metrics_port": self.metrics_port,
         }
 
+    @staticmethod
+    def _with_optional_token(url: str) -> str:
+        token = os.getenv("TUNNEL_SHARED_SECRET", "").strip()
+        if not token:
+            return url
+        separator = "&" if "?" in url else "?"
+        return f"{url}{separator}token={urllib.parse.quote(token, safe='')}"
+
     def get_chat_endpoint(self, bot_id: str) -> Optional[str]:
         if not self.public_base_url:
             return None
-        return f"{self.public_base_url}/api/bot/{bot_id}/chat"
+        endpoint = f"{self.public_base_url}/api/bot/{bot_id}/chat"
+        return self._with_optional_token(endpoint)
+
+    def get_embed_endpoint(self, bot_id: str) -> Optional[str]:
+        if not self.public_base_url:
+            return None
+        endpoint = f"{self.public_base_url}/embed/{bot_id}"
+        return self._with_optional_token(endpoint)
 
 
 tunnel_service = TunnelService()

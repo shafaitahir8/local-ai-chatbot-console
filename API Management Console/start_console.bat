@@ -133,6 +133,31 @@ if /I "%TUNNEL_PROVIDER%"=="localtunnel" (
     )
 )
 
+if /I "%TUNNEL_PROVIDER%"=="ngrok" (
+    where ngrok >nul 2>&1
+    if %ERRORLEVEL% neq 0 (
+        echo [WARN] TUNNEL_PROVIDER=ngrok but ngrok is not available. Falling back to cloudflare.
+        echo [WARN] ngrok not found >> "%LOGFILE%"
+        set "TUNNEL_PROVIDER=cloudflare"
+    ) else (
+        set "AUTO_CLOUDFLARE_TUNNEL=true"
+        echo        ngrok mode enabled.
+        if defined NGROK_STATIC_DOMAIN (
+            echo        Requested ngrok static domain: %NGROK_STATIC_DOMAIN%
+            echo [INFO] ngrok static domain: %NGROK_STATIC_DOMAIN% >> "%LOGFILE%"
+        ) else (
+            echo [WARN] NGROK_STATIC_DOMAIN not set - URL may change on restart.
+            echo [WARN] ngrok static domain missing >> "%LOGFILE%"
+        )
+        if not defined NGROK_AUTHTOKEN (
+            echo [WARN] NGROK_AUTHTOKEN not set. Reserved/static domains usually require authenticated ngrok.
+            echo [WARN] ngrok authtoken missing >> "%LOGFILE%"
+        )
+        echo [INFO] tunnel provider: ngrok >> "%LOGFILE%"
+        goto :tunnel_provider_done
+    )
+)
+
 set "CLOUDFLARE_BIN="
 if exist "tools\cloudflared.exe" (
     set "CLOUDFLARE_BIN=%CD%\tools\cloudflared.exe"

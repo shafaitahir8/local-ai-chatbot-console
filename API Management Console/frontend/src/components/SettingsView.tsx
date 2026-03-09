@@ -92,21 +92,21 @@ export function SettingsView() {
             <label className="font-mono text-xs font-semibold text-foreground">Public Access</label>
           </div>
           <p className="font-mono text-[10px] text-muted-foreground mb-3">
-            Expose your bots publicly. For a fixed URL across restarts, use a named Cloudflare tunnel.
+            Use a static tunnel URL for HubSpot modules. Recommended: Cloudflare named tunnel or ngrok reserved domain.
           </p>
           <div className="bg-secondary border border-border rounded-md p-3 space-y-2">
-            <code className="font-mono text-[10px] text-primary block">$ npx localtunnel --port 8000 --subdomain yourname</code>
+            <code className="font-mono text-[10px] text-primary block">.\scripts\configure_static_tunnel.ps1 -Provider cloudflare -CloudflareTunnelToken "..." -CloudflarePublicBaseUrl "https://chat.example.com"</code>
             <code className="font-mono text-[10px] text-muted-foreground block"># or</code>
-            <code className="font-mono text-[10px] text-primary block">$ ngrok http 8000</code>
-            <code className="font-mono text-[10px] text-muted-foreground block"># or</code>
-            <code className="font-mono text-[10px] text-primary block">$ cloudflared tunnel --url http://localhost:8000</code>
-            <code className="font-mono text-[10px] text-muted-foreground block"># stable URL mode (.env)</code>
-            <code className="font-mono text-[10px] text-primary block">CLOUDFLARE_TUNNEL_TOKEN=...</code>
-            <code className="font-mono text-[10px] text-primary block">CLOUDFLARE_PUBLIC_BASE_URL=https://chat.yourdomain.com</code>
-            <code className="font-mono text-[10px] text-primary block">TUNNEL_SHARED_SECRET=optional-strong-secret</code>
+            <code className="font-mono text-[10px] text-primary block">.\scripts\configure_static_tunnel.ps1 -Provider ngrok -NgrokAuthtoken "..." -NgrokStaticDomain "your.ngrok-free.app"</code>
+            <code className="font-mono text-[10px] text-muted-foreground block"># then restart start_console.bat</code>
             {status?.public_base_url && (
               <code className="font-mono text-[10px] text-success block">
                 Active URL: {status.public_base_url}
+              </code>
+            )}
+            {status?.tunnel_token_required && (
+              <code className="font-mono text-[10px] text-warning block">
+                Tunnel token protection is enabled. Include ?token=... in hardcoded HubSpot endpoints.
               </code>
             )}
           </div>
@@ -142,7 +142,7 @@ export function SettingsView() {
             <label className="font-mono text-xs font-semibold text-foreground">HubSpot Integration</label>
           </div>
           <p className="font-mono text-[10px] text-muted-foreground mb-3">
-            Embed chat widget in HubSpot pages using a custom module:
+            Embed chat widget in HubSpot pages using your static domain and token:
           </p>
           <pre className="bg-secondary border border-border rounded-md p-3 font-mono text-[10px] text-primary overflow-x-auto whitespace-pre-wrap">
 {`<!-- HubSpot Custom Module -->
@@ -150,7 +150,7 @@ export function SettingsView() {
 <script>
   (function() {
     var iframe = document.createElement('iframe');
-    iframe.src = 'YOUR_URL/embed/BOT_ID';
+    iframe.src = 'https://YOUR-STATIC-DOMAIN/embed/BOT_ID?token=YOUR_TUNNEL_SHARED_SECRET';
     iframe.style.width = '100%';
     iframe.style.height = '600px';
     iframe.style.border = 'none';

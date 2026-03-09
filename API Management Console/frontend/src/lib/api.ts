@@ -232,20 +232,104 @@ export async function fetchAnalytics(botId?: string): Promise<Analytics> {
   };
 }
 
-// Chat API
-export async function sendMessage(botId: string, message: string, sessionId?: string): Promise<ChatResponse> {
-  const response = await fetch(`${API_BASE}/bot/${botId}/chat`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ message, session_id: sessionId }),
-  });
+export type ChatProgressStage =
+  | "prepare_request"
+  | "opening_session"
+  | "awaiting_response"
+  | "retrying_request"
+  | "completed";
 
-  if (!response.ok) {
-    const error = await response.json().catch(() => ({ detail: "Chat failed" }));
-    throw new Error(error.detail || "Chat failed");
+export interface ChatProgressUpdate {
+  stage: ChatProgressStage;
+  attempt: number;
+  maxAttempts: number;
+  message: string;
+}
+
+export interface SendMessageOptions {
+  maxRetries?: number;
+  onProgress?: (update: ChatProgressUpdate) => void;
+}
+
+function isRetryableStatus(status: number): boolean {
+  return status === 408 || status === 409 || status === 425 || status === 429 || status >= 500;
+}
+
+function sleep(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+// Chat API
+export async function sendMessage(
+  botId: string,
+  message: string,
+  sessionId?: string,
+  options?: SendMessageOptions
+): Promise<ChatResponse> {
+  const maxAttempts = Math.max(1, (options?.maxRetries ?? 2) + 1);
+  let lastError: Error | null = null;
+
+  for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+    const hasSession = !!(sessionId && sessionId.trim());
+    options?.onProgress?.({
+      stage: hasSession ? "prepare_request" : "opening_session",
+      attempt,
+      maxAttempts,
+      message: hasSession ? "Preparing request..." : "Opening a new chat session...",
+    });
+
+    try {
+      const payload: Record<string, string> = { message };
+      if (hasSession) {
+        payload.session_id = sessionId!.trim();
+      }
+
+      options?.onProgress?.({
+        stage: "awaiting_response",
+        attempt,
+        maxAttempts,
+        message: "Waiting for model response...",
+      });
+
+      const response = await fetch(`${API_BASE}/bot/${botId}/chat`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        const error = await response.json().catch(() => ({ detail: "Chat failed" }));
+        const errorMessage = error.detail || `Chat failed (status ${response.status})`;
+        const requestError = new Error(errorMessage) as Error & { retryable?: boolean };
+        requestError.retryable = isRetryableStatus(response.status);
+        throw requestError;
+      }
+
+      const data: ChatResponse = await response.json();
+      options?.onProgress?.({
+        stage: "completed",
+        attempt,
+        maxAttempts,
+        message: "Response received.",
+      });
+      return data;
+    } catch (error) {
+      const err = (error instanceof Error ? error : new Error("Chat failed")) as Error & { retryable?: boolean };
+      lastError = err;
+      if (attempt < maxAttempts && err.retryable !== false) {
+        options?.onProgress?.({
+          stage: "retrying_request",
+          attempt,
+          maxAttempts,
+          message: `Retrying request (${attempt}/${maxAttempts - 1})...`,
+        });
+        await sleep(400 * attempt);
+        continue;
+      }
+    }
   }
 
-  return response.json();
+  throw lastError ?? new Error("Chat failed");
 }
 
 // Knowledge Base API
@@ -371,6 +455,8 @@ export async function getSystemStatus(): Promise<{
   cloudflare_stable?: boolean;
   cloudflare_source?: string;
   cloudflare_error?: string | null;
+  tunnel_token_required?: boolean;
+  tunnel_token?: string | null;
   api_gateway_running?: boolean;
   api_gateway_port?: number | null;
 }> {
@@ -396,6 +482,8 @@ export async function getSystemStatus(): Promise<{
           cloudflare_stable: false,
           cloudflare_source: "unknown",
           cloudflare_error: null,
+          tunnel_token_required: false,
+          tunnel_token: null,
           api_gateway_running: false,
           api_gateway_port: null,
         };
@@ -415,6 +503,8 @@ export async function getSystemStatus(): Promise<{
     cloudflare_stable: false,
     cloudflare_source: "unknown",
     cloudflare_error: null,
+    tunnel_token_required: false,
+    tunnel_token: null,
     api_gateway_running: false,
     api_gateway_port: null,
   };

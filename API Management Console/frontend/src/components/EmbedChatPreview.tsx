@@ -15,9 +15,8 @@ export function EmbedChatPreview({ botName, botId, accentColor = "#00d4aa" }: Em
   ]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
-  const [loadingText, setLoadingText] = useState("Thinking...");
+  const [loadingText, setLoadingText] = useState("Ready.");
   const [sessionId, setSessionId] = useState<string | undefined>(undefined);
-  const [isFirstMessage, setIsFirstMessage] = useState(true);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   // Auto-scroll to bottom
@@ -25,48 +24,35 @@ export function EmbedChatPreview({ botName, botId, accentColor = "#00d4aa" }: Em
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, loading]);
 
-  // Loading text animation for first message
-  useEffect(() => {
-    if (loading && isFirstMessage) {
-      const texts = [
-        "Initializing model...",
-        "Loading context...",
-        "Processing...",
-        "Generating response..."
-      ];
-      let i = 0;
-      const interval = setInterval(() => {
-        setLoadingText(texts[i % texts.length]);
-        i++;
-      }, 1500);
-      return () => clearInterval(interval);
-    } else if (loading) {
-      setLoadingText("Thinking...");
-    }
-  }, [loading, isFirstMessage]);
-
   const send = async () => {
     if (!input.trim() || loading) return;
     const userMsg = input;
     setMessages((prev) => [...prev, { role: "user", text: userMsg }]);
     setInput("");
     setLoading(true);
+    setLoadingText(sessionId ? "Preparing request..." : "Opening a new chat session...");
 
     try {
-      const response = await sendMessage(botId, userMsg, sessionId);
+      const response = await sendMessage(botId, userMsg, sessionId, {
+        maxRetries: 2,
+        onProgress: (update) => {
+          setLoadingText(update.message);
+        },
+      });
       setMessages((prev) => [...prev, { role: "bot", text: response.response }]);
       // Store session ID for conversation continuity
       if (response.session_id) {
         setSessionId(response.session_id);
       }
-      setIsFirstMessage(false);
     } catch (error) {
       setMessages((prev) => [
         ...prev,
         { role: "bot", text: "Sorry, I encountered an error. Please try again." },
       ]);
+      setLoadingText("Request failed.");
     } finally {
       setLoading(false);
+      setLoadingText("Ready.");
     }
   };
 

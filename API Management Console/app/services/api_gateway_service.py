@@ -4,6 +4,7 @@ API-only gateway service for secure tunnel exposure.
 This service runs a lightweight local HTTP proxy that only exposes:
 - POST /api/bot/{bot_id}/chat
 - GET  /api/bot/{bot_id}/status
+- GET  /embed/{bot_id}
 - GET  /health
 
 Everything else is blocked with 404/405. The tunnel points to this gateway
@@ -42,6 +43,7 @@ class ApiGatewayService:
 
     CHAT_PATH_RE = re.compile(r"^/api/bot/[0-9a-fA-F-]{36}/chat$")
     STATUS_PATH_RE = re.compile(r"^/api/bot/[0-9a-fA-F-]{36}/status$")
+    EMBED_PATH_RE = re.compile(r"^/embed/[0-9a-fA-F-]{36}$")
     MAX_BODY_BYTES = 64 * 1024
 
     def __init__(self) -> None:
@@ -92,6 +94,7 @@ class ApiGatewayService:
                 return bool(
                     self.server.gateway_service.CHAT_PATH_RE.match(path)
                     or self.server.gateway_service.STATUS_PATH_RE.match(path)
+                    or self.server.gateway_service.EMBED_PATH_RE.match(path)
                 )
 
             def _is_allowed_method(self) -> bool:
@@ -101,6 +104,8 @@ class ApiGatewayService:
                 if self.server.gateway_service.CHAT_PATH_RE.match(path):
                     return self.command in {"POST", "OPTIONS"}
                 if self.server.gateway_service.STATUS_PATH_RE.match(path):
+                    return self.command in {"GET", "OPTIONS"}
+                if self.server.gateway_service.EMBED_PATH_RE.match(path):
                     return self.command in {"GET", "OPTIONS"}
                 return False
 

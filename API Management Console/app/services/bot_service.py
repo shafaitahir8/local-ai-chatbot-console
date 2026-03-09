@@ -2,21 +2,29 @@
 Bot Service - Core bot management operations.
 """
 
+import asyncio
+import hashlib
 import os
 import json
 import shutil
 import uuid
 import re
+import logging
+import threading
+import time
 from datetime import datetime
 from typing import Dict, Any, List, Optional, Tuple
+from pathlib import Path
 from sqlalchemy.orm import Session
 
-from ..models.database import Bot, KnowledgeChunk, ConversationMemory, get_db_context
+from ..models.database import Bot, KnowledgeChunk, ConversationMemory
 from .encryption_service import encryption_service
 from .embedding_service import EmbeddingService
 from .template_service import template_service
 from .llm_providers import OpenAIProvider, LocalProvider, ClaudeProvider, GeminiProvider
 from .llm_providers.base_provider import BaseLLMProvider, ChatMessage
+
+logger = logging.getLogger(__name__)
 
 
 class BotService:
@@ -27,6 +35,12 @@ class BotService:
     def __init__(self):
         self.embedding_service = EmbeddingService()
         self._provider_cache: Dict[str, BaseLLMProvider] = {}
+        self.chat_retry_attempts = max(1, int(os.getenv("CHAT_RETRY_ATTEMPTS", "2")))
+        self.chat_retry_backoff_seconds = max(0.1, float(os.getenv("CHAT_RETRY_BACKOFF_SECONDS", "0.8")))
+        self.chat_max_memory_messages = max(0, int(os.getenv("CHAT_MEMORY_WINDOW", "10")))
+        self._session_file_lock = threading.Lock()
+        self._startup_welcome_lock = threading.Lock()
+        self._startup_welcome_cache: Dict[str, Dict[str, str]] = {}
         self.model_files_root = os.path.join(
             os.path.dirname(os.path.dirname(os.path.dirname(__file__))),
             'data',
@@ -54,7 +68,52 @@ class BotService:
         self.embedding_service.get_bot_data_dir(bot.id)
         self.embedding_service.get_documents_dir(bot.id)
         self.embedding_service.get_embeddings_dir(bot.id)
+        self.get_bot_sessions_dir(bot.id)
         self.get_bot_model_files_dir(bot)
+
+    def get_bot_sessions_dir(self, bot_id: str) -> Path:
+        """Get the sessions directory for a bot."""
+        sessions_dir = self.embedding_service.get_bot_data_dir(bot_id) / "sessions"
+        sessions_dir.mkdir(parents=True, exist_ok=True)
+        return sessions_dir
+
+    def create_session_id(self) -> str:
+        """Create a server-issued unique session identifier."""
+        return str(uuid.uuid4())
+
+    def _session_file_name(self, session_id: str) -> str:
+        """Create a stable and filesystem-safe filename for a session."""
+        safe_session = self._slug(session_id)[:80]
+        digest = hashlib.sha1(session_id.encode("utf-8")).hexdigest()[:12]
+        return f"{safe_session}_{digest}.json"
+
+    def get_session_file_path(self, bot_id: str, session_id: str) -> Path:
+        """Get the JSON transcript path for a session."""
+        return self.get_bot_sessions_dir(bot_id) / self._session_file_name(session_id)
+
+    def set_startup_welcome_message(self, bot_id: str, message: str) -> None:
+        """Store latest startup-generated welcome message for quick UI retrieval."""
+        clean_message = (message or "").strip()
+        if not clean_message:
+            return
+
+        with self._startup_welcome_lock:
+            self._startup_welcome_cache[bot_id] = {
+                "message": clean_message,
+                "generated_at": datetime.utcnow().isoformat() + "Z",
+            }
+
+    def get_startup_welcome_message(self, bot_id: str) -> Dict[str, Any]:
+        """Get startup-generated welcome message metadata for a bot."""
+        with self._startup_welcome_lock:
+            payload = dict(self._startup_welcome_cache.get(bot_id) or {})
+
+        message = (payload.get("message") or "").strip()
+        return {
+            "ready": bool(message),
+            "message": message or None,
+            "generated_at": payload.get("generated_at"),
+        }
     
     def _get_provider(self, bot: Bot) -> BaseLLMProvider:
         """
@@ -102,6 +161,118 @@ class BotService:
                 raise ValueError(f"Unknown provider type: {bot.provider_type}")
         
         return self._provider_cache[cache_key]
+
+    def _is_retryable_error(self, error_message: str) -> bool:
+        """Return True for transient failures that should be retried."""
+        text = (error_message or "").lower()
+        retry_markers = [
+            "timeout",
+            "timed out",
+            "rate limit",
+            "429",
+            "503",
+            "502",
+            "500",
+            "temporarily unavailable",
+            "connection error",
+            "network error",
+            "resource exhausted",
+        ]
+        return any(marker in text for marker in retry_markers)
+
+    async def _chat_with_retries(
+        self,
+        provider: BaseLLMProvider,
+        messages: List[ChatMessage],
+        temperature: float,
+        max_tokens: int,
+        retry_attempts: Optional[int] = None,
+    ):
+        """Call provider.chat with retry/backoff on transient failures."""
+        attempts = retry_attempts or self.chat_retry_attempts
+        last_error: Optional[Exception] = None
+
+        for attempt in range(1, attempts + 1):
+            try:
+                response = await provider.chat(
+                    messages=messages,
+                    temperature=temperature,
+                    max_tokens=max_tokens
+                )
+                return response, attempt - 1
+            except Exception as exc:
+                last_error = exc
+                if attempt >= attempts or not self._is_retryable_error(str(exc)):
+                    raise
+                delay = self.chat_retry_backoff_seconds * attempt
+                logger.warning(
+                    "Transient provider failure on attempt %s/%s, retrying in %.2fs: %s",
+                    attempt,
+                    attempts,
+                    delay,
+                    exc,
+                )
+                await asyncio.sleep(delay)
+
+        if last_error is not None:
+            raise last_error
+        raise RuntimeError("Provider chat failed without a specific error")
+
+    def _append_session_transcript(
+        self,
+        bot: Bot,
+        session_id: str,
+        user_message: str,
+        assistant_response: str,
+        *,
+        tokens_used: int,
+        latency_ms: int,
+        retries_used: int,
+        fallback_used: bool,
+        rag_used: bool,
+    ) -> None:
+        """Persist per-session transcript in bot-specific JSON file."""
+        session_path = self.get_session_file_path(bot.id, session_id)
+        timestamp = datetime.utcnow().isoformat() + "Z"
+
+        with self._session_file_lock:
+            if session_path.exists():
+                try:
+                    with open(session_path, "r", encoding="utf-8") as fh:
+                        session_payload = json.load(fh)
+                except Exception:
+                    session_payload = {}
+            else:
+                session_payload = {}
+
+            session_payload.setdefault("bot_id", bot.id)
+            session_payload.setdefault("bot_name", bot.name)
+            session_payload.setdefault("session_id", session_id)
+            session_payload.setdefault("provider_type", bot.provider_type)
+            session_payload.setdefault("model", bot.model)
+            session_payload.setdefault("created_at", timestamp)
+            session_payload["updated_at"] = timestamp
+            session_payload.setdefault("messages", [])
+
+            session_payload["messages"].append({
+                "role": "user",
+                "content": user_message,
+                "timestamp": timestamp,
+            })
+            session_payload["messages"].append({
+                "role": "assistant",
+                "content": assistant_response,
+                "timestamp": timestamp,
+                "tokens_used": int(tokens_used or 0),
+                "latency_ms": int(latency_ms or 0),
+                "retries_used": int(retries_used or 0),
+                "fallback_used": bool(fallback_used),
+                "rag_used": bool(rag_used),
+            })
+            session_payload["message_count"] = len(session_payload["messages"])
+
+            with open(session_path, "w", encoding="utf-8") as fh:
+                json.dump(session_payload, fh, ensure_ascii=False, indent=2)
     
     def create_bot(
         self,
@@ -358,7 +529,13 @@ class BotService:
         db: Session,
         bot_id: str,
         message: str,
-        session_id: Optional[str] = None
+        session_id: Optional[str] = None,
+        *,
+        include_rag: bool = True,
+        include_memory: bool = True,
+        persist_memory: bool = True,
+        persist_session_file: bool = True,
+        retry_attempts: Optional[int] = None,
     ) -> Dict[str, Any]:
         """
         Process a chat message.
@@ -372,8 +549,7 @@ class BotService:
         Returns:
             Chat response dictionary
         """
-        import time
-        start_time = time.time()
+        start_time = time.perf_counter()
         
         bot = self.get_bot(db, bot_id)
         if not bot:
@@ -382,65 +558,103 @@ class BotService:
         if not bot.is_available():
             return {
                 'response': "This chatbot is currently inactive.",
-                'session_id': session_id or str(uuid.uuid4()),
+                'session_id': session_id or self.create_session_id(),
                 'tokens_used': 0,
-                'latency_ms': 0
+                'latency_ms': 0,
+                'retry_count': 0,
+                'fallback_used': False,
+                'status_message': "bot_unavailable"
             }
         
         # Get or create session
-        session_id = session_id or str(uuid.uuid4())
+        session_id = (session_id or "").strip() or self.create_session_id()
         
-        # Build messages
-        messages = []
-        
-        # System prompt with RAG context
-        system_prompt = bot.system_prompt or "You are a helpful AI assistant."
+        provider = self._get_provider(bot)
+        base_system_prompt = bot.system_prompt or "You are a helpful AI assistant."
+        system_prompt = base_system_prompt
+        rag_used = False
+        fallback_used = False
+        retry_count = 0
         
         # Get relevant context from knowledge base
-        provider = self._get_provider(bot)
-        try:
-            search_results = await self.embedding_service.search(
-                message, bot_id, provider, top_k=3
-            )
-            if search_results:
-                context = "\n\n".join([
-                    f"[Source: {r[2].get('source', 'unknown')}]\n{r[0]}"
-                    for r in search_results
-                ])
-                system_prompt = f"{system_prompt}\n\nRelevant context:\n{context}"
-        except Exception:
-            pass  # Continue without RAG if it fails
-        
+        if include_rag:
+            try:
+                search_results = await self.embedding_service.search(
+                    message, bot_id, provider, top_k=3
+                )
+                if search_results:
+                    rag_used = True
+                    context = "\n\n".join([
+                        f"[Source: {r[2].get('source', 'unknown')}]\n{r[0]}"
+                        for r in search_results
+                    ])
+                    system_prompt = f"{system_prompt}\n\nRelevant context:\n{context}"
+            except Exception as rag_error:
+                logger.warning("RAG search failed for bot %s session %s: %s", bot_id, session_id, rag_error)
+
+        # Build messages
+        messages = []
         messages.append(ChatMessage(role="system", content=system_prompt))
         
         # Add conversation memory if enabled
-        if bot.memory_enabled:
-            memory = db.query(ConversationMemory).filter(
-                ConversationMemory.bot_id == bot_id,
-                ConversationMemory.session_id == session_id
-            ).first()
-            
-            if memory and memory.messages:
-                for msg in memory.messages[-10:]:  # Last 10 messages
-                    messages.append(ChatMessage(
-                        role=msg['role'],
-                        content=msg['content']
-                    ))
+        if include_memory and bot.memory_enabled:
+            try:
+                memory = db.query(ConversationMemory).filter(
+                    ConversationMemory.bot_id == bot_id,
+                    ConversationMemory.session_id == session_id
+                ).first()
+                if memory and memory.messages:
+                    history = memory.messages[-self.chat_max_memory_messages:] if self.chat_max_memory_messages else []
+                    for msg in history:
+                        messages.append(ChatMessage(
+                            role=msg['role'],
+                            content=msg['content']
+                        ))
+            except Exception as memory_error:
+                logger.warning(
+                    "Conversation memory load failed for bot %s session %s: %s",
+                    bot_id,
+                    session_id,
+                    memory_error,
+                )
         
         # Add user message
         messages.append(ChatMessage(role="user", content=message))
+
+        fallback_messages = [
+            ChatMessage(role="system", content=base_system_prompt),
+            ChatMessage(role="user", content=message),
+        ]
         
-        # Get response
-        response = await provider.chat(
-            messages=messages,
-            temperature=bot.temperature,
-            max_tokens=bot.max_tokens
-        )
+        # Get response with retries and fallback path.
+        try:
+            response, retry_count = await self._chat_with_retries(
+                provider=provider,
+                messages=messages,
+                temperature=bot.temperature,
+                max_tokens=bot.max_tokens,
+                retry_attempts=retry_attempts,
+            )
+        except Exception as primary_error:
+            logger.warning(
+                "Primary chat pipeline failed for bot %s session %s; retrying without RAG/memory: %s",
+                bot_id,
+                session_id,
+                primary_error,
+            )
+            fallback_used = True
+            response, retry_count = await self._chat_with_retries(
+                provider=provider,
+                messages=fallback_messages,
+                temperature=bot.temperature,
+                max_tokens=bot.max_tokens,
+                retry_attempts=retry_attempts,
+            )
         
-        latency_ms = int((time.time() - start_time) * 1000)
+        latency_ms = int((time.perf_counter() - start_time) * 1000)
         
         # Update memory if enabled
-        if bot.memory_enabled:
+        if persist_memory and bot.memory_enabled:
             memory = db.query(ConversationMemory).filter(
                 ConversationMemory.bot_id == bot_id,
                 ConversationMemory.session_id == session_id
@@ -459,6 +673,27 @@ class BotService:
             memory.messages.append({"role": "assistant", "content": response.content})
             memory.updated_at = datetime.utcnow()
             db.commit()
+
+        if persist_session_file:
+            try:
+                self._append_session_transcript(
+                    bot=bot,
+                    session_id=session_id,
+                    user_message=message,
+                    assistant_response=response.content,
+                    tokens_used=response.tokens_total,
+                    latency_ms=latency_ms,
+                    retries_used=retry_count,
+                    fallback_used=fallback_used,
+                    rag_used=rag_used,
+                )
+            except Exception as session_error:
+                logger.warning(
+                    "Session transcript persistence failed for bot %s session %s: %s",
+                    bot_id,
+                    session_id,
+                    session_error,
+                )
         
         return {
             'response': response.content,
@@ -467,7 +702,48 @@ class BotService:
             'tokens_prompt': response.tokens_prompt,
             'tokens_completion': response.tokens_completion,
             'latency_ms': latency_ms,
-            'model': response.model
+            'model': response.model,
+            'retry_count': retry_count,
+            'fallback_used': fallback_used,
+            'status_message': "completed_with_fallback" if fallback_used else "completed"
+        }
+
+    async def warmup_bot(
+        self,
+        db: Session,
+        bot_id: str,
+        prompt: str = "Hi, send a welcome message",
+    ) -> Dict[str, Any]:
+        """Warm up a bot model so the first real user prompt is faster."""
+        bot = self.get_bot(db, bot_id)
+        if not bot:
+            raise ValueError("Bot not found")
+        if not bot.is_available():
+            return {"status": "skipped", "reason": "bot_unavailable"}
+        if bot.provider_type != "local":
+            return {"status": "skipped", "reason": "provider_not_local"}
+
+        result = await self.chat(
+            db=db,
+            bot_id=bot_id,
+            message=prompt,
+            session_id=f"warmup-{self.create_session_id()}",
+            include_rag=False,
+            include_memory=False,
+            persist_memory=False,
+            persist_session_file=False,
+            retry_attempts=self.chat_retry_attempts,
+        )
+        response_text = (result.get("response") or "").strip()
+        if response_text:
+            self.set_startup_welcome_message(bot_id, response_text)
+
+        return {
+            "status": "ready",
+            "bot_id": bot_id,
+            "latency_ms": result.get("latency_ms", 0),
+            "model": result.get("model"),
+            "response_preview": response_text[:160],
         }
     
     async def upload_knowledge(

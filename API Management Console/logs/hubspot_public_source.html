@@ -1,0 +1,2102 @@
+<!doctype html><html lang="en"><head>
+		<meta charset="utf-8">
+		<title>Chatbots | Conversational Architecture</title>
+		<meta name="description" content="Expert HubSpot CMS development by Arctic Studio. Specializing in custom modules, theme architecture, and high-performance solutions for businesses. ">
+		
+		<link rel="SHORTCUT ICON" href="https://245200612.hs-sites-na2.com/hubfs/Arctic-Logo-svg.svg">
+		
+		
+		
+		
+		<meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1">
+
+    
+    <meta property="og:description" content="Expert HubSpot CMS development by Arctic Studio. Specializing in custom modules, theme architecture, and high-performance solutions for businesses. ">
+    <meta property="og:title" content="Chatbots | Conversational Architecture">
+    <meta name="twitter:description" content="Expert HubSpot CMS development by Arctic Studio. Specializing in custom modules, theme architecture, and high-performance solutions for businesses. ">
+    <meta name="twitter:title" content="Chatbots | Conversational Architecture">
+
+    
+
+    
+    <style>
+a.cta_button{-moz-box-sizing:content-box !important;-webkit-box-sizing:content-box !important;box-sizing:content-box !important;vertical-align:middle}.hs-breadcrumb-menu{list-style-type:none;margin:0px 0px 0px 0px;padding:0px 0px 0px 0px}.hs-breadcrumb-menu-item{float:left;padding:10px 0px 10px 10px}.hs-breadcrumb-menu-divider:before{content:'›';padding-left:10px}.hs-featured-image-link{border:0}.hs-featured-image{float:right;margin:0 0 20px 20px;max-width:50%}@media (max-width: 568px){.hs-featured-image{float:none;margin:0;width:100%;max-width:100%}}.hs-screen-reader-text{clip:rect(1px, 1px, 1px, 1px);height:1px;overflow:hidden;position:absolute !important;width:1px}
+</style>
+
+<link rel="stylesheet" href="https://245200612.hs-sites-na2.com/hubfs/hub_generated/template_assets/1/315262278387/1772949010621/template_base.min.css">
+<link rel="stylesheet" href="https://245200612.hs-sites-na2.com/hubfs/hub_generated/template_assets/1/315262278389/1772948998196/template_base-overrides.min.css">
+
+  <link rel="stylesheet" href="https://245200612.hs-sites-na2.com/hubfs/hub_generated/template_assets/1/319175558844/1772148044898/template_child.min.css">
+
+<link rel="stylesheet" href="https://245200612.hs-sites-na2.com/hubfs/hub_generated/module_assets/1/315263778491/1771157268073/module_STARDUST_Navigation_01.min.css">
+
+<style>
+	#hs_cos_wrapper_site_header-module-2 .header__container {
+  --desktopnavyspacing:15px;
+  --desktopnavxspacing:15px;
+  --dropdownwidth:230px;
+  --dropdownyspacing:24px;
+  --dropdownxspacing:32px;
+  --dropdownlinkspacing:8px;
+}
+
+#hs_cos_wrapper_site_header-module-2 .header__container[data-topbar-fixed=false],
+#hs_cos_wrapper_site_header-module-2 .header__container[data-topbar-fixed=true] .header_styles {
+  background:#ffffff;
+  box-shadow:15px 25px 60px rgba(0,0,0,0%);
+  --border-size:2px;
+}
+
+#hs_cos_wrapper_site_header-module-2 .header__container.header-scroll[data-topbar-fixed=false],
+#hs_cos_wrapper_site_header-module-2 .header__container.header-scroll[data-topbar-fixed=true] .header_styles {
+  background:#ffffff;
+  box-shadow:15px 25px 60px rgba(0,0,0,10%);
+}
+
+#hs_cos_wrapper_site_header-module-2 .header_inline { border-radius:10px; }
+
+#hs_cos_wrapper_site_header-module-2 .header__menu-item { color:#87909e; }
+
+#hs_cos_wrapper_site_header-module-2 .btn-wrapper.btn-none-wrapper .cta-button,
+#hs_cos_wrapper_site_header-module-2 .btn-wrapper.btn-none-wrapper .cta_button {
+  color:#87909e;
+  font-family:Poppins,sans-serif;
+  font-style:normal;
+  font-weight:normal;
+  text-decoration:none;
+  border:none !important;
+  padding:0 !important;
+}
+
+#hs_cos_wrapper_site_header-module-2 .header__menu-link {
+  color:inherit;
+  font-size:14px;
+  font-family:Poppins,sans-serif;
+  font-style:normal;
+  font-weight:normal;
+  text-decoration:none;
+}
+
+#hs_cos_wrapper_site_header-module-2 .header__menu-item--depth-1>.header__menu-child-toggle svg { color:inherit; }
+
+#hs_cos_wrapper_site_header-module-2 .header__menu-item--depth-1.header__menu-item:hover,
+#hs_cos_wrapper_site_header-module-2 .header__menu-item--depth-1.header__menu-item:focus,
+#hs_cos_wrapper_site_header-module-2 .btn-wrapper.btn-none-wrapper .cta-button:hover,
+#hs_cos_wrapper_site_header-module-2 .btn-wrapper.btn-none-wrapper .cta-button:focus,
+#hs_cos_wrapper_site_header-module-2 .btn-wrapper.btn-none-wrapper .cta_button:hover,
+#hs_cos_wrapper_site_header-module-2 .btn-wrapper.btn-none-wrapper .cta_button:focus { color:#2673FF; }
+
+#hs_cos_wrapper_site_header-module-2 .header__menu-item--depth-1>.header__menu-link:active,
+#hs_cos_wrapper_site_header-module-2 .header__menu-item--depth-1.header__menu-link--active-link { color:#0c63ff; }
+
+#hs_cos_wrapper_site_header-module-2 .header__menu--desktop .header__menu-submenu { border-top:2px solid #1B4332; }
+
+#hs_cos_wrapper_site_header-module-2 .header__menu--mobile { background-color:#ffffff; }
+
+#hs_cos_wrapper_site_header-module-2 .header__menu--mobile .header__menu-submenu { background-color:#ffffff; }
+
+#hs_cos_wrapper_site_header-module-2 .header__menu-submenu { background-color:#ffffff; }
+
+#hs_cos_wrapper_site_header-module-2 .header__container .header__menu-submenu .header__menu-item { color:#87909e; }
+
+#hs_cos_wrapper_site_header-module-2 .header__container .header__menu--mobile .header__menu-submenu .header__menu-item { color:#87909e; }
+
+#hs_cos_wrapper_site_header-module-2 .header__container .header__menu-submenu .header__menu-item:hover,
+#hs_cos_wrapper_site_header-module-2 .header__container .header__menu-submenu .header__menu-item:focus {
+  background-color:#ffffff;
+  color:#0c63ff;
+}
+
+#hs_cos_wrapper_site_header-module-2 .header__container .header__menu-submenu .header__menu-item:active,
+#hs_cos_wrapper_site_header-module-2 .header__container .header__menu-submenu .header__menu-link--active-link {
+  background-color:#ffffff;
+  color:#0c63ff;
+}
+
+#hs_cos_wrapper_site_header-module-2 .header__menu-back {
+  font-family:Poppins,sans-serif;
+  font-style:normal;
+  font-weight:normal;
+  text-decoration:none;
+  color:#87909e;
+  font-size:14px;
+}
+
+#hs_cos_wrapper_site_header-module-2 .header__menu-back:hover { color:#2673FF; }
+
+#hs_cos_wrapper_site_header-module-2 .header__menu-announcement {
+  padding-top:0.5rem;
+  padding-right:1rem;
+  padding-bottom:0.5rem;
+  padding-left:1rem;
+  margin-top:0rem;
+  margin-bottom:0rem;
+}
+
+#hs_cos_wrapper_site_header-module-2 .header__top {
+  background-color:#2673FF;
+  transition:background-color 250ms ease;
+}
+
+#hs_cos_wrapper_site_header-module-2 .header__top:hover {
+  background-color:#1B4332;
+  transition:background-color 250ms ease;
+}
+
+#hs_cos_wrapper_site_header-module-2 .header__menu--top .header__menu-item--depth-1:hover,
+#hs_cos_wrapper_site_header-module-2 .header__menu--top .header__menu-item--depth-1:active,
+#hs_cos_wrapper_site_header-module-2 .header__menu--top .header__menu-item--depth-1>.header__menu-link,
+#hs_cos_wrapper_site_header-module-2 .header__menu--top .header__menu-item--depth-1.header__menu-link--active-link {
+  color:#87909e;
+  font-size:12px;
+  font-family:Poppins,sans-serif;
+  font-style:normal;
+  font-weight:normal;
+  text-decoration:none;
+}
+
+#hs_cos_wrapper_site_header-module-2 .header__wrapper--top .lang_list_class li a,
+#hs_cos_wrapper_site_header-module-2 .header__menu--top .header__menu-link { font-size:12px; }
+
+#hs_cos_wrapper_site_header-module-2 .search--icon,
+#hs_cos_wrapper_site_header-module-2 .hs-search-field__input { background:#F5F7F9; }
+
+#hs_cos_wrapper_site_header-module-2 .hs-search-field__input:not([type='radio']):not([type='checkbox']):not([type='file']):not([type='submit']) { color:#30343B; }
+
+#hs_cos_wrapper_site_header-module-2 .header__menu-submenu { transition:visibility 0s linear 300ms,opacity 300ms,top 300ms; }
+
+#hs_cos_wrapper_site_header-module-2 .header__menu-item--open>.header__menu-submenu { transition:visibility 0s linear 0s,opacity 300ms,top 300ms,transform 300ms; }
+
+#hs_cos_wrapper_site_header-module-2 .header__menu-item--depth-1[data-mega="true"] .header__menu-submenu.header__menu-submenu--level-3,
+#hs_cos_wrapper_site_header-module-2 .header__menu-item--depth-1[data-mega="true"] .header__menu-item--open>.header__menu-submenu.header__menu-submenu--level-3 { transition:unset; }
+
+#hs_cos_wrapper_site_header-module-2 .header__container[data-layout="mobile"] .header__menu-submenu { transition:visibility 0s linear 100ms,opacity 100ms,transform 300ms; }
+
+#hs_cos_wrapper_site_header-module-2 .header__container[data-layout="mobile"] .header__menu-item--open>.header__menu-submenu { transition:visibility 0s linear 0s,opacity 100ms,transform 300ms; }
+
+	/* Mega Menu */
+	.header__container[data-layout='desktop'] .header__menu-item[data-mega='true'] .header__menu-submenu button.header__menu-link {
+		background-color: #ffffff;
+		color: #87909e !important;
+	}
+
+</style>
+
+
+<style>
+	.body_dnd_area-module-2 {background-image: url(https://www.sprocketrocket.co/hubfs/sr-assets/stardust/stardust-bg-1.jpg);
+		background-size: cover;
+		background-position: top right;background-repeat: no-repeat;
+		background-color: rgba(255, 255, 255, 1.0);
+		border-top: 0px none #e5e7ea;
+border-bottom: 0px none #e5e7ea;
+
+	}
+    @media (min-width: 768px) {
+		.body_dnd_area-module-2 {
+			background-image: url(https://www.sprocketrocket.co/hubfs/sr-assets/stardust/stardust-bg-1.jpg);
+		}
+	}
+	.body_dnd_area-module-2,
+	.body_dnd_area-module-2 > div {
+		position: relative;
+	}
+	.body_dnd_area-module-2::before {
+		content: "";
+		width: 100%;
+		height: 100%;
+		position: absolute;
+		top: 0;
+		left: 0;
+		background-color: rgba(52, 58, 64, 0.0);
+	}
+	
+	/* sm-custom_padding */
+	@media(max-width: 767.99px) {
+		.body_dnd_area-module-2.sr-padding-custom,
+		.body_dnd_area-module-2 .sr-padding-custom {
+			padding-top: 165px;
+padding-right: 0rem;
+padding-bottom: 3.25rem;
+padding-left: 0rem;
+margin-top: 0rem;
+margin-bottom: 0rem;
+
+		}
+	}
+	
+	/* lg-padding */
+	@media(min-width: 992px) {
+		.body_dnd_area-module-2.sr-padding-custom,
+		.body_dnd_area-module-2 .sr-padding-custom {
+			padding-top: 150px;
+padding-right: 0rem;
+padding-bottom: 150px;
+padding-left: 0rem;
+margin-top: 0rem;
+margin-bottom: 0rem;
+;
+		}
+	}
+	.body_dnd_area-module-2 .content-wrapper {
+		
+	}
+	
+	.body_dnd_area-module-2 .content-row {
+		
+	}
+	
+	.body_dnd_area-module-2 .media-item {
+		order: 1
+	}
+	
+	.body_dnd_area-module-2 .headings {
+		order: 2
+	}
+	
+	.body_dnd_area-module-2 .col-content,.body_dnd_area-module-2.description {
+		order: 3
+	}
+	
+	.body_dnd_area-module-2 .column_features {
+		order: 4
+	}
+	
+	.body_dnd_area-module-2 .cta-group {
+		order: 5
+	}
+	
+	
+	
+	
+	
+
+	.body_dnd_area-module-2 .content-wrapper {
+		display: flex;
+		flex-direction: column;
+		gap: 20px
+	}
+	.body_dnd_area-module-2 .banner-image {
+		margin-left: -;
+		margin-right: -;
+	}
+	.body_dnd_area-module-2 .banner-image-first {
+		margin-top: -;
+		margin-bottom: calc( - 20px);
+	}
+	.body_dnd_area-module-2 .banner-image-last {
+		margin-bottom: -;
+		margin-top: calc( - 20px);
+	}
+</style>
+
+<link rel="stylesheet" href="https://245200612.hs-sites-na2.com/hubfs/hub_generated/module_assets/1/322022603483/1772884566583/module_arctic-chatbot.min.css">
+
+<style>
+	.body_dnd_area-module-7 {background-repeat: no-repeat;
+		border-top: 0px none #e5e7ea;
+border-bottom: 0px none #e5e7ea;
+
+	}
+    
+	
+	.body_dnd_area-module-7 .content-wrapper {
+		padding: 25px;
+
+		border: 1px solid #E9E9E9;
+
+		border-radius: 10px;
+	}
+	
+	.body_dnd_area-module-7 .content-row {
+		
+	}
+	
+	.body_dnd_area-module-7 .media-item {
+		order: 1
+	}
+	
+	.body_dnd_area-module-7 .headings {
+		order: 2
+	}
+	
+	.body_dnd_area-module-7 .col-content,.body_dnd_area-module-7.description {
+		order: 3
+	}
+	
+	.body_dnd_area-module-7 .column_features {
+		order: 4
+	}
+	
+	.body_dnd_area-module-7 .cta-group {
+		order: 5
+	}
+	
+	
+	@media(min-width: 768px) and (max-width: 991.99px) {
+		.body_dnd_area-module-7 .content-wrapper {
+			padding: 30px;
+
+		}
+	}
+	
+	@media(max-width: 767.99px) {
+		.body_dnd_area-module-7 .content-wrapper {
+			padding: 25px;
+
+		}
+	}
+	
+	@media(min-width: 768px) and (max-width: 991.99px) {
+		.body_dnd_area-module-7 .content-row {
+			padding: 0px;
+
+		}
+	}
+	
+	@media(max-width: 767.99px) {
+		.body_dnd_area-module-7 .content-row {
+			padding: 0px;
+
+		}
+	}
+
+	.body_dnd_area-module-7 .content-wrapper {
+		display: flex;
+		flex-direction: column;
+		gap: 20px
+	}
+	.body_dnd_area-module-7 .banner-image {
+		margin-left: -25px;
+		margin-right: -25px;
+	}
+	.body_dnd_area-module-7 .banner-image-first {
+		margin-top: -25px;
+		margin-bottom: calc(25px - 20px);
+	}
+	.body_dnd_area-module-7 .banner-image-last {
+		margin-bottom: -25px;
+		margin-top: calc(25px - 20px);
+	}
+</style>
+
+
+<style>
+	.body_dnd_area-module-8 {background-repeat: no-repeat;
+		border-top: 0px none #e5e7ea;
+border-bottom: 0px none #e5e7ea;
+
+	}
+    
+	
+	/* sm-custom_padding */
+	.body_dnd_area-module-8.sr-padding-custom,
+	.body_dnd_area-module-8 .sr-padding-custom {
+	    padding-top: 75px;
+padding-right: 0rem;
+padding-bottom: 75px;
+padding-left: 0rem;
+margin-top: 0rem;
+margin-bottom: 0rem;
+
+	}
+	/* md-custom_padding */
+	@media(min-width: 768px)and (max-width: 991.99px){
+		.body_dnd_area-module-8.sr-padding-custom,
+		.body_dnd_area-module-8 .sr-padding-custom {
+			padding-top: 100px;
+padding-right: 0rem;
+padding-bottom: 100px;
+padding-left: 0rem;
+margin-top: 0rem;
+margin-bottom: 0rem;
+
+		}
+	}
+	/* lg-padding */
+	@media(min-width: 992px) {
+		.body_dnd_area-module-8.sr-padding-custom,
+		.body_dnd_area-module-8 .sr-padding-custom {
+			padding-top: 150px;
+padding-right: 0rem;
+padding-bottom: 150px;
+padding-left: 0rem;
+margin-top: 0rem;
+margin-bottom: 0rem;
+;
+		}
+	}
+	.body_dnd_area-module-8 .content-wrapper {
+		padding: 0px;
+
+		border-radius: 0px;
+	}
+	
+	.body_dnd_area-module-8 .content-row {
+		
+		border-radius: 0px;
+	}
+	
+	.body_dnd_area-module-8 .media-item {
+		order: 1
+	}
+	
+	.body_dnd_area-module-8 .headings {
+		order: 2
+	}
+	
+	.body_dnd_area-module-8 .col-content,.body_dnd_area-module-8.description {
+		order: 3
+	}
+	
+	.body_dnd_area-module-8 .column_features {
+		order: 4
+	}
+	
+	.body_dnd_area-module-8 .cta-group {
+		order: 5
+	}
+	
+	
+	@media(min-width: 768px) and (max-width: 991.99px) {
+		.body_dnd_area-module-8 .content-wrapper {
+			padding: 0px;
+
+		}
+	}
+	
+	@media(max-width: 767.99px) {
+		.body_dnd_area-module-8 .content-wrapper {
+			padding: 0px;
+
+		}
+	}
+	
+	@media(min-width: 768px) and (max-width: 991.99px) {
+		.body_dnd_area-module-8 .content-row {
+			padding: 0px;
+
+		}
+	}
+	
+	@media(max-width: 767.99px) {
+		.body_dnd_area-module-8 .content-row {
+			padding: 0px;
+
+		}
+	}
+
+	.body_dnd_area-module-8 .content-wrapper {
+		display: flex;
+		flex-direction: column;
+		gap: 25px
+	}
+	.body_dnd_area-module-8 .banner-image {
+		margin-left: -0px;
+		margin-right: -0px;
+	}
+	.body_dnd_area-module-8 .banner-image-first {
+		margin-top: -0px;
+		margin-bottom: calc(0px - 25px);
+	}
+	.body_dnd_area-module-8 .banner-image-last {
+		margin-bottom: -0px;
+		margin-top: calc(0px - 25px);
+	}
+</style>
+
+<link rel="stylesheet" href="https://245200612.hs-sites-na2.com/hubfs/hub_generated/module_assets/1/315263777517/1771157267899/module_STARDUST_Cards_Slider_02.min.css">
+
+		<style>
+			.body_dnd_area-module-9 {background-repeat: repeat;
+		background-color: rgba(245, 247, 249, 1.0);
+		border-top: 0px none #e5e7ea;
+border-bottom: 0px none #e5e7ea;
+
+	}
+    
+	
+			.body_dnd_area-module-9 .slider-content{
+				
+				background-color: var(--black);}
+		</style>
+	
+<link rel="stylesheet" href="https://245200612.hs-sites-na2.com/hubfs/hub_generated/template_assets/1/315262279358/1772948995407/template_splide.min.css">
+<link rel="stylesheet" href="https://245200612.hs-sites-na2.com/hubfs/hub_generated/module_assets/1/315263778507/1771157268007/module_STARDUST_Cards_Testimonial_Slider_01.min.css">
+
+<style>
+	.body_dnd_area-module-10 {background-repeat: repeat;
+		border-top: 0px none #e5e7ea;
+border-bottom: 0px none #e5e7ea;
+
+	}
+    
+	
+	/* sm-custom_padding */
+	.body_dnd_area-module-10.sr-padding-custom,
+	.body_dnd_area-module-10 .sr-padding-custom {
+	    padding-top: 75px;
+padding-right: 0rem;
+padding-bottom: 75px;
+padding-left: 0rem;
+margin-top: 0rem;
+margin-bottom: 0rem;
+
+	}
+	/* md-custom_padding */
+	@media(min-width: 768px)and (max-width: 991.99px){
+		.body_dnd_area-module-10.sr-padding-custom,
+		.body_dnd_area-module-10 .sr-padding-custom {
+			padding-top: 100px;
+padding-right: 0rem;
+padding-bottom: 100px;
+padding-left: 0rem;
+margin-top: 0rem;
+margin-bottom: 0rem;
+
+		}
+	}
+	/* lg-padding */
+	@media(min-width: 992px) {
+		.body_dnd_area-module-10.sr-padding-custom,
+		.body_dnd_area-module-10 .sr-padding-custom {
+			padding-top: 150px;
+padding-right: 0rem;
+padding-bottom: 150px;
+padding-left: 0rem;
+margin-top: 0rem;
+margin-bottom: 0rem;
+;
+		}
+	}
+	.body_dnd_area-module-10 .sr-card {
+		padding: 50px;
+
+		
+		border-radius: 10px;
+		
+		
+		box-shadow:  12px 12px 40px 0px rgba(13, 98, 255, 20%);
+		
+	}
+	@media only screen and (max-width: 1199px) {
+		.body_dnd_area-module-10 .splide[data-perpage] {
+			--perpage: ;
+		}
+	}
+	@media only screen and (max-width: 991px) {
+		.body_dnd_area-module-10 .splide[data-perpage] {
+			--perpage: ;
+		}
+	}
+	@media only screen and (max-width: 768px) {
+		.body_dnd_area-module-10 .splide[data-perpage] {
+			--perpage: ;
+		}
+	}
+</style>
+
+
+	<style>
+		#hs_cos_wrapper_body_dnd_area-module-11 .sr-form {
+  background-color:rgba(255,255,255,1.0);
+  border-radius:10px;
+  border:0px solid rgba(229,231,234,1.0);
+  box-shadow:15px 25px 60px 0px rgba(255,255,255,5%);
+}
+
+@media (max-width:768px) {
+  #hs_cos_wrapper_body_dnd_area-module-11 .sr-form {}
+}
+
+#hs_cos_wrapper_body_dnd_area-module-11 .btn-custom-wrapper input[type=submit].hs-button.primary,
+#hs_cos_wrapper_body_dnd_area-module-11 .btn-custom-wrapper .hs-form input[type=submit] {
+  color:#fff;
+  background-color:#0c63ff;
+  border-color:#0c63ff;
+}
+
+#hs_cos_wrapper_body_dnd_area-module-11 .btn-custom-wrapper input[type=submit].hs-button.primary:hover,
+#hs_cos_wrapper_body_dnd_area-module-11 .btn-custom-wrapper .hs-form input[type=submit]:hover {
+  color:#fff;
+  background-color:#5a93fd;
+  border-color:#5a93fd;
+}
+
+	</style>
+	
+
+<style>
+	.body_dnd_area-module-11 {background-image: url(https://www.leanlabs.com/hubfs/sr-assets/stardust/stardust-bg.jpg);
+		background-size: cover;
+		background-position: top right;background-repeat: no-repeat;
+		background-color: rgba(255, 255, 255, 1.0);
+		border-top: 0px none #e5e7ea;
+border-bottom: 0px none #e5e7ea;
+
+	}
+    @media (min-width: 768px) {
+		.body_dnd_area-module-11 {
+			background-image: url(https://www.leanlabs.com/hubfs/sr-assets/stardust/stardust-bg.jpg);
+		}
+	}
+	.body_dnd_area-module-11,
+	.body_dnd_area-module-11 > div {
+		position: relative;
+	}
+	.body_dnd_area-module-11::before {
+		content: "";
+		width: 100%;
+		height: 100%;
+		position: absolute;
+		top: 0;
+		left: 0;
+		background-color: rgba(52, 58, 64, 0.0);
+	}
+	
+	.body_dnd_area-module-11 .content-wrapper {
+		padding: 0px;
+
+		border-radius: 0px;
+	}
+	
+	.body_dnd_area-module-11 .content-row {
+		
+		border-radius: 0px;
+	}
+	
+	.body_dnd_area-module-11 .media-item {
+		order: 1
+	}
+	
+	.body_dnd_area-module-11 .headings {
+		order: 2
+	}
+	
+	.body_dnd_area-module-11 .col-content,.body_dnd_area-module-11.description {
+		order: 3
+	}
+	
+	.body_dnd_area-module-11 .column_features {
+		order: 4
+	}
+	
+	.body_dnd_area-module-11 .cta-group {
+		order: 5
+	}
+	
+	
+	@media(min-width: 768px) and (max-width: 991.99px) {
+		.body_dnd_area-module-11 .content-wrapper {
+			padding: 0px;
+
+		}
+	}
+	
+	@media(max-width: 767.99px) {
+		.body_dnd_area-module-11 .content-wrapper {
+			padding: 0px;
+
+		}
+	}
+	
+	@media(min-width: 768px) and (max-width: 991.99px) {
+		.body_dnd_area-module-11 .content-row {
+			padding: 0px;
+
+		}
+	}
+	
+	@media(max-width: 767.99px) {
+		.body_dnd_area-module-11 .content-row {
+			padding: 0px;
+
+		}
+	}
+
+	.body_dnd_area-module-11 .content-wrapper {
+		display: flex;
+		flex-direction: column;
+		gap: 25px
+	}
+	.body_dnd_area-module-11 .banner-image {
+		margin-left: -0px;
+		margin-right: -0px;
+	}
+	.body_dnd_area-module-11 .banner-image-first {
+		margin-top: -0px;
+		margin-bottom: calc(0px - 25px);
+	}
+	.body_dnd_area-module-11 .banner-image-last {
+		margin-bottom: -0px;
+		margin-top: calc(0px - 25px);
+	}
+</style>
+
+<link rel="stylesheet" href="https://245200612.hs-sites-na2.com/hubfs/hub_generated/module_assets/1/315263777528/1771157268530/module_STARDUST_Footer_01.min.css">
+
+		<style>
+			.site_footer-module-2 {background-repeat: repeat;color: rgba(0, 0, 0, 0.5);
+		
+		border-top: 0px none #e5e7ea;
+border-bottom: 0px none #e5e7ea;
+
+	}
+    
+	
+			.sr-footer-01 .button__container {
+				
+				
+			}
+			
+			.site_footer-module-2 .row.sr-spacer-bottom-50  {
+				margin-bottom: 2rem;
+				border-bottom: 1px solid #ebebeb;
+			}
+			
+			.site_footer-module-2 .sr-footer-nav li a {
+				
+				color: inherit;
+				
+			}
+			.site_footer-module-2 .sr-footer-nav .hs-menu-depth-1 > a,
+			.site_footer-module-2 .sr-footer-nav li a,
+			.site_footer-module-2 .footer-copyright p a {
+				
+				color: rgba(0, 0, 0, 0.5);
+				
+			}
+			.site_footer-module-2 .sr-footer-nav .hs-menu-depth-1 > a,
+			.site_footer-module-2 .footer-copyright p a,
+			.site_footer-module-2 .footer-copyright {
+				
+				color: rgba(0, 0, 0, 1.0);
+				
+			}
+			.site_footer-module-2 .sr-footer-nav li a:hover,
+			.site_footer-module-2 .footer-copyright p a:hover {
+				
+				color: rgba(12, 99, 255, 1.0);
+				
+			}
+			
+			@media (max-width: 991px){
+				.sr-footer-01 .sr-footer-nav .hs-menu-wrapper > ul {
+					display: flex;
+					flex-direction: column;
+				}
+			}
+			
+			@media only screen and (min-width: 992px) {
+				.sr-footer-01 .sr-footer-nav .hs-menu-wrapper > ul {
+					justify-content: end;
+				}
+			}
+			
+		</style>
+	
+<style>
+  @font-face {
+    font-family: "Poppins";
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+    src: url("/_hcms/googlefonts/Poppins/700.woff2") format("woff2"), url("/_hcms/googlefonts/Poppins/700.woff") format("woff");
+  }
+  @font-face {
+    font-family: "Poppins";
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+    src: url("/_hcms/googlefonts/Poppins/regular.woff2") format("woff2"), url("/_hcms/googlefonts/Poppins/regular.woff") format("woff");
+  }
+  @font-face {
+    font-family: "Poppins";
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+    src: url("/_hcms/googlefonts/Poppins/500.woff2") format("woff2"), url("/_hcms/googlefonts/Poppins/500.woff") format("woff");
+  }
+  @font-face {
+    font-family: "Poppins";
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+    src: url("/_hcms/googlefonts/Poppins/600.woff2") format("woff2"), url("/_hcms/googlefonts/Poppins/600.woff") format("woff");
+  }
+  @font-face {
+    font-family: "Poppins";
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+    src: url("/_hcms/googlefonts/Poppins/regular.woff2") format("woff2"), url("/_hcms/googlefonts/Poppins/regular.woff") format("woff");
+  }
+  @font-face {
+    font-family: "Poppins";
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+    src: url("/_hcms/googlefonts/Poppins/700.woff2") format("woff2"), url("/_hcms/googlefonts/Poppins/700.woff") format("woff");
+  }
+</style>
+
+    <script defer src="https://245200612.hs-sites-na2.com/hubfs/hub_generated/template_assets/1/315262279403/1772949009121/template_splide.min.js"></script>
+
+    
+    <link rel="canonical" href="https://245200612.hs-sites-na2.com/chatbots-conversational-architecture">
+
+
+<meta property="og:url" content="https://245200612.hs-sites-na2.com/chatbots-conversational-architecture">
+<meta name="twitter:card" content="summary">
+
+
+
+
+
+
+		
+		
+		
+		
+	<meta name="generator" content="HubSpot"></head>
+
+
+<body class="   hs-content-id-321958126317 hs-site-page page  Arctic-Sproket-Child homepagechild">
+
+    
+        
+        
+             <div data-global-resource-path="Arctic-Sproket-Child/templates/v2/partials/site_header.html"><div class="container-fluid">
+<div class="row-fluid-wrapper">
+<div class="row-fluid">
+<div class="span12 widget-span widget-type-cell " style="" data-widget-type="cell" data-x="0" data-w="12">
+
+<div class="row-fluid-wrapper row-depth-1 row-number-1 dnd-section">
+<div class="row-fluid ">
+<div class="span12 widget-span widget-type-cell dnd-column" style="" data-widget-type="cell" data-x="0" data-w="12">
+
+<div class="row-fluid-wrapper row-depth-1 row-number-2 dnd-row">
+<div class="row-fluid ">
+<div class="span12 widget-span widget-type-custom_widget dnd-module" style="" data-widget-type="custom_widget" data-x="0" data-w="12">
+<div id="hs_cos_wrapper_site_header-module-2" class="hs_cos_wrapper hs_cos_wrapper_widget hs_cos_wrapper_type_module" style="" data-hs-cos-general-type="widget" data-hs-cos-type="module">
+
+
+		
+		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<header class="header__container header__container--left" data-float="true" data-fixed="true" data-scroll="false" data-transparent="false" data-type="mega" data-topbar-fixed="true">
+	<a class="skip-main bg-dark text-white" href="#main-content">Skip to main content</a>
+	<script>
+		
+		const header = document.querySelector('.header__container');
+		const device = window.matchMedia("(max-width: 993px)");
+		device.addListener(handleDeviceChange);
+		function handleDeviceChange(e) {
+			header.dataset.layout = e.matches ? 'mobile' : 'desktop';
+		}
+		handleDeviceChange(device);
+	</script>
+	
+	
+	<div class="header__bottom ">
+		<div class="container-xl">
+			<div class="header_styles header_inline">
+				<div class="header__wrapper header__wrapper--bottom">
+					<div class="header__logo-col">
+						
+<div class="header__logo" data-mobile="true">
+  
+
+
+		
+		
+		<img class="header__logo-image header__logo-default logo-hide" src="https://245200612.hs-sites-na2.com/hs-fs/hubfs/Arctic-Logo.png?width=38&amp;height=39&amp;name=Arctic-Logo.png" loading="eager" alt="Arctic Logo 2026" height="39" width="38" srcset="https://245200612.hs-sites-na2.com/hs-fs/hubfs/Arctic-Logo.png?width=19&amp;height=20&amp;name=Arctic-Logo.png 19w, https://245200612.hs-sites-na2.com/hs-fs/hubfs/Arctic-Logo.png?width=38&amp;height=39&amp;name=Arctic-Logo.png 38w, https://245200612.hs-sites-na2.com/hs-fs/hubfs/Arctic-Logo.png?width=57&amp;height=59&amp;name=Arctic-Logo.png 57w, https://245200612.hs-sites-na2.com/hs-fs/hubfs/Arctic-Logo.png?width=76&amp;height=78&amp;name=Arctic-Logo.png 76w, https://245200612.hs-sites-na2.com/hs-fs/hubfs/Arctic-Logo.png?width=95&amp;height=98&amp;name=Arctic-Logo.png 95w, https://245200612.hs-sites-na2.com/hs-fs/hubfs/Arctic-Logo.png?width=114&amp;height=117&amp;name=Arctic-Logo.png 114w" sizes="(max-width: 38px) 100vw, 38px">
+
+		
+		
+		<img class="header__logo-image header__logo-scroll " src="https://245200612.hs-sites-na2.com/hs-fs/hubfs/Arctic-Logo.png?width=38&amp;height=39&amp;name=Arctic-Logo.png" loading="eager" alt="Arctic-Logo" height="39" width="38" srcset="https://245200612.hs-sites-na2.com/hs-fs/hubfs/Arctic-Logo.png?width=19&amp;height=20&amp;name=Arctic-Logo.png 19w, https://245200612.hs-sites-na2.com/hs-fs/hubfs/Arctic-Logo.png?width=38&amp;height=39&amp;name=Arctic-Logo.png 38w, https://245200612.hs-sites-na2.com/hs-fs/hubfs/Arctic-Logo.png?width=57&amp;height=59&amp;name=Arctic-Logo.png 57w, https://245200612.hs-sites-na2.com/hs-fs/hubfs/Arctic-Logo.png?width=76&amp;height=78&amp;name=Arctic-Logo.png 76w, https://245200612.hs-sites-na2.com/hs-fs/hubfs/Arctic-Logo.png?width=95&amp;height=98&amp;name=Arctic-Logo.png 95w, https://245200612.hs-sites-na2.com/hs-fs/hubfs/Arctic-Logo.png?width=114&amp;height=117&amp;name=Arctic-Logo.png 114w" sizes="(max-width: 38px) 100vw, 38px">
+
+		
+		
+		
+		<img class="header__logo-image header__logo-default logo-override logo-hide logo_mobile" src="https://245200612.hs-sites-na2.com/hs-fs/hubfs/Arctic-Logo.png?width=38&amp;height=39&amp;name=Arctic-Logo.png" loading="eager" alt="Arctic-Logo" height="39" width="38" srcset="https://245200612.hs-sites-na2.com/hs-fs/hubfs/Arctic-Logo.png?width=19&amp;height=20&amp;name=Arctic-Logo.png 19w, https://245200612.hs-sites-na2.com/hs-fs/hubfs/Arctic-Logo.png?width=38&amp;height=39&amp;name=Arctic-Logo.png 38w, https://245200612.hs-sites-na2.com/hs-fs/hubfs/Arctic-Logo.png?width=57&amp;height=59&amp;name=Arctic-Logo.png 57w, https://245200612.hs-sites-na2.com/hs-fs/hubfs/Arctic-Logo.png?width=76&amp;height=78&amp;name=Arctic-Logo.png 76w, https://245200612.hs-sites-na2.com/hs-fs/hubfs/Arctic-Logo.png?width=95&amp;height=98&amp;name=Arctic-Logo.png 95w, https://245200612.hs-sites-na2.com/hs-fs/hubfs/Arctic-Logo.png?width=114&amp;height=117&amp;name=Arctic-Logo.png 114w" sizes="(max-width: 38px) 100vw, 38px">
+
+		
+		<img class="header__logo-image header__logo-scroll logo_mobile" src="https://245200612.hs-sites-na2.com/hs-fs/hubfs/Arctic-Logo.png?width=38&amp;height=39&amp;name=Arctic-Logo.png" loading="eager" alt="Arctic-Logo" height="39" width="38" srcset="https://245200612.hs-sites-na2.com/hs-fs/hubfs/Arctic-Logo.png?width=19&amp;height=20&amp;name=Arctic-Logo.png 19w, https://245200612.hs-sites-na2.com/hs-fs/hubfs/Arctic-Logo.png?width=38&amp;height=39&amp;name=Arctic-Logo.png 38w, https://245200612.hs-sites-na2.com/hs-fs/hubfs/Arctic-Logo.png?width=57&amp;height=59&amp;name=Arctic-Logo.png 57w, https://245200612.hs-sites-na2.com/hs-fs/hubfs/Arctic-Logo.png?width=76&amp;height=78&amp;name=Arctic-Logo.png 76w, https://245200612.hs-sites-na2.com/hs-fs/hubfs/Arctic-Logo.png?width=95&amp;height=98&amp;name=Arctic-Logo.png 95w, https://245200612.hs-sites-na2.com/hs-fs/hubfs/Arctic-Logo.png?width=114&amp;height=117&amp;name=Arctic-Logo.png 114w" sizes="(max-width: 38px) 100vw, 38px">
+		
+
+	
+</div>
+
+					</div>
+					<div class="header__menu-col m-right-auto">
+						
+<nav class="header__menu header__menu--desktop" aria-label="Desktop navigation">
+	<ul class="header__menu-wrapper list-unstyled my-0 has-next-true">
+		
+
+
+	
+
+
+
+
+
+
+		
+	</ul>
+</nav>
+
+
+						
+<div class="header__menu-container header__menu-container--mobile">
+	<button type="button" class="header__menu-toggle header__menu-toggle--open header__menu-toggle--show no-button">
+		<span class="show-for-sr">Open main navigation</span>
+		<svg width="26" height="16" viewbox="0 0 26 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+			<rect y="14" width="26" height="2" fill="#30343B" />
+			<rect y="7" width="26" height="2" fill="#30343B" />
+			<rect width="26" height="2" fill="#30343B" />
+		</svg>
+	</button>
+	<button type="button" class="header__menu-toggle header__menu-toggle--close no-button">
+		<span class="show-for-sr">Close main navigation</span>
+		<svg width="21" height="21" viewbox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg" role="presentation">
+			<rect x="1" y="19" width="26" height="2" transform="rotate(-45 1 19)" fill="#30343B" />
+			<rect x="2" y="1" width="26" height="2" transform="rotate(45 2 1)" fill="#30343B" />
+		</svg>
+	</button>
+	<nav class="header__menu header__menu--mobile" aria-label="Mobile navigation" tabindex="-1">
+		<ul class="header__menu-wrapper list-unstyled m-0">
+			
+
+
+	
+
+
+
+
+
+
+			
+			
+			
+			<li class="header__menu-item header__menu-item--button header__menu-item--depth-1 hs-skip-lang-url-rewrite">
+				<div class="cta-group ">
+<div class="btn-wrapper btn-gradient_one-wrapper btn-wrapper-sm"><a class="cta-button" href="http://sprocketrocket.co/presets" target="_blank" rel="noopener" role="link">Get Started</a></div></div>
+			</li>
+			
+
+		</ul>
+		
+		
+
+
+	</nav>
+</div>
+
+
+					</div>
+					
+					<div class="header__button-col hidden-phone">
+						<div class="cta-group ">
+<div class="btn-wrapper btn-gradient_one-wrapper btn-wrapper-sm"><a class="cta-button" href="http://sprocketrocket.co/presets" target="_blank" rel="noopener" role="link">Get Started</a></div></div>
+					</div>
+					
+					
+				</div> 
+			</div>
+		</div> 
+	</div> 
+	<div id="main-content" tabindex="-1"></div>
+</header> </div>
+
+</div><!--end widget-span -->
+</div><!--end row-->
+</div><!--end row-wrapper -->
+
+</div><!--end widget-span -->
+</div><!--end row-->
+</div><!--end row-wrapper -->
+
+</div><!--end widget-span -->
+</div>
+</div>
+</div></div>
+        
+    
+
+    
+        <div class="container-fluid body_dnd_area">
+<div class="row-fluid-wrapper">
+<div class="row-fluid">
+<div class="span12 widget-span widget-type-cell " style="" data-widget-type="cell" data-x="0" data-w="12">
+
+<div class="row-fluid-wrapper row-depth-1 row-number-1 dnd-section">
+<div class="row-fluid ">
+<div class="span12 widget-span widget-type-cell dnd-column" style="" data-widget-type="cell" data-x="0" data-w="12">
+
+<div class="row-fluid-wrapper row-depth-1 row-number-2 dnd-row">
+<div class="row-fluid ">
+<div class="span12 widget-span widget-type-custom_widget dnd-module" style="" data-widget-type="custom_widget" data-x="0" data-w="12">
+<div id="hs_cos_wrapper_body_dnd_area-module-2" class="hs_cos_wrapper hs_cos_wrapper_widget hs_cos_wrapper_type_module" style="" data-hs-cos-general-type="widget" data-hs-cos-type="module">
+
+
+
+
+
+<div class="sr-multicol-media sr-one-col-01 body_dnd_area-module-2 bg-custom sr-padding-md-full  sr-padding-custom text-white  prototype-no-background sr_module">
+
+	
+
+
+
+
+
+
+	<div class="container">
+		
+
+				
+
+                <div class="content-row">
+					<div class="row row-gap sr-valign-center">
+					
+					
+					<div class=" col-lg-12 offset-lg-0 order-lg-1 sr-col  sr-repeater-1" style="">
+						<div class="content-wrapper">
+							
+							
+							<div class="headings">
+								
+<h1 class="heading mb-0 display-1">
+	Arctic Studio | Precision HubSpot Development
+</h1>
+							</div>
+							
+							
+							<div class="col-content">
+								<p>Scalable themes, custom modules, and high-performance CMS solutions for growth-focused agencies and businesses.</p>
+							</div>
+							
+							
+							<div class="cta-group pt-3">
+<div class="btn-wrapper btn-gradient_one-wrapper btn-wrapper-md"><a class="cta-button" href="#" role="link">View Our Work</a></div></div>
+						</div>
+					</div>
+					
+				</div>
+				</div>
+
+		
+	</div>
+</div>
+
+
+</div>
+
+</div><!--end widget-span -->
+</div><!--end row-->
+</div><!--end row-wrapper -->
+
+</div><!--end widget-span -->
+</div><!--end row-->
+</div><!--end row-wrapper -->
+
+<div class="row-fluid-wrapper row-depth-1 row-number-3 dnd-section">
+<div class="row-fluid ">
+<div class="span12 widget-span widget-type-cell dnd-column" style="" data-widget-type="cell" data-x="0" data-w="12">
+
+<div class="row-fluid-wrapper row-depth-1 row-number-4 dnd-row">
+<div class="row-fluid ">
+<div class="span12 widget-span widget-type-custom_widget dnd-module" style="" data-widget-type="custom_widget" data-x="0" data-w="12">
+<div id="hs_cos_wrapper_widget_1772880225284" class="hs_cos_wrapper hs_cos_wrapper_widget hs_cos_wrapper_type_module" style="" data-hs-cos-general-type="widget" data-hs-cos-type="module"><!-- Arctic Chatbot Module -->
+
+
+
+
+<div class="arctic-chatbot-container" data-api="https://blah-tournament-tech-flags.trycloudflare.com/api/bot/3027bcaf-eeaf-4746-8d55-0390d9f922e6/chat" style="--arctic-chatbot-accent: #007bff;">
+  <div class="arctic-chatbot-header">
+    <span class="arctic-chatbot-title">AI Assistant</span>
+    <span class="arctic-chatbot-status" data-role="status">Online</span>
+  </div>
+  <div class="arctic-chatbot-messages" data-role="messages">
+    <div class="arctic-chatbot-msg arctic-chatbot-msg-bot">
+      <div class="arctic-chatbot-msg-bubble">Hello! How can I help you today?</div>
+    </div>
+  </div>
+  <div class="arctic-chatbot-input">
+    <input type="text" data-role="input" placeholder="Type a message...">
+    <button type="button" data-role="send">
+      <svg width="18" height="18" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13" /><path d="M22 2L15 22L11 13L2 9L22 2Z" /></svg>
+    </button>
+  </div>
+</div>
+
+</div>
+
+</div><!--end widget-span -->
+</div><!--end row-->
+</div><!--end row-wrapper -->
+
+</div><!--end widget-span -->
+</div><!--end row-->
+</div><!--end row-wrapper -->
+
+<div class="row-fluid-wrapper row-depth-1 row-number-5 dnd-section">
+<div class="row-fluid ">
+<div class="span12 widget-span widget-type-cell dnd-column" style="" data-widget-type="cell" data-x="0" data-w="12">
+
+<div class="row-fluid-wrapper row-depth-1 row-number-6 dnd-row">
+<div class="row-fluid ">
+<div class="span12 widget-span widget-type-custom_widget dnd-module" style="" data-widget-type="custom_widget" data-x="0" data-w="12">
+<div id="hs_cos_wrapper_body_dnd_area-module-7" class="hs_cos_wrapper hs_cos_wrapper_widget hs_cos_wrapper_type_module" style="" data-hs-cos-general-type="widget" data-hs-cos-type="module">
+
+
+
+
+
+<div class="sr-multicol-media sr-one-col-01 body_dnd_area-module-7 bg-none sr-padding-full sr-padding-md-full sr-padding-lg-full text-auto  prototype-no-background sr_module">
+
+	
+
+
+
+
+
+
+	<div class="container">
+		
+
+				
+				<div class="text-left sr-spacer-bottom-50">
+					
+<h2 class="heading h1 text-center">
+	High-Performance Architecture. Engineered for HubSpot.
+</h2>
+					
+					<div class="description"><div style="text-align: center;">Leveraging the Sprocket Rocket framework to deliver pixel-perfect, scalable websites in a fraction of the time.</div></div>
+					
+				</div>
+				
+
+                <div class="content-row">
+					<div class="row row-gap sr-valign-stretch">
+					
+					
+					<div class=" col-lg-4 offset-lg-0 order-lg-1 col-md-8 offset-md-2 order-md-1 sr-col text-left sr-repeater-1 d-flex flex-wrap" style="">
+						<div class="content-wrapper">
+							
+							
+
+							
+							
+								
+									
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+							<div class="responsive-image media-item  banner-image banner-image-first" style="--banner-height: 188px;">
+								
+								
+								<img src="https://www.sprocketrocket.co/hubfs/sr-assets/stardust/startdust-two-col-1.jpg" alt="Modular Architecture" loading="lazy" width="354" height="188">
+								
+								
+							</div>
+							
+							
+							
+							<div class="headings">
+								
+<h4 class="heading">
+	Modular Architecture
+</h4>
+							</div>
+							
+							
+							<div class="col-content">
+								<p>Clean, scalable theme foundations that allow for rapid deployment without sacrificing custom HubL flexibility.</p>
+							</div>
+							
+							
+							<div class="cta-group pt-3">
+<div class="btn-wrapper btn-gradient_one-wrapper btn-wrapper-md"><a class="cta-button" href="#" role="link">Read more</a></div></div>
+						</div>
+					</div>
+					
+					
+					<div class=" col-lg-4 offset-lg-0 order-lg-1 col-md-8 offset-md-2 order-md-1 sr-col text-left sr-repeater-2 d-flex flex-wrap" style="">
+						<div class="content-wrapper">
+							
+							
+
+							
+							
+								
+									
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+							<div class="responsive-image media-item  banner-image banner-image-first" style="--banner-height: 188px;">
+								
+								
+								<img src="https://www.sprocketrocket.co/hubfs/sr-assets/stardust/startdust-two-col-2.jpg" alt="Custom Design Systems" loading="lazy" width="354" height="188">
+								
+								
+							</div>
+							
+							
+							
+							<div class="headings">
+								
+<h4 class="heading">
+	Custom Design Systems
+</h4>
+							</div>
+							
+							
+							<div class="col-content">
+								<p><span>Meticulous configuration of global styles to ensure your brand’s DNA is consistent across every HubSpot module.<br></span></p>
+							</div>
+							
+							
+							<div class="cta-group pt-3">
+<div class="btn-wrapper btn-gradient_one-wrapper btn-wrapper-md"><a class="cta-button" href="#" role="link">Read more</a></div></div>
+						</div>
+					</div>
+					
+					
+					<div class=" col-lg-4 offset-lg-0 order-lg-1 col-md-8 offset-md-2 order-md-1 sr-col text-left sr-repeater-3 d-flex flex-wrap" style="">
+						<div class="content-wrapper">
+							
+							
+
+							
+							
+								
+									
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+							<div class="responsive-image media-item  banner-image banner-image-first" style="--banner-height: 188px;">
+								
+								
+								<img src="https://www.sprocketrocket.co/hubfs/sr-assets/stardust/startdust-two-col-3.jpg" alt="Core Web Vitals" loading="lazy" width="354" height="188">
+								
+								
+							</div>
+							
+							
+							
+							<div class="headings">
+								
+<h4 class="heading">
+	Core Web Vitals
+</h4>
+							</div>
+							
+							
+							<div class="col-content">
+								<p>Mobile-first, high-performance builds audited for Core Web Vitals and top-tier user experience.</p>
+							</div>
+							
+							
+							<div class="cta-group pt-3">
+<div class="btn-wrapper btn-gradient_one-wrapper btn-wrapper-md"><a class="cta-button" href="#" role="link">Read more</a></div></div>
+						</div>
+					</div>
+					
+				</div>
+				</div>
+
+		
+	</div>
+</div>
+
+
+</div>
+
+</div><!--end widget-span -->
+</div><!--end row-->
+</div><!--end row-wrapper -->
+
+<div class="row-fluid-wrapper row-depth-1 row-number-7 dnd-row">
+<div class="row-fluid ">
+<div class="span12 widget-span widget-type-custom_widget dnd-module" style="" data-widget-type="custom_widget" data-x="0" data-w="12">
+<div id="hs_cos_wrapper_body_dnd_area-module-8" class="hs_cos_wrapper hs_cos_wrapper_widget hs_cos_wrapper_type_module" style="" data-hs-cos-general-type="widget" data-hs-cos-type="module">
+
+
+
+
+
+<div class="sr-multicol-media sr-one-col-01 body_dnd_area-module-8 bg-dark  sr-padding-custom text-white  prototype-no-background sr_module">
+
+	
+
+
+
+
+
+
+	<div class="container">
+		
+
+				
+
+                <div class="content-row">
+					<div class="row row-gap sr-valign-center">
+					
+					
+					<div class=" col-lg-5 offset-lg-0 order-lg-1 col-md-8 offset-md-2 order-md-1 sr-col text-left sr-repeater-1" style="">
+						<div class="content-wrapper">
+							
+							
+
+							
+							
+								
+									
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+							<div class="responsive-image media-item ">
+								
+								
+								<img src="https://www.leanlabs.com/hubfs/sr-assets/stardust/startdust-two-col-10.png" alt="startdust-two-col-10" loading="lazy" width="450" height="512" style="--img-corner: 5px">
+								
+								
+							</div>
+							
+							
+							
+							
+							
+							
+						</div>
+					</div>
+					
+					
+					<div class=" col-lg-7 offset-lg-0 order-lg-1 col-md-8 offset-md-2 order-md-1 sr-col text-left sr-repeater-2" style="">
+						<div class="content-wrapper">
+							
+							
+							<div class="headings">
+								
+<p class="heading">
+	THE ARCTIC METHOD
+</p>
+<h2 class="heading">
+	Custom Modules. Built for Complexity.
+</h2>
+							</div>
+							
+							
+							<div class="col-content lead">
+								<p><span>Standard themes often hit a wall with unique data needs. We extend HubSpot CMS beyond its limits—engineering HubDB directories, custom calculators, and API integrations that are:</span></p>
+<blockquote>
+<p>Clean, optimized HubL and CSS architecture built for long-term scalability and easy maintenance.</p>
+</blockquote>
+<blockquote>
+<p>Marketer-Friendly: Fully editable via the drag-and-drop interface.</p>
+</blockquote>
+<blockquote>
+<p>Performance-First: Zero bloat, ensuring maximum site speed.</p>
+</blockquote>
+							</div>
+							
+							
+							<div class="cta-group pt-3">
+<div class="btn-wrapper btn-white-wrapper btn-wrapper-md"><a class="cta-button" href="#" role="link">Explore Custom Solutions</a></div></div>
+						</div>
+					</div>
+					
+				</div>
+				</div>
+
+		
+	</div>
+</div>
+
+
+</div>
+
+</div><!--end widget-span -->
+</div><!--end row-->
+</div><!--end row-wrapper -->
+
+<div class="row-fluid-wrapper row-depth-1 row-number-8 dnd-row">
+<div class="row-fluid ">
+<div class="span12 widget-span widget-type-custom_widget dnd-module" style="" data-widget-type="custom_widget" data-x="0" data-w="12">
+<div id="hs_cos_wrapper_body_dnd_area-module-9" class="hs_cos_wrapper hs_cos_wrapper_widget hs_cos_wrapper_type_module" style="" data-hs-cos-general-type="widget" data-hs-cos-type="module">
+
+
+
+	
+
+	<div class="sr-cards-slider-02 overflow-hidden body_dnd_area-module-9 sr-clients bg-custom sr-padding-auto text-white text-left prototype-no-background sr_module">
+
+		
+
+
+
+
+
+
+		<div class="container-fluid">
+			
+
+
+						<div class="splide arrows_unstyled" role="group" aria-label="SR Cards Slider 02" data-perpage="2" data-arrows="true" data-autoplay="false" data-autoplayspeed="6" data-scroll="false" data-scrollspeed="0.25" style="--dots-color:;--arrows-color:">
+
+							<div class="splide__track overflow-visible">
+								<div class="splide__list unstyle-list align-items-center">
+
+									
+									<div class="splide__slide text-center" style="--aspect: 537/594">
+										<img src="https://www.sprocketrocket.co/hubfs/sr-assets/presets/alto-preview-sm.jpg" alt="alto" loading="lazy" width="537" height="594">
+										<div class="cta-group ">
+<div class="btn-wrapper btn-gradient_one-wrapper btn-wrapper-md"><a class="cta-button" href="#" target="_blank" rel="noopener" role="link">View Architecture Details</a></div></div>
+									</div>
+									
+									<div class="splide__slide text-center" style="--aspect: 537/594">
+										<img src="https://www.lean-labs.com/hubfs/sr-assets/alto/nebula-preset.png" alt="alto-preset" loading="lazy" width="537" height="594">
+										<div class="cta-group ">
+<div class="btn-wrapper btn-gradient_one-wrapper btn-wrapper-md"><a class="cta-button" href="#link" target="_blank" rel="noopener" role="link">Preview Functionality</a></div></div>
+									</div>
+									
+									<div class="splide__slide text-center" style="--aspect: 537/594">
+										<img src="https://www.sprocketrocket.co/hubfs/sr-assets/presets/stardust-preview-sm.jpg" alt="stardust" loading="lazy" width="537" height="594">
+										<div class="cta-group ">
+<div class="btn-wrapper btn-gradient_one-wrapper btn-wrapper-md"><a class="cta-button" href="#link" target="_blank" rel="noopener" role="link">See Performance Metrics</a></div></div>
+									</div>
+									
+
+								</div>
+							</div>
+							<div class="slider-content text-">
+								<div class="slider-content-inner">
+									
+<h3 class="heading">
+	Engineered Modules.<br>Tailored Solutions.
+</h3>
+									
+									<div class="description lead">
+										<p><span>A showcase of custom-built HubSpot components designed to solve complex business logic while maintaining a seamless user experience.<br></span></p>
+<ul>
+<li>
+<p><em>JS Calculator &nbsp; &nbsp;<br></em></p>
+</li>
+<li>
+<p><em>Landing Pages &nbsp; &nbsp;<br></em></p>
+</li>
+<li>
+<p><em>Custom Modules</em></p>
+</li>
+</ul>
+									</div>
+									
+									<div class="splide__arrows unstyled sr-spacer-top-50">
+										<button class="splide__arrow splide__arrow--prev no-button">
+											<svg width="54" height="54" viewbox="0 0 54 54" fill="none" xmlns="http://www.w3.org/2000/svg">
+												<rect width="54" height="54" rx="10" transform="matrix(-1 0 0 1 54 0)" fill="white"></rect>
+												<path d="M40.7363 25.2655V28.7342H19.9239L29.4629 38.2733L27.0001 40.7361L13.2639 26.9999L27.0001 13.2637L29.4629 15.7265L19.9239 25.2655H40.7363Z" fill="#1D2E4E"></path>
+											</svg>
+
+										</button>
+										<button class="splide__arrow splide__arrow--next no-button">
+											<svg width="54" height="54" viewbox="0 0 54 54" fill="none" xmlns="http://www.w3.org/2000/svg">
+												<rect width="54" height="54" rx="10" fill="white"></rect>
+												<path d="M13.2637 25.2655V28.7342H34.0761L24.5371 38.2733L26.9999 40.7361L40.7361 26.9999L26.9999 13.2637L24.5371 15.7265L34.0761 25.2655H13.2637Z" fill="#1D2E4E"></path>
+											</svg>
+										</button>
+									</div>
+								</div>
+							</div>
+						</div>
+			
+		</div>
+	</div>
+
+	
+
+    
+	
+    
+	
+</div>
+
+</div><!--end widget-span -->
+</div><!--end row-->
+</div><!--end row-wrapper -->
+
+<div class="row-fluid-wrapper row-depth-1 row-number-9 dnd-row">
+<div class="row-fluid ">
+<div class="span12 widget-span widget-type-custom_widget dnd-module" style="" data-widget-type="custom_widget" data-x="0" data-w="12">
+<div id="hs_cos_wrapper_body_dnd_area-module-10" class="hs_cos_wrapper hs_cos_wrapper_widget hs_cos_wrapper_type_module" style="" data-hs-cos-general-type="widget" data-hs-cos-type="module">
+
+
+
+
+
+	
+
+
+<div class="sr-cards-testimonial-slider-01 overflow-hidden body_dnd_area-module-10 bg-none  sr-padding-custom text-auto text-center prototype-no-background sr_module">
+
+	
+
+
+
+
+
+
+	<div class="container container-large sr-cards-testimonial-slider-01inner-wrapper ">
+		
+				<div class="sr-cards-testimonial-slider-01-content-wrapper">
+
+					
+					<div class="sr-spacer-bottom-50 text-auto text-center">
+						
+<h2 class="heading h1">
+	The Arctic Standard
+</h2>
+						
+					</div>
+					
+
+					<div class="splide arrows_unstyled" role="group" aria-label="SR Cards Testimonial Slider 01" data-perpage="3" data-arrows="" data-pagination="true" data-autoplay="false" data-autoplayspeed="6" data-scroll="false" data-scrollspeed="0.25" style="--dots-color:#0D62FF;--arrows-color:">
+						<div class="splide__track overflow-visible sr-spacer-bottom-50">
+							<div class="splide__list">
+								
+								<div class="splide__slide slider-item text-left">
+									<div class="sr-cards-testimonial-slider-01-content sr-card sr-border text-auto">
+
+										<div class="slide-content">
+											
+											<div class="icon-wrapper" style="--icon-color: #0D62FF" role="presentation">
+												
+												<div class="sr-icon">
+													<span id="hs_cos_wrapper_body_dnd_area-module-10_" class="hs_cos_wrapper hs_cos_wrapper_widget hs_cos_wrapper_type_icon" style="" data-hs-cos-general-type="widget" data-hs-cos-type="icon"><svg version="1.0" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 448 512" height="48" aria-hidden="true"><g id="Quote Left1_layer"><path d="M0 216C0 149.7 53.7 96 120 96h8c17.7 0 32 14.3 32 32s-14.3 32-32 32h-8c-30.9 0-56 25.1-56 56v8h64c35.3 0 64 28.7 64 64v64c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V320 288 216zm256 0c0-66.3 53.7-120 120-120h8c17.7 0 32 14.3 32 32s-14.3 32-32 32h-8c-30.9 0-56 25.1-56 56v8h64c35.3 0 64 28.7 64 64v64c0 35.3-28.7 64-64 64H320c-35.3 0-64-28.7-64-64V320 288 216z" /></g></svg></span>
+												</div>
+												
+											</div>
+											
+											<div class="description">
+												<p>Enterprise-Grade Workflows: Applying the rigorous standards used by HubSpot Platinum Partners to every project, regardless of size.</p>
+											</div>
+										</div>
+
+										
+									</div>
+								</div>
+								
+								<div class="splide__slide slider-item text-left">
+									<div class="sr-cards-testimonial-slider-01-content sr-card sr-border text-auto">
+
+										<div class="slide-content">
+											
+											<div class="icon-wrapper" style="--icon-color: #0D62FF" role="presentation">
+												
+												<div class="sr-icon">
+													<span id="hs_cos_wrapper_body_dnd_area-module-10_" class="hs_cos_wrapper hs_cos_wrapper_widget hs_cos_wrapper_type_icon" style="" data-hs-cos-general-type="widget" data-hs-cos-type="icon"><svg version="1.0" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 448 512" height="48" aria-hidden="true"><g id="Quote Left2_layer"><path d="M0 216C0 149.7 53.7 96 120 96h8c17.7 0 32 14.3 32 32s-14.3 32-32 32h-8c-30.9 0-56 25.1-56 56v8h64c35.3 0 64 28.7 64 64v64c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V320 288 216zm256 0c0-66.3 53.7-120 120-120h8c17.7 0 32 14.3 32 32s-14.3 32-32 32h-8c-30.9 0-56 25.1-56 56v8h64c35.3 0 64 28.7 64 64v64c0 35.3-28.7 64-64 64H320c-35.3 0-64-28.7-64-64V320 288 216z" /></g></svg></span>
+												</div>
+												
+											</div>
+											
+											<div class="description">
+												<p>Architectural Integrity: We don't just build for today; we engineer modules that remain stable and scalable as your HubSpot portal grows.</p>
+											</div>
+										</div>
+
+										
+									</div>
+								</div>
+								
+								<div class="splide__slide slider-item text-left">
+									<div class="sr-cards-testimonial-slider-01-content sr-card sr-border text-auto">
+
+										<div class="slide-content">
+											
+											<div class="icon-wrapper" style="--icon-color: #0D62FF" role="presentation">
+												
+												<div class="sr-icon">
+													<span id="hs_cos_wrapper_body_dnd_area-module-10_" class="hs_cos_wrapper hs_cos_wrapper_widget hs_cos_wrapper_type_icon" style="" data-hs-cos-general-type="widget" data-hs-cos-type="icon"><svg version="1.0" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 448 512" height="48" aria-hidden="true"><g id="Quote Left3_layer"><path d="M0 216C0 149.7 53.7 96 120 96h8c17.7 0 32 14.3 32 32s-14.3 32-32 32h-8c-30.9 0-56 25.1-56 56v8h64c35.3 0 64 28.7 64 64v64c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V320 288 216zm256 0c0-66.3 53.7-120 120-120h8c17.7 0 32 14.3 32 32s-14.3 32-32 32h-8c-30.9 0-56 25.1-56 56v8h64c35.3 0 64 28.7 64 64v64c0 35.3-28.7 64-64 64H320c-35.3 0-64-28.7-64-64V320 288 216z" /></g></svg></span>
+												</div>
+												
+											</div>
+											
+											<div class="description">
+												<p>Performance-First Development: A commitment to clean code and Core Web Vitals, ensuring your site is a high-speed asset, not a heavy burden.</p>
+											</div>
+										</div>
+
+										
+									</div>
+								</div>
+								
+							</div>
+						</div>
+
+						
+
+						
+						<div class="splide__pagination"></div>
+						
+
+					</div>
+
+
+
+				</div>
+				
+	</div>
+</div>
+
+
+
+
+
+
+
+
+</div>
+
+</div><!--end widget-span -->
+</div><!--end row-->
+</div><!--end row-wrapper -->
+
+<div class="row-fluid-wrapper row-depth-1 row-number-10 dnd-row">
+<div class="row-fluid ">
+<div class="span12 widget-span widget-type-custom_widget dnd-module" style="" data-widget-type="custom_widget" data-x="0" data-w="12">
+<div id="hs_cos_wrapper_body_dnd_area-module-11" class="hs_cos_wrapper hs_cos_wrapper_widget hs_cos_wrapper_type_module" style="" data-hs-cos-general-type="widget" data-hs-cos-type="module">
+
+
+
+
+
+<div class="sr-multicol-media sr-one-col-01 body_dnd_area-module-11 bg-custom sr-padding-full text-white  prototype-no-background sr_module">
+
+	
+
+
+
+
+
+
+	<div class="container">
+		
+		<div class="row">
+			<div class="col-lg-10 offset-lg-1">
+		
+
+				
+				<div class="text-center sr-spacer-bottom-50">
+					
+<h2 class="heading h1 text-center">
+	Ready to Build? Let’s Architect Your Solution.
+</h2>
+					
+					<div class="description">Whether you need a custom module, a technical audit, or a full HubSpot CMS migration, we’re ready to help you scale.</div>
+					
+				</div>
+				
+
+                <div class="content-row">
+					<div class="row row-gap sr-valign-auto">
+					
+					
+					<div class=" col-lg-6 offset-lg-0 order-lg-1 col-md-8 offset-md-2 order-md-1 sr-col text-left sr-repeater-1" style="">
+						<div class="content-wrapper">
+							
+							<div class="media-item">
+								<div class="sr-form  btn-wrapper text-dark btn-primary-wrapper btn-wrapper-md btn-auto">
+	
+	
+	
+	
+	<span id="hs_cos_wrapper_body_dnd_area-module-11_" class="hs_cos_wrapper hs_cos_wrapper_widget hs_cos_wrapper_type_form" style="" data-hs-cos-general-type="widget" data-hs-cos-type="form">
+<div id="hs_form_target_body_dnd_area-module-11" class="hs-form-html" data-form-id="c3cfe931-55e4-4cb6-addb-d9b1f082de7f" data-portal-id="245200612" data-region="na2"></div>
+
+
+
+
+</span>
+	
+	
+</div>
+							</div>
+							
+							
+							
+							
+							
+						</div>
+					</div>
+					
+					
+					<div class=" col-lg-6 offset-lg-0 order-lg-1 col-md-8 offset-md-2 order-md-1 sr-col text-center sr-repeater-2" style="--v-accent: var(--); ">
+						<div class="content-wrapper">
+							
+							
+
+							
+							
+								
+									
+								
+							
+								
+							
+								
+							
+								
+							
+								
+							
+							<div class="responsive-image media-item full-width-image ">
+								
+								
+								<img src="https://www.leanlabs.com/hubfs/sr-assets/stardust/stardust-two-col-offer.png" alt="stardust-two-col-offer" loading="lazy" width="540" height="418" style="--img-corner: 5px">
+								
+								
+							</div>
+							
+							
+							
+							
+							
+							
+						</div>
+					</div>
+					
+				</div>
+				</div>
+
+		
+			</div>
+		</div>
+		
+	</div>
+</div>
+
+
+</div>
+
+</div><!--end widget-span -->
+</div><!--end row-->
+</div><!--end row-wrapper -->
+
+</div><!--end widget-span -->
+</div><!--end row-->
+</div><!--end row-wrapper -->
+
+</div><!--end widget-span -->
+</div>
+</div>
+</div>
+    
+
+    
+        
+        
+            <div data-global-resource-path="Arctic-Sproket-Child/templates/v2/partials/site_footer.html"><div class="container-fluid">
+<div class="row-fluid-wrapper">
+<div class="row-fluid">
+<div class="span12 widget-span widget-type-cell " style="" data-widget-type="cell" data-x="0" data-w="12">
+
+<div class="row-fluid-wrapper row-depth-1 row-number-1 dnd-section">
+<div class="row-fluid ">
+<div class="span12 widget-span widget-type-cell dnd-column" style="" data-widget-type="cell" data-x="0" data-w="12">
+
+<div class="row-fluid-wrapper row-depth-1 row-number-2 dnd-row">
+<div class="row-fluid ">
+<div class="span12 widget-span widget-type-custom_widget dnd-module" style="" data-widget-type="custom_widget" data-x="0" data-w="12">
+<div id="hs_cos_wrapper_site_footer-module-2" class="hs_cos_wrapper hs_cos_wrapper_widget hs_cos_wrapper_type_module" style="" data-hs-cos-general-type="widget" data-hs-cos-type="module">
+
+	
+
+	
+	
+	
+	
+	
+	
+
+	
+
+	
+
+
+<footer class="sr-footer sr-footer-01 site_footer-module-2 bg-light sr-padding-half text-custom prototype-no-background sr_module">
+
+	
+
+
+
+
+
+
+	<div class="sr-footer-nav">
+		<div class="container">
+
+			
+
+					<div class="row sr-spacer-bottom-50">
+						<div class="d-flex flex-column align-items-start justify-content-start col-md-3 order-md-1 mb-md-0 mb-5">
+							
+							
+							
+							
+							
+
+							
+								<img src="https://8510912.fs1.hubspotusercontent-na1.net/hubfs/8510912/SR%20Logo%20Dark.svg" alt="Logo" loading="lazy" width="220" height="50">
+							
+
+							
+
+							
+						</div>
+
+						<div class="col-md-9 order-md-2">
+							
+							<nav id="hs_cos_wrapper_module_1494607248582_footer" class="hs_cos_wrapper hs_cos_wrapper_module hs_cos_wrapper_type_menu" style="" data-hs-cos-general-type="module" data-hs-cos-type="menu" aria-label="Footer Navigation">
+								<div id="hs_menu_wrapper_module_1494607248582_footer" class="hs-menu-wrapper active-branch flyouts hs-menu-flow-horizontal" role="navigation" data-sitemap-name="sprocket-rocket footer">
+									<ul class="justify-content-end" role="menu">
+										<li class="hs-menu-item hs-menu-depth-1 hs-item-has-children" role="none">
+											<a href="javascript:;" role="menuitem">Home</a>
+											<ul class="hs-menu-children-wrapper" role="menu">
+												<li class="hs-menu-item hs-menu-depth-2" role="none"><a href="javascript:;" role="menuitem">Company</a></li>
+												<li class="hs-menu-item hs-menu-depth-2" role="none"><a href="javascript:;" role="menuitem">Team</a></li>
+												<li class="hs-menu-item hs-menu-depth-2" role="none"><a href="javascript:;" role="menuitem">Careers</a></li>
+											</ul>
+										</li>
+										<li class="hs-menu-item hs-menu-depth-1 hs-item-has-children" role="none">
+											<a href="javascript:;" role="menuitem">Work</a>
+											<ul class="hs-menu-children-wrapper" role="menu">
+												<li class="hs-menu-item hs-menu-depth-2" role="none"><a href="javascript:;" role="menuitem">Design Portfolio</a></li>
+												<li class="hs-menu-item hs-menu-depth-2" role="none"><a href="javascript:;" role="menuitem">Case Studies</a></li>
+												<li class="hs-menu-item hs-menu-depth-2" role="none"><a href="javascript:;" role="menuitem">Pricing</a></li>
+											</ul>
+										</li>
+										<li class="hs-menu-item hs-menu-depth-1 hs-item-has-children" role="none">
+											<a href="javascript:;" role="menuitem">Resources</a>
+											<ul class="hs-menu-children-wrapper" role="menu">
+												<li class="hs-menu-item hs-menu-depth-2" role="none"><a href="javascript:;" role="menuitem">Content Marketing</a></li>
+												<li class="hs-menu-item hs-menu-depth-2" role="none"><a href="javascript:;" role="menuitem">Contact</a></li>
+												<li class="hs-menu-item hs-menu-depth-2" role="none"><a href="javascript:;" role="menuitem">Blog</a></li>
+											</ul>
+										</li>
+									</ul>
+								</div>
+							</nav>
+							
+						</div>
+					</div>
+
+					
+
+		</div>
+	</div>
+
+	
+	<div class="footer-copyright container">
+		<div class="row no-gutters">
+			<div class="col-md-12 text-md-center">
+				<div class="text-custom ">
+					<div class="small"><p class="small">©2026 Brandvious, Inc. All rights reserved. <a href="/privacy-policy">Privacy Policy</a></p></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+
+	
+
+</footer>
+</div>
+
+</div><!--end widget-span -->
+</div><!--end row-->
+</div><!--end row-wrapper -->
+
+</div><!--end widget-span -->
+</div><!--end row-->
+</div><!--end row-wrapper -->
+
+</div><!--end widget-span -->
+</div>
+</div>
+</div></div>
+        
+    
+
+    
+<script src="https://245200612.hs-sites-na2.com/hubfs/hub_generated/template_assets/1/315263777502/1772949005982/template_jquery.min.js" crossorigin="anonymous"></script>
+
+<script defer src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF" crossorigin="anonymous"></script>
+<script defer src="https://245200612.hs-sites-na2.com/hubfs/hub_generated/template_assets/1/315262279402/1772949008519/template_interaction.min.js"></script>
+
+
+<script defer src="/hs/hsstatic/cms-free-branding-lib/static-1.2918/js/index.js"></script>
+<!-- HubSpot performance collection script -->
+<script defer src="/hs/hsstatic/content-cwv-embed/static-1.1293/embed.js"></script>
+<script>
+var hsVars = hsVars || {}; hsVars['language'] = 'en';
+</script>
+
+<script src="/hs/hsstatic/cos-i18n/static-1.53/bundles/project.js"></script>
+<script src="https://245200612.hs-sites-na2.com/hubfs/hub_generated/module_assets/1/315263778491/1771157268073/module_STARDUST_Navigation_01.min.js"></script>
+<script src="https://245200612.hs-sites-na2.com/hubfs/hub_generated/module_assets/1/322022603483/1772884566583/module_arctic-chatbot.min.js"></script>
+<script defer src="https://245200612.hs-sites-na2.com/hubfs/hub_generated/module_assets/1/315263777517/1771157267899/module_STARDUST_Cards_Slider_02.min.js"></script>
+<script defer src="https://245200612.hs-sites-na2.com/hubfs/hub_generated/module_assets/1/315263778507/1771157268007/module_STARDUST_Cards_Testimonial_Slider_01.min.js"></script>
+
+  <script data-hs-allowed="true">
+    ((d=document,q='querySelectorAll',l='hs-form-html',m='script',b='/_hcms/forms/embed/v4/render-definition/ssr',u='https://js-na2.hsforms.net/forms/embed/245200612.js') => {
+      const a = (t,i) => t.replace(/{{hs_form_instance_id_placeholder}}/g,i);
+      const i = (f,o) => {f.innerHTML=o;for(const s of f[q](m)){const n=d.createElement(m);for(const{name:e,value:t}of s.attributes)n.setAttribute(e,t);n.appendChild(d.createTextNode(s.innerHTML)),s.parentNode.replaceChild(n,s)}};
+      const j = (e,f) => {try{if(e.status === 404)return;}catch(_){}const n=f.cloneNode(true);n.classList.replace(l,'hs-form-frame');i(f,'<'+m+' src="'+u+'"></'+m+'>'+n.outerHTML);};
+      const r = (el,c=el.dataset) => {if(c.fetched)return;c.fetched=Date.now();fetch(`${b}/${c.portalId}/${c.formId}`).then((r) => r.text().then((t) => {i(el,a(t,el.id));c.loaded=Date.now();})).catch((e) => j(e,el));};
+      d[q]('.'+l).forEach((el) => r(el));
+    })();
+  </script>
+
+
+  <script data-hs-allowed="true">
+    ((el) => {
+      el && el.addEventListener('hs-form-event:on-ready', (e) => {
+      window.HubSpotFormsV4.getFormFromEvent(e).setExtraSubmissionMetadata({
+        
+        
+        
+        
+        
+        
+        
+      });
+    });
+    })(document.getElementById('hs_form_target_body_dnd_area-module-11'));
+  </script>
+
+
+<!-- Start of HubSpot Analytics Code -->
+<script type="text/javascript">
+var _hsq = _hsq || [];
+_hsq.push(["setContentType", "standard-page"]);
+_hsq.push(["setCanonicalUrl", "https:\/\/245200612.hs-sites-na2.com\/chatbots-conversational-architecture"]);
+_hsq.push(["setPageId", "321958126317"]);
+_hsq.push(["setContentMetadata", {
+    "contentPageId": 321958126317,
+    "legacyPageId": "321958126317",
+    "contentFolderId": null,
+    "contentGroupId": null,
+    "abTestId": null,
+    "languageVariantId": 321958126317,
+    "languageCode": null,
+    
+    
+}]);
+</script>
+
+<script type="text/javascript" id="hs-script-loader" async defer src="/hs/scriptloader/245200612.js"></script>
+<!-- End of HubSpot Analytics Code -->
+
+
+<script type="text/javascript">
+var hsVars = {
+    render_id: "979e9b0e-7da7-49bb-9df6-2bdde5fdd7a0",
+    ticks: 1772949071267,
+    page_id: 321958126317,
+    
+    content_group_id: 0,
+    portal_id: 245200612,
+    app_hs_base_url: "https://app-na2.hubspot.com",
+    cp_hs_base_url: "https://cp-na2.hubspot.com",
+    language: "en",
+    analytics_page_type: "standard-page",
+    scp_content_type: "",
+    
+    analytics_page_id: "321958126317",
+    category_id: 1,
+    folder_id: 0,
+    is_hubspot_user: false
+}
+</script>
+
+
+<script defer src="/hs/hsstatic/HubspotToolsMenu/static-1.640/js/index.js"></script>
+
+
+
+
+
+
+<script id="srDebug" type="application/json">
+	{
+		"page_type": "STANDARD_PAGE",
+		"theme": "Arctic-Sproket-Child",
+		"template": "Arctic-Sproket-Child/templates/v2/pages/homepagechild.html",
+		"child_theme": "true",
+		"hub_id": "245200612",
+		"version": "91",
+		"last_updated": "Dec 17, 2025"
+	}
+</script>
+
+</body></html>

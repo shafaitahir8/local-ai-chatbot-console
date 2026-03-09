@@ -2,6 +2,9 @@
 Embeddable chat widget routes.
 """
 
+import os
+from html import escape
+
 from fastapi import APIRouter, Depends, HTTPException, status, Request
 from fastapi.responses import HTMLResponse
 from sqlalchemy.orm import Session
@@ -9,12 +12,14 @@ from sqlalchemy.orm import Session
 from ..models.database import get_db, Bot
 from ..models.schemas import EmbedConfigResponse
 from ..services.bot_service import bot_service
+from ..services.tunnel_service import tunnel_service
 
 router = APIRouter(prefix="/embed", tags=["embed"])
 
 
-def get_embed_html(bot: Bot) -> str:
+def get_embed_html(bot: Bot, initial_message: str) -> str:
     """Generate embeddable chat widget HTML."""
+    safe_initial_message = escape((initial_message or "").strip() or bot.welcome_message or "")
     return f'''<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -364,7 +369,7 @@ def get_embed_html(bot: Bot) -> str:
             <div class="chat-header">{bot.name}</div>
             
             <div class="chat-messages" id="messages">
-                <div class="message assistant">{bot.welcome_message}</div>
+                <div class="message assistant" id="startup-welcome">{safe_initial_message}</div>
             </div>
             
             <div class="typing-indicator" id="typing">
@@ -389,8 +394,11 @@ def get_embed_html(bot: Bot) -> str:
     <script>
         const BOT_ID = '{bot.id}';
         const API_BASE = window.location.origin;
-        let sessionId = localStorage.getItem('session_' + BOT_ID) || generateUUID();
-        localStorage.setItem('session_' + BOT_ID, sessionId);
+        let sessionId = null;
+        const MAX_CHAT_RETRIES = 2;
+        const queryParams = new URLSearchParams(window.location.search);
+        const tunnelToken = queryParams.get('token') || '';
+        const tunnelBypassNeeded = /\\.loca\\.lt$|localtunnel\\.me$/i.test(window.location.hostname);
         
         // Stats tracking
         let stats = {{
@@ -399,18 +407,34 @@ def get_embed_html(bot: Bot) -> str:
             responseTimes: []
         }};
         
-        function generateUUID() {{
-            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {{
-                var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
-                return v.toString(16);
-            }});
-        }}
-        
         const messagesEl = document.getElementById('messages');
         const inputEl = document.getElementById('input');
         const sendBtn = document.getElementById('send');
         const typingEl = document.getElementById('typing');
         const thinkingEl = document.getElementById('thinking-indicator');
+        const startupWelcomeEl = document.getElementById('startup-welcome');
+
+        function withOptionalToken(url) {{
+            if (!tunnelToken) {{
+                return url;
+            }}
+            const separator = url.indexOf('?') >= 0 ? '&' : '?';
+            return url + separator + 'token=' + encodeURIComponent(tunnelToken);
+        }}
+
+        function buildRequestHeaders(contentType) {{
+            const headers = {{}};
+            if (contentType) {{
+                headers['Content-Type'] = contentType;
+            }}
+            if (tunnelBypassNeeded) {{
+                headers['bypass-tunnel-reminder'] = 'true';
+            }}
+            if (tunnelToken) {{
+                headers['X-Tunnel-Token'] = tunnelToken;
+            }}
+            return headers;
+        }}
         
         function updateStats(tokens, responseTime) {{
             stats.messageCount++;
@@ -453,6 +477,43 @@ def get_embed_html(bot: Bot) -> str:
                 logList.removeChild(logList.firstChild);
             }}
         }}
+
+        async function loadStartupWelcome(attempt = 1) {{
+            const maxAttempts = 5;
+            const statusUrl = withOptionalToken(API_BASE + '/api/bot/' + BOT_ID + '/status');
+
+            try {{
+                const response = await fetch(statusUrl, {{
+                    method: 'GET',
+                    headers: buildRequestHeaders(null)
+                }});
+                if (!response.ok) {{
+                    throw new Error('Status check failed');
+                }}
+
+                const data = await response.json().catch(() => ({{}}));
+                const startupMessage = (data.startup_welcome_message || '').trim();
+                const configuredMessage = (data.welcome_message || '').trim();
+
+                if (startupMessage && startupWelcomeEl) {{
+                    startupWelcomeEl.textContent = startupMessage;
+                    addLog('Startup welcome loaded from model warmup', 'received');
+                    return;
+                }}
+
+                if (configuredMessage && startupWelcomeEl && !startupWelcomeEl.textContent.trim()) {{
+                    startupWelcomeEl.textContent = configuredMessage;
+                }}
+
+                if (!startupMessage && data.startup_welcome_ready === false && attempt < maxAttempts) {{
+                    setTimeout(() => loadStartupWelcome(attempt + 1), 800 * attempt);
+                }}
+            }} catch (error) {{
+                if (attempt < 3) {{
+                    setTimeout(() => loadStartupWelcome(attempt + 1), 600 * attempt);
+                }}
+            }}
+        }}
         
         inputEl.addEventListener('keypress', (e) => {{
             if (e.key === 'Enter' && !e.shiftKey) {{
@@ -467,6 +528,59 @@ def get_embed_html(bot: Bot) -> str:
             msg.textContent = text;
             messagesEl.appendChild(msg);
             messagesEl.scrollTop = messagesEl.scrollHeight;
+        }}
+
+        function isRetryableStatus(statusCode) {{
+            return statusCode === 408 || statusCode === 409 || statusCode === 425 || statusCode === 429 || statusCode >= 500;
+        }}
+
+        function sleep(ms) {{
+            return new Promise((resolve) => setTimeout(resolve, ms));
+        }}
+
+        async function sendMessageWithRetry(text) {{
+            for (let attempt = 1; attempt <= MAX_CHAT_RETRIES + 1; attempt++) {{
+                const isNewSession = !sessionId;
+                updateCurrentStats(isNewSession ? 'Opening Session...' : 'Sending Request...', null, null);
+                addLog((isNewSession ? 'Opening session' : 'Sending request') + ' (attempt ' + attempt + ')');
+                try {{
+                    const payload = {{ message: text }};
+                    if (sessionId) {{
+                        payload.session_id = sessionId;
+                    }}
+
+                    updateCurrentStats('Waiting For Model Response...', null, null);
+                    const response = await fetch(withOptionalToken(API_BASE + '/api/bot/' + BOT_ID + '/chat'), {{
+                        method: 'POST',
+                        headers: buildRequestHeaders('application/json'),
+                        body: JSON.stringify(payload)
+                    }});
+
+                    const data = await response.json().catch(() => ({{}}));
+                    if (response.ok) {{
+                        return data;
+                    }}
+
+                    const detail = data.detail || 'Request failed with status ' + response.status;
+                    if (attempt <= MAX_CHAT_RETRIES && isRetryableStatus(response.status)) {{
+                        updateCurrentStats('Retrying Request...', null, null);
+                        addLog('Transient error, retrying: ' + detail, 'error');
+                        await sleep(350 * attempt);
+                        continue;
+                    }}
+
+                    throw new Error(detail);
+                }} catch (error) {{
+                    if (attempt <= MAX_CHAT_RETRIES) {{
+                        updateCurrentStats('Retrying Request...', null, null);
+                        addLog('Connection issue, retrying attempt ' + attempt, 'error');
+                        await sleep(350 * attempt);
+                        continue;
+                    }}
+                    throw error;
+                }}
+            }}
+            throw new Error('Failed to send chat message after retries.');
         }}
         
         async function sendMessage() {{
@@ -485,49 +599,33 @@ def get_embed_html(bot: Bot) -> str:
             // Show typing indicator
             typingEl.classList.add('show');
             thinkingEl.classList.add('active');
-            updateCurrentStats('Thinking...', null, null);
+            updateCurrentStats('Preparing Request...', null, null);
             
             const startTime = Date.now();
             
             try {{
-                const response = await fetch(API_BASE + '/api/bot/' + BOT_ID + '/chat', {{
-                    method: 'POST',
-                    headers: {{
-                        'Content-Type': 'application/json'
-                    }},
-                    body: JSON.stringify({{
-                        message: text,
-                        session_id: sessionId
-                    }})
-                }});
-                
+                const data = await sendMessageWithRetry(text);
                 const responseTime = Date.now() - startTime;
-                const data = await response.json();
                 
                 // Hide typing indicator
                 typingEl.classList.remove('show');
                 thinkingEl.classList.remove('active');
                 
-                if (response.ok) {{
-                    addMessage(data.response, 'assistant');
+                addMessage(data.response || 'No response received.', 'assistant');
+                if (data.session_id) {{
                     sessionId = data.session_id;
-                    localStorage.setItem('session_' + BOT_ID, sessionId);
-                    
-                    // Update stats
-                    updateStats(data.tokens_used, responseTime);
-                    updateCurrentStats('Ready', responseTime, data.tokens_used);
-                    addLog('Response received (' + responseTime + 'ms, ' + (data.tokens_used || 0) + ' tokens)', 'received');
-                }} else {{
-                    addMessage(data.detail || 'An error occurred', 'system');
-                    updateCurrentStats('Error', null, null);
-                    addLog('Error: ' + (data.detail || 'Unknown error'), 'error');
                 }}
+                
+                // Update stats
+                updateStats(data.tokens_used, responseTime);
+                updateCurrentStats('Ready', responseTime, data.tokens_used);
+                addLog('Response received (' + responseTime + 'ms, ' + (data.tokens_used || 0) + ' tokens)', 'received');
             }} catch (error) {{
                 typingEl.classList.remove('show');
                 thinkingEl.classList.remove('active');
                 addMessage('Connection error. Please try again.', 'system');
                 updateCurrentStats('Error', null, null);
-                addLog('Connection error', 'error');
+                addLog('Error: ' + ((error && error.message) || 'Connection error'), 'error');
             }}
             
             // Re-enable input
@@ -535,6 +633,8 @@ def get_embed_html(bot: Bot) -> str:
             sendBtn.disabled = false;
             inputEl.focus();
         }}
+
+        loadStartupWelcome();
     </script>
 </body>
 </html>'''
@@ -568,7 +668,9 @@ async def get_embed_widget(
             status_code=200
         )
     
-    return HTMLResponse(content=get_embed_html(bot))
+    startup_welcome = bot_service.get_startup_welcome_message(bot.id)
+    initial_message = (startup_welcome.get("message") or bot.welcome_message or "").strip()
+    return HTMLResponse(content=get_embed_html(bot, initial_message=initial_message))
 
 
 @router.get("/{bot_id}/config", response_model=EmbedConfigResponse)
@@ -608,14 +710,19 @@ async def get_embed_snippet(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Bot not found"
         )
-    
+
     base_url = str(request.base_url).rstrip('/')
-    embed_url = f"{base_url}/embed/{bot_id}"
+    tunnel_chat_url = tunnel_service.get_chat_endpoint(bot_id)
+    tunnel_embed_url = tunnel_service.get_embed_endpoint(bot_id)
+    api_url = tunnel_chat_url or f"{base_url}/api/bot/{bot_id}/chat"
+    embed_url = tunnel_embed_url or f"{base_url}/embed/{bot_id}"
     
     return {
         "bot_id": bot_id,
         "bot_name": bot.name,
+        "api_url": api_url,
         "embed_url": embed_url,
+        "token_required": bool(os.getenv("TUNNEL_SHARED_SECRET", "").strip()),
         "snippets": {
             "iframe": f'''<iframe 
     src="{embed_url}" 
@@ -627,6 +734,7 @@ async def get_embed_snippet(
 </iframe>''',
             
             "hubspot": f'''<!-- HubSpot Custom Module HTML -->
+<!-- API Endpoint for HubSpot module field: {api_url} -->
 <div id="chatbot-container" style="width: 100%; height: 600px;">
     <iframe 
         src="{embed_url}" 

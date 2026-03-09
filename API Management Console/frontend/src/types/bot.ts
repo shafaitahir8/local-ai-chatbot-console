@@ -83,4 +83,7 @@ export interface ChatResponse {
   session_id: string;
   tokens_used: number;
   latency_ms: number;
+  retry_count?: number;
+  fallback_used?: boolean;
+  status_message?: string | null;
 }

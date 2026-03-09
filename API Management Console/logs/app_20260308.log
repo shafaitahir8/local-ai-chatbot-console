@@ -2127,3 +2127,64 @@ RuntimeError: Gemini API error: 429 - {
 2026-03-08 17:43:26 - app.main - INFO -   ✅ Arctic Customer Bot (3027bcaf-eeaf-4746-8d55-0390d9f922e6) initialized
 2026-03-08 17:43:29 - app.main - INFO -   ✅ Arctic - Google API Test (a82abf91-4529-4680-854d-2e72e578e70f) initialized
 2026-03-08 17:49:48 - app.main - INFO - 👋 Shutting down...
+2026-03-08 18:32:20 - app.main - INFO - === Application Starting ===
+2026-03-08 18:32:20 - app.main - INFO - Log file: D:\JupyterNotebooks\Chatbots\API Management Console\logs\app_20260308.log
+2026-03-08 18:32:20 - app.main - INFO - Python version: 3.14.0 (tags/v3.14.0:ebf955d, Oct  7 2025, 10:15:03) [MSC v.1944 64 bit (AMD64)]
+2026-03-08 18:32:20 - app.main - INFO - Working directory: D:\JupyterNotebooks\Chatbots\API Management Console
+2026-03-08 18:32:20 - app.main - INFO - Loading environment variables...
+2026-03-08 18:32:20 - app.main - INFO - Environment variables loaded
+2026-03-08 18:32:20 - app.main - INFO - Importing routers...
+2026-03-08 18:32:25 - app.main - INFO - Routers imported successfully
+2026-03-08 18:32:25 - app.main - INFO - Initializing database...
+2026-03-08 18:32:25 - app.main - INFO - Database module imported
+2026-03-08 18:32:25 - app.main - INFO - Importing template service...
+2026-03-08 18:32:25 - app.main - INFO - Template service imported
+2026-03-08 18:32:25 - app.main - INFO - Importing tunnel service...
+2026-03-08 18:32:25 - app.main - INFO - Tunnel service imported
+2026-03-08 18:32:25 - app.main - INFO - Importing API gateway service...
+2026-03-08 18:32:25 - app.main - INFO - API gateway service imported
+2026-03-08 18:32:25 - app.main - INFO - React frontend found, serving from frontend/dist
+2026-03-08 18:32:27 - app.main - INFO - === Application Starting ===
+2026-03-08 18:32:27 - app.main - INFO - Log file: D:\JupyterNotebooks\Chatbots\API Management Console\logs\app_20260308.log
+2026-03-08 18:32:27 - app.main - INFO - Python version: 3.14.0 (tags/v3.14.0:ebf955d, Oct  7 2025, 10:15:03) [MSC v.1944 64 bit (AMD64)]
+2026-03-08 18:32:27 - app.main - INFO - Working directory: D:\JupyterNotebooks\Chatbots\API Management Console
+2026-03-08 18:32:27 - app.main - INFO - Loading environment variables...
+2026-03-08 18:32:27 - app.main - INFO - Environment variables loaded
+2026-03-08 18:32:27 - app.main - INFO - Importing routers...
+2026-03-08 18:32:28 - app.main - INFO - Routers imported successfully
+2026-03-08 18:32:28 - app.main - INFO - Initializing database...
+2026-03-08 18:32:28 - app.main - INFO - Database module imported
+2026-03-08 18:32:28 - app.main - INFO - Importing template service...
+2026-03-08 18:32:28 - app.main - INFO - Template service imported
+2026-03-08 18:32:28 - app.main - INFO - Importing tunnel service...
+2026-03-08 18:32:28 - app.main - INFO - Tunnel service imported
+2026-03-08 18:32:28 - app.main - INFO - Importing API gateway service...
+2026-03-08 18:32:28 - app.main - INFO - API gateway service imported
+2026-03-08 18:32:28 - app.main - INFO - React frontend found, serving from frontend/dist
+2026-03-08 18:32:28 - app.main - INFO - 🚀 Starting Local AI Chatbot Deployment Console...
+2026-03-08 18:32:28 - app.main - INFO - ✅ Database initialized
+2026-03-08 18:32:28 - app.main - INFO - ✅ Templates loaded
+2026-03-08 18:32:28 - app.services.api_gateway_service - INFO - API gateway started on http://127.0.0.1:61485 -> http://127.0.0.1:8000
+2026-03-08 18:32:28 - app.main - INFO - 🔒 API-only gateway active on: http://127.0.0.1:61485
+2026-03-08 18:32:31 - app.main - INFO - 🌐 Public endpoint ready: https://arcticbot245.loca.lt
+2026-03-08 18:32:31 - app.main - INFO - 📍 Admin Dashboard: http://localhost:8000/admin
+2026-03-08 18:32:31 - app.main - INFO - 📍 API Documentation: http://localhost:8000/docs
+2026-03-08 18:32:32 - app.main - INFO - 🤖 Initializing 2 active bot(s) in background...
+2026-03-08 18:32:32 - faiss.loader - DEBUG - Environment variable FAISS_OPT_LEVEL is not set, so let's pick the instruction set according to the current CPU
+2026-03-08 18:32:32 - faiss.loader - INFO - Loading faiss with AVX2 support.
+2026-03-08 18:32:32 - faiss.loader - INFO - Successfully loaded faiss with AVX2 support.
+2026-03-08 18:33:10 - app.services.llm_providers.local_provider - INFO - Loading sentence-transformers model (first time, may take a moment)...
+2026-03-08 18:33:10 - sentence_transformers.SentenceTransformer - INFO - Use pytorch device_name: cpu
+2026-03-08 18:33:10 - sentence_transformers.SentenceTransformer - INFO - Load pretrained SentenceTransformer: all-MiniLM-L6-v2
+2026-03-08 18:33:11 - app.services.api_gateway_service - DEBUG - api-gateway: "OPTIONS /api/bot/a82abf91-4529-4680-854d-2e72e578e70f/chat?token=2b7e8c9f4a1d6e3f5b8c7d2a9e4f6b1c HTTP/1.1" 204 -
+2026-03-08 18:33:13 - huggingface_hub.utils._http - WARNING - Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+2026-03-08 18:33:15 - app.services.llm_providers.local_provider - INFO - Sentence-transformers model loaded successfully
+2026-03-08 18:33:16 - app.services.llm_providers.local_provider - INFO - Ollama is already running
+2026-03-08 18:33:22 - app.services.api_gateway_service - DEBUG - api-gateway: "OPTIONS /api/bot/a82abf91-4529-4680-854d-2e72e578e70f/chat?token=2b7e8c9f4a1d6e3f5b8c7d2a9e4f6b1c HTTP/1.1" 204 -
+2026-03-08 18:33:38 - app.main - INFO -   ✅ Arctic Customer Bot (3027bcaf-eeaf-4746-8d55-0390d9f922e6) initialized
+2026-03-08 18:33:41 - app.main - INFO -   ✅ Arctic - Google API Test (a82abf91-4529-4680-854d-2e72e578e70f) initialized
+2026-03-08 18:34:27 - app.services.api_gateway_service - DEBUG - api-gateway: "POST /api/bot/a82abf91-4529-4680-854d-2e72e578e70f/chat?token=2b7e8c9f4a1d6e3f5b8c7d2a9e4f6b1c HTTP/1.1" 422 -
+2026-03-08 18:34:27 - app.services.api_gateway_service - DEBUG - api-gateway: "POST /api/bot/a82abf91-4529-4680-854d-2e72e578e70f/chat?token=2b7e8c9f4a1d6e3f5b8c7d2a9e4f6b1c HTTP/1.1" 422 -
+2026-03-08 18:34:39 - app.services.api_gateway_service - DEBUG - api-gateway: "POST /api/bot/a82abf91-4529-4680-854d-2e72e578e70f/chat?token=2b7e8c9f4a1d6e3f5b8c7d2a9e4f6b1c HTTP/1.1" 200 -
+2026-03-08 18:34:41 - app.services.api_gateway_service - DEBUG - api-gateway: "POST /api/bot/a82abf91-4529-4680-854d-2e72e578e70f/chat?token=2b7e8c9f4a1d6e3f5b8c7d2a9e4f6b1c HTTP/1.1" 200 -
+2026-03-08 18:36:15 - app.main - INFO - 👋 Shutting down...

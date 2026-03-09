@@ -166,6 +166,7 @@ async def get_system_status(
     tunnel_status = tunnel_service.get_status()
     cloudflare_status = "Running" if tunnel_status.get("running") else "Unavailable"
     gateway_status = api_gateway_service.get_status()
+    tunnel_token = os.getenv("TUNNEL_SHARED_SECRET", "").strip()
 
     return {
         "server": "Running",
@@ -178,6 +179,8 @@ async def get_system_status(
         "cloudflare_stable": tunnel_status.get("stable", False),
         "cloudflare_source": tunnel_status.get("source"),
         "cloudflare_error": tunnel_status.get("last_error"),
+        "tunnel_token_required": bool(tunnel_token),
+        "tunnel_token": tunnel_token or None,
         "api_gateway_running": gateway_status.get("running", False),
         "api_gateway_port": gateway_status.get("port"),
     }
