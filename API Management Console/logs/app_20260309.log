@@ -1134,3 +1134,319 @@ RuntimeError: Local LLM connection error: . Ollama may not be running. Attemptin
 2026-03-09 17:41:28 - app.services.api_gateway_service - DEBUG - api-gateway: "GET /embed/3027bcaf-eeaf-4746-8d55-0390d9f922e6?token=2b7e8c9f4a1d6e3f5b8c7d2a9e4f6b1c HTTP/1.1" 200 -
 2026-03-09 17:41:29 - app.services.llm_providers.local_provider - INFO - Ollama is already running
 2026-03-09 17:41:33 - app.services.api_gateway_service - DEBUG - api-gateway: "POST /api/bot/3027bcaf-eeaf-4746-8d55-0390d9f922e6/chat?token=2b7e8c9f4a1d6e3f5b8c7d2a9e4f6b1c HTTP/1.1" 200 -
+2026-03-09 18:17:20 - app.main - INFO - === Application Starting ===
+2026-03-09 18:17:20 - app.main - INFO - Log file: D:\JupyterNotebooks\Chatbots\API Management Console\logs\app_20260309.log
+2026-03-09 18:17:20 - app.main - INFO - Python version: 3.14.0 (tags/v3.14.0:ebf955d, Oct  7 2025, 10:15:03) [MSC v.1944 64 bit (AMD64)]
+2026-03-09 18:17:20 - app.main - INFO - Working directory: D:\JupyterNotebooks\Chatbots\API Management Console
+2026-03-09 18:17:20 - app.main - INFO - Loading environment variables...
+2026-03-09 18:17:20 - app.main - INFO - Environment variables loaded
+2026-03-09 18:17:20 - app.main - INFO - Importing routers...
+2026-03-09 18:17:24 - app.main - INFO - Routers imported successfully
+2026-03-09 18:17:24 - app.main - INFO - Initializing database...
+2026-03-09 18:17:24 - app.main - INFO - Database module imported
+2026-03-09 18:17:24 - app.main - INFO - Importing template service...
+2026-03-09 18:17:24 - app.main - INFO - Template service imported
+2026-03-09 18:17:24 - app.main - INFO - Importing tunnel service...
+2026-03-09 18:17:24 - app.main - INFO - Tunnel service imported
+2026-03-09 18:17:24 - app.main - INFO - Importing API gateway service...
+2026-03-09 18:17:24 - app.main - INFO - API gateway service imported
+2026-03-09 18:17:24 - app.main - INFO - React frontend found, serving from frontend/dist
+2026-03-09 18:17:25 - app.main - INFO - === Application Starting ===
+2026-03-09 18:17:25 - app.main - INFO - Log file: D:\JupyterNotebooks\Chatbots\API Management Console\logs\app_20260309.log
+2026-03-09 18:17:25 - app.main - INFO - Python version: 3.14.0 (tags/v3.14.0:ebf955d, Oct  7 2025, 10:15:03) [MSC v.1944 64 bit (AMD64)]
+2026-03-09 18:17:25 - app.main - INFO - Working directory: D:\JupyterNotebooks\Chatbots\API Management Console
+2026-03-09 18:17:25 - app.main - INFO - Loading environment variables...
+2026-03-09 18:17:25 - app.main - INFO - Environment variables loaded
+2026-03-09 18:17:25 - app.main - INFO - Importing routers...
+2026-03-09 18:17:27 - app.main - INFO - Routers imported successfully
+2026-03-09 18:17:27 - app.main - INFO - Initializing database...
+2026-03-09 18:17:27 - app.main - INFO - Database module imported
+2026-03-09 18:17:27 - app.main - INFO - Importing template service...
+2026-03-09 18:17:27 - app.main - INFO - Template service imported
+2026-03-09 18:17:27 - app.main - INFO - Importing tunnel service...
+2026-03-09 18:17:27 - app.main - INFO - Tunnel service imported
+2026-03-09 18:17:27 - app.main - INFO - Importing API gateway service...
+2026-03-09 18:17:27 - app.main - INFO - API gateway service imported
+2026-03-09 18:17:27 - app.main - INFO - React frontend found, serving from frontend/dist
+2026-03-09 18:17:27 - app.main - INFO - 🚀 Starting Local AI Chatbot Deployment Console...
+2026-03-09 18:17:27 - app.main - INFO - ✅ Database initialized
+2026-03-09 18:17:27 - app.main - INFO - ✅ Templates loaded
+2026-03-09 18:17:27 - app.services.api_gateway_service - INFO - API gateway started on http://127.0.0.1:64582 -> http://127.0.0.1:8000
+2026-03-09 18:17:27 - app.main - INFO - 🔒 API-only gateway active on: http://127.0.0.1:64582
+2026-03-09 18:19:02 - app.main - INFO - === Application Starting ===
+2026-03-09 18:19:02 - app.main - INFO - Log file: d:\JupyterNotebooks\Chatbots\API Management Console\logs\app_20260309.log
+2026-03-09 18:19:02 - app.main - INFO - Python version: 3.14.0 (tags/v3.14.0:ebf955d, Oct  7 2025, 10:15:03) [MSC v.1944 64 bit (AMD64)]
+2026-03-09 18:19:02 - app.main - INFO - Working directory: d:\JupyterNotebooks\Chatbots\API Management Console
+2026-03-09 18:19:02 - app.main - INFO - Loading environment variables...
+2026-03-09 18:19:02 - app.main - INFO - Environment variables loaded
+2026-03-09 18:19:02 - app.main - INFO - Importing routers...
+2026-03-09 18:19:03 - app.main - INFO - Routers imported successfully
+2026-03-09 18:19:03 - app.main - INFO - Initializing database...
+2026-03-09 18:19:03 - app.main - INFO - Database module imported
+2026-03-09 18:19:03 - app.main - INFO - Importing template service...
+2026-03-09 18:19:03 - app.main - INFO - Template service imported
+2026-03-09 18:19:03 - app.main - INFO - Importing tunnel service...
+2026-03-09 18:19:03 - app.main - INFO - Tunnel service imported
+2026-03-09 18:19:03 - app.main - INFO - Importing API gateway service...
+2026-03-09 18:19:03 - app.main - INFO - API gateway service imported
+2026-03-09 18:19:03 - app.main - INFO - React frontend found, serving from frontend/dist
+2026-03-09 18:19:04 - app.main - INFO - === Application Starting ===
+2026-03-09 18:19:04 - app.main - INFO - Log file: d:\JupyterNotebooks\Chatbots\API Management Console\logs\app_20260309.log
+2026-03-09 18:19:04 - app.main - INFO - Python version: 3.14.0 (tags/v3.14.0:ebf955d, Oct  7 2025, 10:15:03) [MSC v.1944 64 bit (AMD64)]
+2026-03-09 18:19:04 - app.main - INFO - Working directory: d:\JupyterNotebooks\Chatbots\API Management Console
+2026-03-09 18:19:04 - app.main - INFO - Loading environment variables...
+2026-03-09 18:19:04 - app.main - INFO - Environment variables loaded
+2026-03-09 18:19:04 - app.main - INFO - Importing routers...
+2026-03-09 18:19:05 - app.main - INFO - Routers imported successfully
+2026-03-09 18:19:05 - app.main - INFO - Initializing database...
+2026-03-09 18:19:05 - app.main - INFO - Database module imported
+2026-03-09 18:19:05 - app.main - INFO - Importing template service...
+2026-03-09 18:19:05 - app.main - INFO - Template service imported
+2026-03-09 18:19:05 - app.main - INFO - Importing tunnel service...
+2026-03-09 18:19:05 - app.main - INFO - Tunnel service imported
+2026-03-09 18:19:05 - app.main - INFO - Importing API gateway service...
+2026-03-09 18:19:05 - app.main - INFO - API gateway service imported
+2026-03-09 18:19:05 - app.main - INFO - React frontend found, serving from frontend/dist
+2026-03-09 18:19:05 - app.main - INFO - 🚀 Starting Local AI Chatbot Deployment Console...
+2026-03-09 18:21:21 - app.main - INFO - === Application Starting ===
+2026-03-09 18:21:21 - app.main - INFO - Log file: D:\JupyterNotebooks\Chatbots\API Management Console\logs\app_20260309.log
+2026-03-09 18:21:21 - app.main - INFO - Python version: 3.14.0 (tags/v3.14.0:ebf955d, Oct  7 2025, 10:15:03) [MSC v.1944 64 bit (AMD64)]
+2026-03-09 18:21:21 - app.main - INFO - Working directory: D:\JupyterNotebooks\Chatbots\API Management Console
+2026-03-09 18:21:21 - app.main - INFO - Loading environment variables...
+2026-03-09 18:21:21 - app.main - INFO - Environment variables loaded
+2026-03-09 18:21:21 - app.main - INFO - Importing routers...
+2026-03-09 18:21:23 - app.main - INFO - Routers imported successfully
+2026-03-09 18:21:23 - app.main - INFO - Initializing database...
+2026-03-09 18:21:23 - app.main - INFO - Database module imported
+2026-03-09 18:21:23 - app.main - INFO - Importing template service...
+2026-03-09 18:21:23 - app.main - INFO - Template service imported
+2026-03-09 18:21:23 - app.main - INFO - Importing tunnel service...
+2026-03-09 18:21:23 - app.main - INFO - Tunnel service imported
+2026-03-09 18:21:23 - app.main - INFO - Importing API gateway service...
+2026-03-09 18:21:23 - app.main - INFO - API gateway service imported
+2026-03-09 18:21:23 - app.main - INFO - React frontend found, serving from frontend/dist
+2026-03-09 18:21:23 - app.main - INFO - 🚀 Starting Local AI Chatbot Deployment Console...
+2026-03-09 18:22:17 - app.main - INFO - === Application Starting ===
+2026-03-09 18:22:17 - app.main - INFO - Log file: D:\JupyterNotebooks\Chatbots\API Management Console\logs\app_20260309.log
+2026-03-09 18:22:17 - app.main - INFO - Python version: 3.14.0 (tags/v3.14.0:ebf955d, Oct  7 2025, 10:15:03) [MSC v.1944 64 bit (AMD64)]
+2026-03-09 18:22:17 - app.main - INFO - Working directory: D:\JupyterNotebooks\Chatbots\API Management Console
+2026-03-09 18:22:17 - app.main - INFO - Loading environment variables...
+2026-03-09 18:22:17 - app.main - INFO - Environment variables loaded
+2026-03-09 18:22:17 - app.main - INFO - Importing routers...
+2026-03-09 18:22:18 - app.main - INFO - Routers imported successfully
+2026-03-09 18:22:18 - app.main - INFO - Initializing database...
+2026-03-09 18:22:18 - app.main - INFO - Database module imported
+2026-03-09 18:22:18 - app.main - INFO - Importing template service...
+2026-03-09 18:22:18 - app.main - INFO - Template service imported
+2026-03-09 18:22:18 - app.main - INFO - Importing tunnel service...
+2026-03-09 18:22:18 - app.main - INFO - Tunnel service imported
+2026-03-09 18:22:18 - app.main - INFO - Importing API gateway service...
+2026-03-09 18:22:18 - app.main - INFO - API gateway service imported
+2026-03-09 18:22:18 - app.main - INFO - React frontend found, serving from frontend/dist
+2026-03-09 18:22:18 - app.main - INFO - 🚀 Starting Local AI Chatbot Deployment Console...
+2026-03-09 18:22:18 - app.main - INFO - ✅ Database initialized
+2026-03-09 18:22:18 - app.main - INFO - ✅ Templates loaded
+2026-03-09 18:22:18 - app.services.api_gateway_service - INFO - API gateway started on http://127.0.0.1:49308 -> http://127.0.0.1:8000
+2026-03-09 18:22:18 - app.main - INFO - 🔒 API-only gateway active on: http://127.0.0.1:49308
+2026-03-09 18:23:46 - app.main - INFO - === Application Starting ===
+2026-03-09 18:23:46 - app.main - INFO - Log file: D:\JupyterNotebooks\Chatbots\API Management Console\logs\app_20260309.log
+2026-03-09 18:23:46 - app.main - INFO - Python version: 3.14.0 (tags/v3.14.0:ebf955d, Oct  7 2025, 10:15:03) [MSC v.1944 64 bit (AMD64)]
+2026-03-09 18:23:46 - app.main - INFO - Working directory: D:\JupyterNotebooks\Chatbots\API Management Console
+2026-03-09 18:23:46 - app.main - INFO - Loading environment variables...
+2026-03-09 18:23:46 - app.main - INFO - Environment variables loaded
+2026-03-09 18:23:46 - app.main - INFO - Importing routers...
+2026-03-09 18:23:47 - app.main - INFO - Routers imported successfully
+2026-03-09 18:23:47 - app.main - INFO - Initializing database...
+2026-03-09 18:23:47 - app.main - INFO - Database module imported
+2026-03-09 18:23:47 - app.main - INFO - Importing template service...
+2026-03-09 18:23:47 - app.main - INFO - Template service imported
+2026-03-09 18:23:47 - app.main - INFO - Importing tunnel service...
+2026-03-09 18:23:47 - app.main - INFO - Tunnel service imported
+2026-03-09 18:23:47 - app.main - INFO - Importing API gateway service...
+2026-03-09 18:23:47 - app.main - INFO - API gateway service imported
+2026-03-09 18:23:47 - app.main - INFO - React frontend found, serving from frontend/dist
+2026-03-09 18:23:47 - app.main - INFO - 🚀 Starting Local AI Chatbot Deployment Console...
+2026-03-09 18:25:39 - app.main - INFO - === Application Starting ===
+2026-03-09 18:25:39 - app.main - INFO - === Application Starting ===
+Chatbots\API Management Console\logs\app_20260309.log
+2026-03-09 18:25:39 - app.main - INFO - Python version: 3.14.0 (tags/v3.14.0:ebf955d, Oct  7 2025, 10:15:03) [MSC v.1944 64 bit (AMD64)]
+2026-03-09 18:25:39 - app.main - INFO - Working directory: D:\JupyterNotebooks\Chatbots\API Management Console
+2026-03-09 18:25:39 - app.main - INFO - Loading environment variables...
+2026-03-09 18:25:39 - app.main - INFO - Log file: D:\JupyterNotebooks\Chatbots\API Management Console\logs\app_20260309.log
+2026-03-09 18:25:39 - app.main - INFO - Python version: 3.14.0 (tags/v3.14.0:ebf955d, Oct  7 2025, 10:15:03) [MSC v.1944 64 bit (AMD64)]
+2026-03-09 18:25:39 - app.main - INFO - Working directory: D:\JupyterNotebooks\Chatbots\API Management Console
+2026-03-09 18:25:39 - app.main - INFO - Loading environment variables...
+2026-03-09 18:25:39 - app.main - INFO - Environment variables loaded
+2026-03-09 18:25:39 - app.main - INFO - === Application Starting ===
+2026-03-09 18:25:39 - app.main - INFO - Importing routers...
+2026-03-09 18:25:39 - app.main - INFO - Log file: d:\JupyterNotebooks\Chatbots\API Management Console\logs\app_20260309.log
+2026-03-09 18:25:39 - app.main - INFO - Python version: 3.14.0 (tags/v3.14.0:ebf955d, Oct  7 2025, 10:15:03) [MSC v.1944 64 bit (AMD64)]
+2026-03-09 18:25:39 - app.main - INFO - Working directory: d:\JupyterNotebooks\Chatbots\API Management Console
+2026-03-09 18:25:39 - app.main - INFO - Loading environment variables...
+2026-03-09 18:25:39 - app.main - INFO - Environment variables loaded
+2026-03-09 18:25:39 - app.main - INFO - Importing routers...
+2026-03-09 18:25:39 - app.main - INFO - Environment variables loaded
+2026-03-09 18:25:39 - app.main - INFO - Importing routers...
+2026-03-09 18:25:40 - app.main - INFO - Routers imported successfully
+2026-03-09 18:25:40 - app.main - INFO - Initializing database...
+2026-03-09 18:25:40 - app.main - INFO - Database module imported
+2026-03-09 18:25:40 - app.main - INFO - Importing template service...
+2026-03-09 18:25:40 - app.main - INFO - Template service imported
+2026-03-09 18:25:40 - app.main - INFO - Importing tunnel service...
+2026-03-09 18:25:40 - app.main - INFO - Tunnel service imported
+2026-03-09 18:25:40 - app.main - INFO - Importing API gateway service...
+2026-03-09 18:25:40 - app.main - INFO - API gateway service imported
+2026-03-09 18:25:40 - app.main - INFO - Routers imported successfully
+2026-03-09 18:25:40 - app.main - INFO - Initializing database...
+2026-03-09 18:25:40 - app.main - INFO - Database module imported
+2026-03-09 18:25:40 - app.main - INFO - Importing template service...
+2026-03-09 18:25:40 - app.main - INFO - Template service imported
+2026-03-09 18:25:40 - app.main - INFO - Importing tunnel service...
+2026-03-09 18:25:40 - app.main - INFO - Tunnel service imported
+2026-03-09 18:25:40 - app.main - INFO - Importing API gateway service...
+2026-03-09 18:25:40 - app.main - INFO - API gateway service imported
+2026-03-09 18:25:40 - app.main - INFO - Routers imported successfully
+2026-03-09 18:25:40 - app.main - INFO - Initializing database...
+2026-03-09 18:25:40 - app.main - INFO - Database module imported
+2026-03-09 18:25:40 - app.main - INFO - Importing template service...
+2026-03-09 18:25:40 - app.main - INFO - Template service imported
+2026-03-09 18:25:40 - app.main - INFO - Importing tunnel service...
+2026-03-09 18:25:40 - app.main - INFO - Tunnel service imported
+2026-03-09 18:25:40 - app.main - INFO - Importing API gateway service...
+2026-03-09 18:25:40 - app.main - INFO - API gateway service imported
+2026-03-09 18:25:40 - app.main - INFO - React frontend found, serving from frontend/dist
+2026-03-09 18:25:40 - app.main - INFO - Starting Local AI Chatbot Deployment Console...
+2026-03-09 18:25:40 - app.main - INFO - Database initialized
+2026-03-09 18:25:40 - app.main - INFO - Templates loaded
+2026-03-09 18:25:40 - app.main - INFO - React frontend found, serving from frontend/dist
+2026-03-09 18:25:40 - app.main - INFO - Starting Local AI Chatbot Deployment Console...
+2026-03-09 18:25:40 - app.main - INFO - Database initialized
+2026-03-09 18:25:40 - app.main - INFO - Templates loaded
+2026-03-09 18:25:40 - app.services.api_gateway_service - INFO - API gateway started on http://127.0.0.1:59633 -> http://127.0.0.1:8000
+2026-03-09 18:25:40 - app.main - INFO - API-only gateway active on: http://127.0.0.1:59633
+2026-03-09 18:25:40 - app.services.api_gateway_service - INFO - API gateway started on http://127.0.0.1:50827 -> http://127.0.0.1:8000
+2026-03-09 18:25:40 - app.main - INFO - API-only gateway active on: http://127.0.0.1:50827
+2026-03-09 18:25:40 - app.main - INFO - React frontend found, serving from frontend/dist
+2026-03-09 18:25:40 - app.main - INFO - Starting Local AI Chatbot Deployment Console...
+2026-03-09 18:25:40 - app.main - INFO - Database initialized
+2026-03-09 18:25:40 - app.main - INFO - Templates loaded
+2026-03-09 18:25:40 - app.services.api_gateway_service - INFO - API gateway started on http://127.0.0.1:50828 -> http://127.0.0.1:8000
+2026-03-09 18:25:40 - app.main - INFO - API-only gateway active on: http://127.0.0.1:50828
+2026-03-09 18:25:43 - app.main - INFO - Public endpoint ready: https://wet-jellyfish-70.loca.lt
+2026-03-09 18:25:43 - app.main - INFO - Admin Dashboard: http://localhost:8000/admin
+2026-03-09 18:25:43 - app.main - INFO - API Documentation: http://localhost:8000/docs
+2026-03-09 18:25:43 - app.main - INFO - Public endpoint ready: https://strange-mole-11.loca.lt
+2026-03-09 18:25:43 - app.main - INFO - Admin Dashboard: http://localhost:8000/admin
+2026-03-09 18:25:43 - app.main - INFO - API Documentation: http://localhost:8000/docs
+2026-03-09 18:25:43 - app.main - INFO - Public endpoint ready: https://young-goat-22.loca.lt
+2026-03-09 18:25:43 - app.main - INFO - Admin Dashboard: http://localhost:8000/admin
+2026-03-09 18:25:43 - app.main - INFO - API Documentation: http://localhost:8000/docs
+2026-03-09 18:25:44 - app.main - INFO - Prewarming 1 bot(s) in parallel (concurrency=4) with prompt: Hi, send a welcome message
+2026-03-09 18:25:44 - app.main - INFO - Prewarming 1 bot(s) in parallel (concurrency=4) with prompt: Hi, send a welcome message
+2026-03-09 18:25:44 - app.main - INFO - Prewarming 1 bot(s) in parallel (concurrency=4) with prompt: Hi, send a welcome message
+2026-03-09 18:25:45 - app.services.llm_providers.local_provider - INFO - Ollama is already running
+2026-03-09 18:25:45 - app.services.llm_providers.local_provider - INFO - Ollama is already running
+2026-03-09 18:25:45 - app.services.llm_providers.local_provider - INFO - Ollama is already running
+2026-03-09 18:25:55 - app.main - INFO - Warmup complete: Arctic Customer Bot (3027bcaf-eeaf-4746-8d55-0390d9f922e6) in 10426ms
+2026-03-09 18:25:57 - app.main - INFO - Warmup complete: Arctic Customer Bot (3027bcaf-eeaf-4746-8d55-0390d9f922e6) in 12413ms
+2026-03-09 18:26:00 - app.main - INFO - Warmup complete: Arctic Customer Bot (3027bcaf-eeaf-4746-8d55-0390d9f922e6) in 15541ms
+2026-03-09 18:26:16 - app.main - INFO - === Application Starting ===
+2026-03-09 18:26:16 - app.main - INFO - Log file: D:\JupyterNotebooks\Chatbots\API Management Console\logs\app_20260309.log
+2026-03-09 18:26:16 - app.main - INFO - Python version: 3.14.0 (tags/v3.14.0:ebf955d, Oct  7 2025, 10:15:03) [MSC v.1944 64 bit (AMD64)]
+2026-03-09 18:26:16 - app.main - INFO - Working directory: D:\JupyterNotebooks\Chatbots\API Management Console
+2026-03-09 18:26:16 - app.main - INFO - Loading environment variables...
+2026-03-09 18:26:16 - app.main - INFO - Environment variables loaded
+2026-03-09 18:26:16 - app.main - INFO - Importing routers...
+2026-03-09 18:26:20 - app.main - INFO - Routers imported successfully
+2026-03-09 18:26:20 - app.main - INFO - Initializing database...
+2026-03-09 18:26:20 - app.main - INFO - Database module imported
+2026-03-09 18:26:20 - app.main - INFO - Importing template service...
+2026-03-09 18:26:20 - app.main - INFO - Template service imported
+2026-03-09 18:26:20 - app.main - INFO - Importing tunnel service...
+2026-03-09 18:26:20 - app.main - INFO - Tunnel service imported
+2026-03-09 18:26:20 - app.main - INFO - Importing API gateway service...
+2026-03-09 18:26:20 - app.main - INFO - API gateway service imported
+2026-03-09 18:26:20 - app.main - INFO - React frontend found, serving from frontend/dist
+2026-03-09 18:26:21 - app.main - INFO - === Application Starting ===
+2026-03-09 18:26:21 - app.main - INFO - Log file: D:\JupyterNotebooks\Chatbots\API Management Console\logs\app_20260309.log
+2026-03-09 18:26:21 - app.main - INFO - Python version: 3.14.0 (tags/v3.14.0:ebf955d, Oct  7 2025, 10:15:03) [MSC v.1944 64 bit (AMD64)]
+2026-03-09 18:26:21 - app.main - INFO - Working directory: D:\JupyterNotebooks\Chatbots\API Management Console
+2026-03-09 18:26:21 - app.main - INFO - Loading environment variables...
+2026-03-09 18:26:22 - app.main - INFO - Environment variables loaded
+2026-03-09 18:26:22 - app.main - INFO - Importing routers...
+2026-03-09 18:26:23 - app.main - INFO - Routers imported successfully
+2026-03-09 18:26:23 - app.main - INFO - Initializing database...
+2026-03-09 18:26:23 - app.main - INFO - Database module imported
+2026-03-09 18:26:23 - app.main - INFO - Importing template service...
+2026-03-09 18:26:23 - app.main - INFO - Template service imported
+2026-03-09 18:26:23 - app.main - INFO - Importing tunnel service...
+2026-03-09 18:26:23 - app.main - INFO - Tunnel service imported
+2026-03-09 18:26:23 - app.main - INFO - Importing API gateway service...
+2026-03-09 18:26:23 - app.main - INFO - API gateway service imported
+2026-03-09 18:26:23 - app.main - INFO - React frontend found, serving from frontend/dist
+2026-03-09 18:26:23 - app.main - INFO - Starting Local AI Chatbot Deployment Console...
+2026-03-09 18:26:23 - app.main - INFO - Database initialized
+2026-03-09 18:26:23 - app.main - INFO - Templates loaded
+2026-03-09 18:26:23 - app.services.api_gateway_service - INFO - API gateway started on http://127.0.0.1:50233 -> http://127.0.0.1:8000
+2026-03-09 18:26:23 - app.main - INFO - API-only gateway active on: http://127.0.0.1:50233
+2026-03-09 18:26:26 - app.main - INFO - Public endpoint ready: https://yellow-sloth-34.loca.lt
+2026-03-09 18:26:26 - app.main - INFO - Admin Dashboard: http://localhost:8000/admin
+2026-03-09 18:26:26 - app.main - INFO - API Documentation: http://localhost:8000/docs
+2026-03-09 18:26:27 - app.main - INFO - Prewarming 1 bot(s) in parallel (concurrency=4) with prompt: Hi, send a welcome message
+2026-03-09 18:26:27 - faiss.loader - DEBUG - Environment variable FAISS_OPT_LEVEL is not set, so let's pick the instruction set according to the current CPU
+2026-03-09 18:26:27 - faiss.loader - INFO - Loading faiss with AVX2 support.
+2026-03-09 18:26:27 - faiss.loader - INFO - Successfully loaded faiss with AVX2 support.
+2026-03-09 18:26:28 - app.services.llm_providers.local_provider - INFO - Ollama is already running
+2026-03-09 18:26:32 - app.main - INFO - Warmup complete: Arctic Customer Bot (3027bcaf-eeaf-4746-8d55-0390d9f922e6) in 4932ms
+2026-03-09 18:27:09 - app.services.llm_providers.local_provider - INFO - Loading sentence-transformers model (first time, may take a moment)...
+2026-03-09 18:27:09 - sentence_transformers.SentenceTransformer - INFO - Use pytorch device_name: cpu
+2026-03-09 18:27:09 - sentence_transformers.SentenceTransformer - INFO - Load pretrained SentenceTransformer: all-MiniLM-L6-v2
+2026-03-09 18:27:11 - huggingface_hub.utils._http - WARNING - Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+2026-03-09 18:27:16 - app.services.llm_providers.local_provider - INFO - Sentence-transformers model loaded successfully
+2026-03-09 18:27:17 - app.services.llm_providers.local_provider - INFO - Ollama is already running
+2026-03-09 19:22:01 - app.services.llm_providers.local_provider - INFO - Ollama is already running
+2026-03-09 19:26:15 - app.main - INFO - === Application Starting ===
+2026-03-09 19:26:15 - app.main - INFO - Log file: D:\JupyterNotebooks\Chatbots\API Management Console\logs\app_20260309.log
+2026-03-09 19:26:15 - app.main - INFO - Python version: 3.14.0 (tags/v3.14.0:ebf955d, Oct  7 2025, 10:15:03) [MSC v.1944 64 bit (AMD64)]
+2026-03-09 19:26:15 - app.main - INFO - Working directory: D:\JupyterNotebooks\Chatbots\API Management Console
+2026-03-09 19:26:15 - app.main - INFO - Loading environment variables...
+2026-03-09 19:26:15 - app.main - INFO - Environment variables loaded
+2026-03-09 19:26:15 - app.main - INFO - Importing routers...
+2026-03-09 19:26:20 - app.main - INFO - Routers imported successfully
+2026-03-09 19:26:20 - app.main - INFO - Initializing database...
+2026-03-09 19:26:20 - app.main - INFO - Database module imported
+2026-03-09 19:26:20 - app.main - INFO - Importing template service...
+2026-03-09 19:26:20 - app.main - INFO - Template service imported
+2026-03-09 19:26:20 - app.main - INFO - Importing tunnel service...
+2026-03-09 19:26:20 - app.main - INFO - Tunnel service imported
+2026-03-09 19:26:20 - app.main - INFO - Importing API gateway service...
+2026-03-09 19:26:20 - app.main - INFO - API gateway service imported
+2026-03-09 19:26:20 - app.main - INFO - React frontend found, serving from frontend/dist
+2026-03-09 19:26:22 - app.main - INFO - === Application Starting ===
+2026-03-09 19:26:22 - app.main - INFO - Log file: D:\JupyterNotebooks\Chatbots\API Management Console\logs\app_20260309.log
+2026-03-09 19:26:22 - app.main - INFO - Python version: 3.14.0 (tags/v3.14.0:ebf955d, Oct  7 2025, 10:15:03) [MSC v.1944 64 bit (AMD64)]
+2026-03-09 19:26:22 - app.main - INFO - Working directory: D:\JupyterNotebooks\Chatbots\API Management Console
+2026-03-09 19:26:22 - app.main - INFO - Loading environment variables...
+2026-03-09 19:26:22 - app.main - INFO - Environment variables loaded
+2026-03-09 19:26:22 - app.main - INFO - Importing routers...
+2026-03-09 19:26:23 - app.main - INFO - Routers imported successfully
+2026-03-09 19:26:23 - app.main - INFO - Initializing database...
+2026-03-09 19:26:23 - app.main - INFO - Database module imported
+2026-03-09 19:26:23 - app.main - INFO - Importing template service...
+2026-03-09 19:26:23 - app.main - INFO - Template service imported
+2026-03-09 19:26:23 - app.main - INFO - Importing tunnel service...
+2026-03-09 19:26:23 - app.main - INFO - Tunnel service imported
+2026-03-09 19:26:23 - app.main - INFO - Importing API gateway service...
+2026-03-09 19:26:23 - app.main - INFO - API gateway service imported
+2026-03-09 19:26:23 - app.main - INFO - React frontend found, serving from frontend/dist
+2026-03-09 19:26:23 - app.main - INFO - Starting Local AI Chatbot Deployment Console...
+2026-03-09 19:26:23 - app.main - INFO - Database initialized
+2026-03-09 19:26:23 - app.main - INFO - Templates loaded
+2026-03-09 19:26:23 - app.services.api_gateway_service - INFO - API gateway started on http://127.0.0.1:54139 -> http://127.0.0.1:8000
+2026-03-09 19:26:23 - app.main - INFO - API-only gateway active on: http://127.0.0.1:54139
+2026-03-09 19:26:27 - app.main - INFO - Public endpoint ready: https://arcticbot245.loca.lt
+2026-03-09 19:26:27 - app.main - INFO - Admin Dashboard: http://localhost:8000/admin
+2026-03-09 19:26:27 - app.main - INFO - API Documentation: http://localhost:8000/docs
+2026-03-09 19:26:28 - app.main - INFO - Prewarming 1 bot(s) in parallel (concurrency=4) with prompt: Hi, send a welcome message
+2026-03-09 19:26:29 - app.services.llm_providers.local_provider - INFO - Ollama is already running
+2026-03-09 19:26:33 - app.main - INFO - Warmup complete: Arctic Customer Bot (3027bcaf-eeaf-4746-8d55-0390d9f922e6) in 5539ms

@@ -1,4 +1,4 @@
-"""
+﻿"""
 Local AI Chatbot Deployment Console - Main Application
 
 A multi-chatbot AI control platform for creating, managing, and deploying
@@ -120,21 +120,21 @@ except Exception as e:
 async def lifespan(app: FastAPI):
     """Application lifespan events."""
     # Startup
-    logger.info("🚀 Starting Local AI Chatbot Deployment Console...")
-    print("🚀 Starting Local AI Chatbot Deployment Console...")
+    logger.info("Starting Local AI Chatbot Deployment Console...")
+    print("Starting Local AI Chatbot Deployment Console...")
     
     try:
         init_db()
-        logger.info("✅ Database initialized")
-        print("✅ Database initialized")
+        logger.info("Database initialized")
+        print("Database initialized")
     except Exception as e:
         logger.exception(f"Failed to initialize database: {e}")
         raise
     
     try:
         template_service._ensure_default_templates()
-        logger.info("✅ Templates loaded")
-        print("✅ Templates loaded")
+        logger.info("Templates loaded")
+        print("Templates loaded")
     except Exception as e:
         logger.exception(f"Failed to load templates: {e}")
         raise
@@ -149,14 +149,14 @@ async def lifespan(app: FastAPI):
             gateway_status = api_gateway_service.get_status()
             if gateway_status.get("running") and gateway_status.get("port"):
                 gateway_origin_url = api_gateway_service.get_origin_url() or app_origin_url
-                logger.info("🔒 API-only gateway active on: %s", gateway_origin_url)
-                print(f"🔒 API-only gateway active on: {gateway_origin_url}")
+                logger.info("API-only gateway active on: %s", gateway_origin_url)
+                print(f"API-only gateway active on: {gateway_origin_url}")
             else:
                 logger.warning("API-only gateway failed to start; falling back to full app origin")
-                print("⚠️ API-only gateway failed to start; falling back to full app origin")
+                print("WARNING: API-only gateway failed to start; falling back to full app origin")
     except Exception as gateway_err:
         logger.warning("API-only gateway startup failed; using direct app origin: %s", gateway_err)
-        print(f"⚠️ API-only gateway startup failed; using direct app origin: {gateway_err}")
+        print(f"WARNING: API-only gateway startup failed; using direct app origin: {gateway_err}")
 
     # Start/resolve public tunnel URL for external integrations (e.g., HubSpot)
     tunnel_origin_url = os.getenv("TUNNEL_ORIGIN_URL", gateway_origin_url)
@@ -164,19 +164,19 @@ async def lifespan(app: FastAPI):
         tunnel_ok = await tunnel_service.ensure_started(origin_url=tunnel_origin_url)
         tunnel_status = tunnel_service.get_status()
         if tunnel_ok and tunnel_status.get("public_base_url"):
-            logger.info("🌐 Public endpoint ready: %s", tunnel_status["public_base_url"])
-            print(f"🌐 Public endpoint ready: {tunnel_status['public_base_url']}")
+            logger.info("Public endpoint ready: %s", tunnel_status["public_base_url"])
+            print(f"Public endpoint ready: {tunnel_status['public_base_url']}")
         else:
             logger.warning("Public tunnel unavailable: %s", tunnel_status.get("last_error"))
-            print(f"⚠️ Public tunnel unavailable: {tunnel_status.get('last_error')}")
+            print(f"WARNING: Public tunnel unavailable: {tunnel_status.get('last_error')}")
     except Exception as tunnel_err:
         logger.warning("Public tunnel startup failed: %s", tunnel_err)
-        print(f"⚠️ Public tunnel startup failed: {tunnel_err}")
+        print(f"WARNING: Public tunnel startup failed: {tunnel_err}")
     
-    logger.info("📍 Admin Dashboard: http://localhost:8000/admin")
-    logger.info("📍 API Documentation: http://localhost:8000/docs")
-    print("📍 Admin Dashboard: http://localhost:8000/admin")
-    print("📍 API Documentation: http://localhost:8000/docs")
+    logger.info("Admin Dashboard: http://localhost:8000/admin")
+    logger.info("API Documentation: http://localhost:8000/docs")
+    print("Admin Dashboard: http://localhost:8000/admin")
+    print("API Documentation: http://localhost:8000/docs")
     
     # Schedule bot initialization as a background task (non-blocking)
     async def _init_bots():
@@ -269,14 +269,14 @@ async def lifespan(app: FastAPI):
     
     yield
     
-    # Shutdown — cancel init if still running
+    # Shutdown - cancel init if still running
     init_task.cancel()
     await tunnel_service.shutdown()
     api_gateway_service.shutdown()
 
     # Shutdown
-    logger.info("👋 Shutting down...")
-    print("👋 Shutting down...")
+    logger.info("Shutting down...")
+    print("Shutting down...")
 
 
 # Create FastAPI application
@@ -1006,7 +1006,7 @@ def get_admin_html() -> str:
                             </div>
                             <div class="form-group">
                                 <label class="form-label">Password</label>
-                                <input type="password" class="form-input" id="login-password" placeholder="••••••••" required>
+                                <input type="password" class="form-input" id="login-password" placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢" required>
                             </div>
                             <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 16px;">
                                 Sign In
@@ -1798,9 +1798,9 @@ def get_admin_html() -> str:
                 let paginationHtml = '';
                 if (total_pages > 1) {
                     paginationHtml = `
-                        <button class="btn btn-secondary btn-sm" ${currentPage <= 1 ? 'disabled' : ''} onclick="loadKnowledgeChunks('${botId}', ${currentPage - 1})">← Previous</button>
+                        <button class="btn btn-secondary btn-sm" ${currentPage <= 1 ? 'disabled' : ''} onclick="loadKnowledgeChunks('${botId}', ${currentPage - 1})">â† Previous</button>
                         <span style="font-size: 13px;">Page ${currentPage} of ${total_pages}</span>
-                        <button class="btn btn-secondary btn-sm" ${currentPage >= total_pages ? 'disabled' : ''} onclick="loadKnowledgeChunks('${botId}', ${currentPage + 1})">Next →</button>
+                        <button class="btn btn-secondary btn-sm" ${currentPage >= total_pages ? 'disabled' : ''} onclick="loadKnowledgeChunks('${botId}', ${currentPage + 1})">Next â†’</button>
                     `;
                 }
                 paginationDiv.innerHTML = paginationHtml;
@@ -1932,4 +1932,5 @@ if __name__ == "__main__":
         port=8000,
         reload=True
     )
+
 

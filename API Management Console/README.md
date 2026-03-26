@@ -1,4 +1,4 @@
-# Local AI Chatbot Deployment Console
+﻿# Local AI Chatbot Deployment Console
 
 A powerful, local-first AI deployment platform for creating, managing, and deploying multiple chatbots. This system runs entirely on your desktop and provides a secure web-based management UI at localhost.
 

@@ -1,0 +1,10 @@
+============================================ 
+ Startup Log - Mon 03/09/2026 19:26:12.00 
+============================================ 
+[INFO] Working directory: D:\JupyterNotebooks\Chatbots\API Management Console 
+[INFO] Python 3.14.0 
+[INFO] venv activated 
+[INFO] localtunnel subdomain: arcticbot245 
+[INFO] tunnel provider: localtunnel 
+[INFO] Ollama ready, 0 models 
+[INFO] Starting uvicorn 
