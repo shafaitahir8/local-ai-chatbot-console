@@ -27,9 +27,16 @@ A powerful, local-first AI deployment platform for creating, managing, and deplo
 - **One-click delete** - Remove individual chunks
 
 ### Enhanced Reliability
-- **Setup script improvements** - `setup_ollama.bat` checks existing models before downloading
+- **Setup script improvements** - `scripts/setup_ollama.bat` checks existing models before downloading
 - **Error handling** - Better diagnostics and error messages
 - **Application logging** - Detailed logs in `logs/app_YYYYMMDD.log`
+
+## Recent Updates
+
+- Public tunnel support now uses an API-only gateway by default and supports static/public endpoints protected by `TUNNEL_SHARED_SECRET`.
+- HubSpot module requests include the LocalTunnel bypass header and support tokenized API calls when the tunnel is protected.
+- Missing Ollama models can trigger a background `ollama pull`, and the user receives a chat message instead of a generic failure.
+- Slow local hardware can use `LOCAL_LLM_TIMEOUT_SECONDS` to avoid timing out long-running model responses.
 
 ## 🎯 Features
 
@@ -219,7 +226,8 @@ API Management Console/
 │   ├── local_template.json
 │   └── claude_template.json
 ├── start_console.bat            # One-click launcher (Windows)
-├── setup_ollama.bat             # Ollama model setup script
+├── scripts/
+│   └── setup_ollama.bat         # Ollama model setup script
 ├── .env
 ├── .env.example
 ├── requirements.txt
@@ -239,10 +247,16 @@ API Management Console/
 | `ENCRYPTION_SECRET` | Secret for API key encryption | Random |
 | `OPENAI_API_KEY` | Your OpenAI API key | - |
 | `ANTHROPIC_API_KEY` | Your Anthropic API key | - |
-| `LOCAL_LLM_URL` | Local LLM server URL | `http://localhost:8080` |
+| `LOCAL_LLM_URL` | Local LLM server URL | `http://localhost:11434` |
+| `LOCAL_LLM_TIMEOUT_SECONDS` | Timeout for local model responses | `300` |
+| `LOCAL_LLM_AUTO_PULL_MISSING` | Auto-download missing Ollama models | `true` |
 | `RATE_LIMIT_REQUESTS` | Requests per window | `60` |
 | `RATE_LIMIT_WINDOW` | Rate limit window (seconds) | `60` |
 | `CORS_ORIGINS` | Allowed CORS origins | `*` |
+| `TUNNEL_PROVIDER` | Tunnel backend (`cloudflare`, `localtunnel`, `ngrok`) | `localtunnel` |
+| `TUNNEL_API_ONLY` | Expose only gateway-safe routes publicly | `true` |
+| `TUNNEL_SHARED_SECRET` | Shared secret accepted as query/header token | blank |
+| `LOCALTUNNEL_SUBDOMAIN` | Requested LocalTunnel subdomain | blank |
 
 
 ## 📡 API Reference
@@ -352,6 +366,12 @@ Full API documentation available at `/docs` when server is running.
 </div>
 ```
 
+For HubSpot modules that call the public API directly instead of using the iframe:
+
+- Use `https://YOUR-PUBLIC-DOMAIN/api/bot/{bot_id}/chat?token={TUNNEL_SHARED_SECRET}` when `TUNNEL_SHARED_SECRET` is enabled.
+- If the public URL is a LocalTunnel domain such as `*.loca.lt`, the request must include `bypass-tunnel-reminder: true`.
+- After updating module files in HubSpot Design Manager, republish the module/page so HubSpot regenerates the served `hub_generated/module_assets/...` bundle.
+
 
 ## 🌍 Exposing Publicly
 
@@ -390,12 +410,15 @@ For production, consider:
 4. **Use a proper secret** for `JWT_SECRET` and `ENCRYPTION_SECRET`
 5. **Set up backups** for the SQLite database
 
+For a stable public URL with shared-secret protection, see [static_tunnel_setup.md](/d:/JupyterNotebooks/Chatbots/API%20Management%20Console/docs/static_tunnel_setup.md).
+
 
 ## 🤖 Using Local LLMs
 
 The console supports local language models via **Ollama** (recommended) or other OpenAI-compatible servers. When using local LLMs, the console will automatically:
 - Start Ollama if it's not running
 - Verify your selected model is installed
+- Start a background download for missing Ollama models when enabled
 - Provide helpful error messages if setup is needed
 
 ### Recommended Models for Consumer Hardware
@@ -413,7 +436,7 @@ The console supports local language models via **Ollama** (recommended) or other
 **Option 1: Automated Setup (Recommended)**
 ```batch
 # Run the setup script to install all recommended models
-.\setup_ollama.bat
+.\scripts\setup_ollama.bat
 ```
 
 **Option 2: Manual Setup**
@@ -461,6 +484,8 @@ ollama pull <model_name>
 ollama pull qwen2.5:1.5b
 ```
 
+If `LOCAL_LLM_AUTO_PULL_MISSING=true`, the app will also attempt this automatically in the background and ask the user to retry after the download starts.
+
 **Check installed models:**
 ```bash
 ollama list
@@ -469,7 +494,7 @@ ollama list
 ### With llama.cpp Server
 
 ```bash
-# Start llama.cpp server (update LOCAL_LLM_URL=http://localhost:8080 in .env)
+# Start llama.cpp server (update LOCAL_LLM_URL to match the server URL in .env)
 ./server -m your-model.gguf -c 4096 --host 0.0.0.0 --port 8080
 ```
 
