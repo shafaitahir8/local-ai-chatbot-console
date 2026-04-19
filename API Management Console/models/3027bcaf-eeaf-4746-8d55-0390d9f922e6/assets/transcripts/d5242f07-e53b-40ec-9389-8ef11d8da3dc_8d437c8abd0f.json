@@ -1,0 +1,27 @@
+{
+  "bot_id": "3027bcaf-eeaf-4746-8d55-0390d9f922e6",
+  "bot_name": "Arctic Customer Bot",
+  "session_id": "d5242f07-e53b-40ec-9389-8ef11d8da3dc",
+  "provider_type": "local",
+  "model": "llama3.2:3b",
+  "created_at": "2026-04-19T04:33:06.711615Z",
+  "updated_at": "2026-04-19T04:33:06.711615Z",
+  "messages": [
+    {
+      "role": "user",
+      "content": "Send user this email for contact: shafaitahir8@gmail.com",
+      "timestamp": "2026-04-19T04:33:06.711615Z"
+    },
+    {
+      "role": "assistant",
+      "content": "### **Support Request Email**\n\nSubject: Technical Support Inquiry - Arctic Studio\n\nDear \\[User's Name],\n\nI appreciate you reaching out to Arctic Studio for technical support. I'm here to help address any issues with your HubSpot setup.\n\nTo better assist you, could you please provide more details about the issue you're experiencing? This will allow me to direct you to the most suitable resources or escalate the request if needed.\n\nOur process includes:\n\n1. **Technical Triage**: We'll start by asking specific questions about the problem to identify the root cause.\n2. **Lead Capture**: If this is a new inquiry, we may need your name, work email address, and website URL to improve our response time.\n3. **Escalation**: For complex issues, our Technical Architect will review logs and respond within 24 hours.\n\nPlease feel free to provide any relevant information about your issue. I can direct you to [Shafai's Contact Information](shafaitahir8@gmail.com) for immediate assistance or continue to work with me to resolve the issue.\n\nLooking forward to hearing back from you.\n\nBest regards,\n\n\\[Your Name]\nTechnical Support Lead\nArctic Studio",
+      "timestamp": "2026-04-19T04:33:06.711615Z",
+      "tokens_used": 686,
+      "latency_ms": 5631,
+      "retries_used": 0,
+      "fallback_used": true,
+      "rag_used": false
+    }
+  ],
+  "message_count": 2
+}

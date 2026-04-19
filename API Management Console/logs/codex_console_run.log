@@ -1,0 +1,79 @@
+
+ ============================================
+  Local AI Chatbot Deployment Console
+ ============================================
+
+ [INFO] Log file: D:\JupyterNotebooks\Chatbots\API Management Console\logs\startup_20260328_125103.log
+
+[1/7] Checking Python installation...
+       Found: Python 3.14.0
+[2/7] Setting up virtual environment...
+       Virtual environment exists.
+[3/7] Checking dependencies...
+       Dependencies already installed.
+[4/7] Loading configuration...
+       Configuration loaded from .env
+[5/7] Checking public tunnel provider...
+       LocalTunnel mode enabled via npx localtunnel.
+       Requested LocalTunnel subdomain: arcticbot245
+[6/7] Checking Ollama (local LLM)...
+       Ollama is running.
+[WARN] Ollama running but no models installed.
+       Run scripts\setup_ollama.bat to install models.
+[7/7] Starting server...
+
+ ============================================
+  Server Starting...
+ ============================================
+
+  Admin Dashboard:  http://localhost:8000/admin
+  API Docs:         http://localhost:8000/docs
+
+  Press CTRL+C to stop the server
+ ============================================
+
+INFO:     Will watch for changes in these directories: ['D:\\JupyterNotebooks\\Chatbots\\API Management Console']
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO:     Started reloader process [22016] using WatchFiles
+{"timestamp": "2026-03-28T07:51:09.693131Z", "level": "INFO", "logger": "app.main", "message": "=== Application Starting ==="}
+{"timestamp": "2026-03-28T07:51:09.693229Z", "level": "INFO", "logger": "app.main", "message": "Log file: D:\\JupyterNotebooks\\Chatbots\\API Management Console\\logs\\app_20260328.log"}
+{"timestamp": "2026-03-28T07:51:09.693267Z", "level": "INFO", "logger": "app.main", "message": "Python version: 3.14.0 (tags/v3.14.0:ebf955d, Oct  7 2025, 10:15:03) [MSC v.1944 64 bit (AMD64)]"}
+{"timestamp": "2026-03-28T07:51:09.693298Z", "level": "INFO", "logger": "app.main", "message": "Working directory: D:\\JupyterNotebooks\\Chatbots\\API Management Console"}
+{"timestamp": "2026-03-28T07:51:09.693328Z", "level": "INFO", "logger": "app.main", "message": "Loading environment variables..."}
+{"timestamp": "2026-03-28T07:51:09.694810Z", "level": "INFO", "logger": "app.main", "message": "Environment variables loaded"}
+{"timestamp": "2026-03-28T07:51:09.694856Z", "level": "INFO", "logger": "app.main", "message": "Importing routers..."}
+{"timestamp": "2026-03-28T07:51:10.973127Z", "level": "INFO", "logger": "app.main", "message": "Routers imported successfully"}
+{"timestamp": "2026-03-28T07:51:10.973180Z", "level": "INFO", "logger": "app.main", "message": "Initializing database..."}
+{"timestamp": "2026-03-28T07:51:10.973214Z", "level": "INFO", "logger": "app.main", "message": "Database module imported"}
+{"timestamp": "2026-03-28T07:51:10.973246Z", "level": "INFO", "logger": "app.main", "message": "Importing template service..."}
+{"timestamp": "2026-03-28T07:51:10.973278Z", "level": "INFO", "logger": "app.main", "message": "Template service imported"}
+{"timestamp": "2026-03-28T07:51:10.973306Z", "level": "INFO", "logger": "app.main", "message": "Importing tunnel service..."}
+{"timestamp": "2026-03-28T07:51:10.973334Z", "level": "INFO", "logger": "app.main", "message": "Tunnel service imported"}
+{"timestamp": "2026-03-28T07:51:10.973359Z", "level": "INFO", "logger": "app.main", "message": "Importing API gateway service..."}
+{"timestamp": "2026-03-28T07:51:10.974342Z", "level": "INFO", "logger": "app.main", "message": "API gateway service imported"}
+{"timestamp": "2026-03-28T07:51:11.011062Z", "level": "INFO", "logger": "app.main", "message": "React frontend found, serving from frontend/dist"}
+INFO:     Started server process [28684]
+INFO:     Waiting for application startup.
+{"timestamp": "2026-03-28T07:51:11.013494Z", "level": "INFO", "logger": "app.main", "message": "Starting Local AI Chatbot Deployment Console..."}
+Starting Local AI Chatbot Deployment Console...
+{"timestamp": "2026-03-28T07:51:11.039099Z", "level": "INFO", "logger": "app.main", "message": "Database initialized"}
+Database initialized
+{"timestamp": "2026-03-28T07:51:11.039572Z", "level": "INFO", "logger": "app.main", "message": "Templates loaded"}
+Templates loaded
+{"timestamp": "2026-03-28T07:51:11.039641Z", "level": "INFO", "logger": "app.main", "message": "Admin Dashboard: http://localhost:8000/admin"}
+{"timestamp": "2026-03-28T07:51:11.039708Z", "level": "INFO", "logger": "app.main", "message": "API Documentation: http://localhost:8000/docs"}
+Admin Dashboard: http://localhost:8000/admin
+API Documentation: http://localhost:8000/docs
+{"timestamp": "2026-03-28T07:51:11.039749Z", "level": "INFO", "logger": "app.main", "message": "Running API role 'api'. Gateway/tunnel/scraper/warmup now require separate supervisor roles."}
+INFO:     Application startup complete.
+INFO:     127.0.0.1:57579 - "GET /admin HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57579 - "GET /assets/index-CoWMUGVP.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57579 - "GET /api/bots HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63249 - "POST /api/admin/login HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63249 - "GET /api/bots HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63475 - "GET /admin HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63475 - "GET /login HTTP/1.1" 307 Temporary Redirect
+INFO:     127.0.0.1:63475 - "GET /admin/login HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63475 - "GET /api/bots HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:63598 - "POST /api/admin/login HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63598 - "GET /api/bots HTTP/1.1" 200 OK

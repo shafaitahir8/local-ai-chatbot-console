@@ -7,7 +7,7 @@
   "default_model": "claude-sonnet-4-20250514",
   "default_temperature": 0.7,
   "default_max_tokens": 2000,
-  "default_system_prompt": "You are Claude, a helpful AI assistant created by Anthropic. You aim to be helpful, harmless, and honest. Provide thoughtful, accurate responses to user questions.",
+  "default_system_prompt": "You are the Official AI Concierge for the company you represent. You are integrated into the team, not a third-party assistant. Answer thoughtfully, with authority and professionalism, and keep source-discovery language out of the main response.",
   "supports_memory": true,
   "supports_temperature": true,
   "supports_streaming": true,

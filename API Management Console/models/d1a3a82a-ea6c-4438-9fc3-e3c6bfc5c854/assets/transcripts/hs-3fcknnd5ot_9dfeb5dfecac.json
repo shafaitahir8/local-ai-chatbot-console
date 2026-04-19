@@ -1,0 +1,27 @@
+{
+  "bot_id": "d1a3a82a-ea6c-4438-9fc3-e3c6bfc5c854",
+  "bot_name": "Hubbase Chatbot",
+  "session_id": "hs-3fcknnd5ot",
+  "provider_type": "local",
+  "model": "qwen2.5:1.5b",
+  "created_at": "2026-03-28T17:08:09.890045Z",
+  "updated_at": "2026-03-28T17:08:09.890045Z",
+  "messages": [
+    {
+      "role": "user",
+      "content": "what does it mean to be concious",
+      "timestamp": "2026-03-28T17:08:09.890045Z"
+    },
+    {
+      "role": "assistant",
+      "content": "Being conscious means having the ability to perceive and experience the world around you. It involves having a sense of self-awareness and being able to think and reason about your experiences. This means being able to recognize and respond to your environment, and being able to think about your thoughts and feelings. It also means being able to remember and recall information, as well as being able to make decisions based on your experiences and knowledge. Consciousness can be experienced in different ways, such as through your senses, emotions, and thoughts. It is a fundamental aspect of human experience and is closely related to other qualities like awareness and perception.",
+      "timestamp": "2026-03-28T17:08:09.890045Z",
+      "tokens_used": 444,
+      "latency_ms": 2274,
+      "retries_used": 0,
+      "fallback_used": true,
+      "rag_used": false
+    }
+  ],
+  "message_count": 2
+}

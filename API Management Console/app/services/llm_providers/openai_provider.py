@@ -38,13 +38,18 @@ class OpenAIProvider(BaseLLMProvider):
         self.api_key = api_key or os.getenv("OPENAI_API_KEY")
         self.model = model or "gpt-4.1-mini"
         self.embedding_model = "text-embedding-3-small"
+        self.request_timeout = float(os.getenv("OPENAI_TIMEOUT_SECONDS", "45"))
         self._client: Optional[AsyncOpenAI] = None
     
     @property
     def client(self) -> AsyncOpenAI:
         """Lazy initialization of OpenAI client."""
         if self._client is None:
-            self._client = AsyncOpenAI(api_key=self.api_key)
+            self._client = AsyncOpenAI(
+                api_key=self.api_key,
+                timeout=self.request_timeout,
+                max_retries=0,
+            )
         return self._client
     
     @property
@@ -58,6 +63,11 @@ class OpenAIProvider(BaseLLMProvider):
     @property
     def supported_models(self) -> List[str]:
         return self.SUPPORTED_MODELS
+
+    async def warm_client(self) -> bool:
+        """Prime the shared OpenAI client object during startup."""
+        _ = self.client
+        return True
     
     async def chat(
         self,
@@ -69,26 +79,29 @@ class OpenAIProvider(BaseLLMProvider):
         """Send chat completion request to OpenAI."""
         try:
             formatted_messages = self.format_messages(messages)
-            
-            response = await self.client.chat.completions.create(
-                model=self.model,
-                messages=formatted_messages,
-                temperature=temperature,
-                max_tokens=max_tokens,
-                **kwargs
-            )
-            
-            choice = response.choices[0]
-            usage = response.usage
-            
-            return ChatResponse(
-                content=choice.message.content or "",
-                tokens_prompt=usage.prompt_tokens if usage else 0,
-                tokens_completion=usage.completion_tokens if usage else 0,
-                tokens_total=usage.total_tokens if usage else 0,
-                model=response.model,
-                finish_reason=choice.finish_reason
-            )
+
+            async def _call() -> ChatResponse:
+                response = await self.client.chat.completions.create(
+                    model=self.model,
+                    messages=formatted_messages,
+                    temperature=temperature,
+                    max_tokens=max_tokens,
+                    **kwargs
+                )
+
+                choice = response.choices[0]
+                usage = response.usage
+
+                return ChatResponse(
+                    content=choice.message.content or "",
+                    tokens_prompt=usage.prompt_tokens if usage else 0,
+                    tokens_completion=usage.completion_tokens if usage else 0,
+                    tokens_total=usage.total_tokens if usage else 0,
+                    model=response.model,
+                    finish_reason=choice.finish_reason
+                )
+
+            return await self.run_with_breaker(self.chat_breaker, self.chat_bulkhead, _call)
         except Exception as e:
             raise RuntimeError(f"OpenAI API error: {str(e)}")
     
@@ -126,19 +139,22 @@ class OpenAIProvider(BaseLLMProvider):
         """Get embeddings from OpenAI."""
         try:
             model = kwargs.get("embedding_model", self.embedding_model)
-            
-            response = await self.client.embeddings.create(
-                model=model,
-                input=texts
-            )
-            
-            embeddings = [item.embedding for item in response.data]
-            
-            return EmbeddingResponse(
-                embeddings=embeddings,
-                tokens_used=response.usage.total_tokens,
-                model=response.model
-            )
+
+            async def _call() -> EmbeddingResponse:
+                response = await self.client.embeddings.create(
+                    model=model,
+                    input=texts
+                )
+
+                embeddings = [item.embedding for item in response.data]
+
+                return EmbeddingResponse(
+                    embeddings=embeddings,
+                    tokens_used=response.usage.total_tokens,
+                    model=response.model
+                )
+
+            return await self.run_with_breaker(self.embedding_breaker, self.embedding_bulkhead, _call)
         except Exception as e:
             raise RuntimeError(f"OpenAI embedding error: {str(e)}")
     

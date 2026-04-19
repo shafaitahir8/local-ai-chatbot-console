@@ -1,5 +1,13 @@
 ﻿# Local AI Chatbot Deployment Console
 
+Documentation lives in [`docs/`](docs/README.md). Start with:
+
+- [`docs/README.md`](docs/README.md)
+- [`docs/setup-and-development.md`](docs/setup-and-development.md)
+- [`docs/architecture.md`](docs/architecture.md)
+- [`docs/api-reference.md`](docs/api-reference.md)
+- [`docs/cli.md`](docs/cli.md)
+
 A powerful, local-first AI deployment platform for creating, managing, and deploying multiple chatbots. This system runs entirely on your desktop and provides a secure web-based management UI at localhost.
 
 ![Version](https://img.shields.io/badge/version-1.1.0-blue)

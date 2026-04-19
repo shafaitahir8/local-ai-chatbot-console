@@ -1,0 +1,47 @@
+{
+  "pages_found": 1,
+  "pages_scraped": 0,
+  "pages_visited": 1,
+  "current_url": "https://example.com/",
+  "status": "completed",
+  "revalidated_pages": 0,
+  "unchanged_pages": 0,
+  "changed_pages": 0,
+  "priority_counts": {
+    "T1": 0,
+    "T2": 0,
+    "T3": 0
+  },
+  "summary": {
+    "scraped": "0/5",
+    "tier_1_pages": 0,
+    "tier_2_pages": 0,
+    "tier_3_pages": 0,
+    "total_words": 0
+  },
+  "checkpoint": {
+    "start_url": "https://example.com",
+    "frontier": [],
+    "visited": [
+      "https://example.com/"
+    ],
+    "visited_urls_hash": "b559c7edd3fb67374c1a25e739cdd7edd1d79949",
+    "last_url": "https://example.com/",
+    "pages_saved": 0,
+    "pages_found": 1,
+    "persisted_page_ids": [],
+    "persist_pages_path": null,
+    "revalidate_pages_path": null,
+    "active_job_path": "D:\\JupyterNotebooks\\Chatbots\\API Management Console\\models\\smoke-bot\\scrapes\\active_job_smoke-job.json",
+    "pages_discovered_counter": 1,
+    "max_depth_reached": 0,
+    "revalidated_pages": 0,
+    "unchanged_pages": 0,
+    "changed_pages": 0,
+    "priority_counts": {
+      "T1": 0,
+      "T2": 0,
+      "T3": 0
+    }
+  }
+}

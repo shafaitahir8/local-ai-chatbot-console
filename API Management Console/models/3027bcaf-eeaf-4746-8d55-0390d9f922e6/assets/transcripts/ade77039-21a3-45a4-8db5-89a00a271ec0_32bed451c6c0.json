@@ -1,0 +1,57 @@
+{
+  "bot_id": "3027bcaf-eeaf-4746-8d55-0390d9f922e6",
+  "bot_name": "Arctic Customer Bot",
+  "session_id": "ade77039-21a3-45a4-8db5-89a00a271ec0",
+  "provider_type": "local",
+  "model": "llama3.2:3b",
+  "created_at": "2026-04-19T06:37:58.010170Z",
+  "updated_at": "2026-04-19T06:38:18.297537Z",
+  "messages": [
+    {
+      "role": "user",
+      "content": "Respond as a chatbot in 1-2 short sentences.\nDo not write an email, letter, greeting, sign-off, or placeholders.\nGive the user the direct answer only.\nCalculate quote for the user, ask the user how many pages are required, expect a number, then multiply that number with 50$ per page.",
+      "timestamp": "2026-04-19T06:37:58.010170Z"
+    },
+    {
+      "role": "assistant",
+      "content": "I'm sorry, but I need more information to provide a specific cost estimate. How many pages do you anticipate we will be creating together?",
+      "timestamp": "2026-04-19T06:37:58.010170Z",
+      "tokens_used": 665,
+      "latency_ms": 2680,
+      "retries_used": 0,
+      "fallback_used": true,
+      "rag_used": true
+    },
+    {
+      "role": "user",
+      "content": "5",
+      "timestamp": "2026-04-19T06:38:06.458004Z"
+    },
+    {
+      "role": "assistant",
+      "content": "For engineered solutions, our standard rate is $50 per page. Therefore, the total quote for your project would be $250.",
+      "timestamp": "2026-04-19T06:38:06.458004Z",
+      "tokens_used": 656,
+      "latency_ms": 2938,
+      "retries_used": 0,
+      "fallback_used": true,
+      "rag_used": false
+    },
+    {
+      "role": "user",
+      "content": "100 pages",
+      "timestamp": "2026-04-19T06:38:18.297537Z"
+    },
+    {
+      "role": "assistant",
+      "content": "For 100 pages at $50 per page, the total quote would be $5000.",
+      "timestamp": "2026-04-19T06:38:18.297537Z",
+      "tokens_used": 687,
+      "latency_ms": 4193,
+      "retries_used": 0,
+      "fallback_used": true,
+      "rag_used": false
+    }
+  ],
+  "message_count": 6
+}

@@ -1,0 +1,27 @@
+{
+  "bot_id": "d1a3a82a-ea6c-4438-9fc3-e3c6bfc5c854",
+  "bot_name": "Hubbase Chatbot",
+  "session_id": "038d031e-0404-49dc-a08b-a20f687cef3c",
+  "provider_type": "gemini",
+  "model": "gemini-2.5-flash",
+  "created_at": "2026-03-28T15:14:41.975446Z",
+  "updated_at": "2026-03-28T15:14:41.975446Z",
+  "messages": [
+    {
+      "role": "user",
+      "content": "what can you tell me about hubbase services",
+      "timestamp": "2026-03-28T15:14:41.975446Z"
+    },
+    {
+      "role": "assistant",
+      "content": "[mock:gemini] Echo: what can you tell me about hubbase services",
+      "timestamp": "2026-03-28T15:14:41.975446Z",
+      "tokens_used": 192,
+      "latency_ms": 32,
+      "retries_used": 0,
+      "fallback_used": false,
+      "rag_used": false
+    }
+  ],
+  "message_count": 2
+}

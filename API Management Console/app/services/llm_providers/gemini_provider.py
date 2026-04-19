@@ -3,6 +3,7 @@ Google Gemini LLM Provider implementation (Generative Language API).
 """
 
 import os
+import asyncio
 from typing import List, Optional, AsyncIterator, Dict, Any
 import httpx
 
@@ -29,12 +30,24 @@ class GeminiProvider(BaseLLMProvider):
         super().__init__(api_key, model)
         self.api_key = api_key or os.getenv("GEMINI_API_KEY")
         self.model = model or "gemini-2.5-flash"
+        self.request_timeout = httpx.Timeout(
+            timeout=float(os.getenv("GEMINI_TIMEOUT_SECONDS", "45")),
+            connect=float(os.getenv("GEMINI_CONNECT_TIMEOUT_SECONDS", "10")),
+        )
+        self.embedding_parallelism = max(1, int(os.getenv("GEMINI_EMBEDDING_PARALLELISM", "4")))
         self._client: Optional[httpx.AsyncClient] = None
 
     @property
     def client(self) -> httpx.AsyncClient:
         if self._client is None:
-            self._client = httpx.AsyncClient(timeout=120.0)
+            self._client = httpx.AsyncClient(
+                timeout=self.request_timeout,
+                limits=httpx.Limits(
+                    max_connections=int(os.getenv("HTTPX_MAX_CONNECTIONS", "32")),
+                    max_keepalive_connections=int(os.getenv("HTTPX_MAX_KEEPALIVE_CONNECTIONS", "16")),
+                    keepalive_expiry=float(os.getenv("HTTPX_KEEPALIVE_EXPIRY_SECONDS", "30")),
+                ),
+            )
         return self._client
 
     @property
@@ -48,6 +61,11 @@ class GeminiProvider(BaseLLMProvider):
     @property
     def supported_models(self) -> List[str]:
         return self.SUPPORTED_MODELS
+
+    async def warm_client(self) -> bool:
+        """Prime the shared Gemini HTTP client during startup."""
+        _ = self.client
+        return True
 
     def _headers(self) -> Dict[str, str]:
         return {"Content-Type": "application/json"}
@@ -99,36 +117,39 @@ class GeminiProvider(BaseLLMProvider):
             payload = self._build_payload(messages, temperature, max_tokens)
             url = f"{self.API_BASE}/models/{self.model}:generateContent"
 
-            response = await self.client.post(
-                url,
-                params={"key": self.api_key},
-                headers=self._headers(),
-                json=payload,
-            )
-            response.raise_for_status()
-            data = response.json()
+            async def _call() -> ChatResponse:
+                response = await self.client.post(
+                    url,
+                    params={"key": self.api_key},
+                    headers=self._headers(),
+                    json=payload,
+                )
+                response.raise_for_status()
+                data = response.json()
 
-            candidates = data.get("candidates", [])
-            content = ""
-            if candidates:
-                parts = candidates[0].get("content", {}).get("parts", [])
-                content = "".join(part.get("text", "") for part in parts if isinstance(part, dict))
+                candidates = data.get("candidates", [])
+                content = ""
+                if candidates:
+                    parts = candidates[0].get("content", {}).get("parts", [])
+                    content = "".join(part.get("text", "") for part in parts if isinstance(part, dict))
 
-            usage = data.get("usageMetadata", {})
-            prompt_tokens = int(usage.get("promptTokenCount", 0) or 0)
-            completion_tokens = int(usage.get("candidatesTokenCount", 0) or 0)
-            total_tokens = int(usage.get("totalTokenCount", prompt_tokens + completion_tokens) or 0)
+                usage = data.get("usageMetadata", {})
+                prompt_tokens = int(usage.get("promptTokenCount", 0) or 0)
+                completion_tokens = int(usage.get("candidatesTokenCount", 0) or 0)
+                total_tokens = int(usage.get("totalTokenCount", prompt_tokens + completion_tokens) or 0)
 
-            finish_reason = candidates[0].get("finishReason") if candidates else None
+                finish_reason = candidates[0].get("finishReason") if candidates else None
 
-            return ChatResponse(
-                content=content,
-                tokens_prompt=prompt_tokens,
-                tokens_completion=completion_tokens,
-                tokens_total=total_tokens,
-                model=self.model,
-                finish_reason=finish_reason,
-            )
+                return ChatResponse(
+                    content=content,
+                    tokens_prompt=prompt_tokens,
+                    tokens_completion=completion_tokens,
+                    tokens_total=total_tokens,
+                    model=self.model,
+                    finish_reason=finish_reason,
+                )
+
+            return await self.run_with_breaker(self.chat_breaker, self.chat_bulkhead, _call)
         except httpx.HTTPStatusError as exc:
             detail = exc.response.text
             raise RuntimeError(f"Gemini API error: {exc.response.status_code} - {detail}")
@@ -158,34 +179,46 @@ class GeminiProvider(BaseLLMProvider):
             if not self.api_key:
                 raise RuntimeError("Gemini API key is required")
 
-            embeddings: List[List[float]] = []
-            tokens_used = 0
+            async def _call() -> EmbeddingResponse:
+                local_embeddings: List[List[float]] = [list() for _ in texts]
+                token_counter = {"value": 0}
+                token_lock = asyncio.Lock()
+                semaphore = asyncio.Semaphore(self.embedding_parallelism)
 
-            for text in texts:
-                payload = {
-                    "model": f"models/{self.EMBEDDING_MODEL}",
-                    "content": {"parts": [{"text": text}]},
-                }
-                url = f"{self.API_BASE}/models/{self.EMBEDDING_MODEL}:embedContent"
-                response = await self.client.post(
-                    url,
-                    params={"key": self.api_key},
-                    headers=self._headers(),
-                    json=payload,
+                async def _embed_one(index: int, text: str) -> None:
+                    payload = {
+                        "model": f"models/{self.EMBEDDING_MODEL}",
+                        "content": {"parts": [{"text": text}]},
+                    }
+                    url = f"{self.API_BASE}/models/{self.EMBEDDING_MODEL}:embedContent"
+                    async with semaphore:
+                        response = await self.client.post(
+                            url,
+                            params={"key": self.api_key},
+                            headers=self._headers(),
+                            json=payload,
+                        )
+                        response.raise_for_status()
+                        data = response.json()
+                        vector = data.get("embedding", {}).get("values", [])
+                        local_embeddings[index] = vector
+
+                        usage = data.get("usageMetadata", {})
+                        async with token_lock:
+                            token_counter["value"] += int(usage.get("promptTokenCount", 0) or 0)
+
+                await asyncio.gather(*[
+                    _embed_one(index, text)
+                    for index, text in enumerate(texts)
+                ])
+
+                return EmbeddingResponse(
+                    embeddings=local_embeddings,
+                    tokens_used=token_counter["value"],
+                    model=self.EMBEDDING_MODEL,
                 )
-                response.raise_for_status()
-                data = response.json()
-                vector = data.get("embedding", {}).get("values", [])
-                embeddings.append(vector)
 
-                usage = data.get("usageMetadata", {})
-                tokens_used += int(usage.get("promptTokenCount", 0) or 0)
-
-            return EmbeddingResponse(
-                embeddings=embeddings,
-                tokens_used=tokens_used,
-                model=self.EMBEDDING_MODEL,
-            )
+            return await self.run_with_breaker(self.embedding_breaker, self.embedding_bulkhead, _call)
         except httpx.HTTPStatusError as exc:
             detail = exc.response.text
             raise RuntimeError(f"Gemini embedding error: {exc.response.status_code} - {detail}")

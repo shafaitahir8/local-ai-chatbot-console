@@ -6,16 +6,24 @@
 <div
   class="arctic-chatbot-container"
   data-api="{{ endpoint }}"
+  data-bot-name="{{ bot_name|escape_attr }}"
   style="--arctic-chatbot-accent: {{ color }};"
 >
   <div class="arctic-chatbot-header">
     <span class="arctic-chatbot-title">{{ bot_name }}</span>
     <span class="arctic-chatbot-status" data-role="status">Online</span>
   </div>
-  <div class="arctic-chatbot-messages" data-role="messages"></div>
+  <div class="arctic-chatbot-messages" data-role="messages">
+    <div class="arctic-chatbot-msg arctic-chatbot-msg-bot arctic-chatbot-msg-seed" data-role="seed-message">
+      <div class="arctic-chatbot-msg-stack">
+        <div class="arctic-chatbot-msg-bubble" data-role="seed-bubble">Hello! How can I help you today?</div>
+        <div class="arctic-chatbot-quick-actions" data-role="seed-chips"></div>
+      </div>
+    </div>
+  </div>
   <div class="arctic-chatbot-input">
     <input type="text" data-role="input" placeholder="Type a message..." />
-    <button type="button" data-role="send">
+    <button type="button" data-role="send" aria-label="Send message">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13"/><path d="M22 2L15 22L11 13L2 9L22 2Z"/></svg>
     </button>
   </div>

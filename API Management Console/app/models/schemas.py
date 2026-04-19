@@ -3,7 +3,7 @@ Pydantic schemas for API request/response validation.
 """
 
 from datetime import datetime
-from typing import Optional, List, Dict, Any
+from typing import Optional, List, Dict, Any, Literal
 from pydantic import BaseModel, Field, validator
 from enum import Enum
 
@@ -13,6 +13,49 @@ class ProviderType(str, Enum):
     LOCAL = "local"
     CLAUDE = "claude"
     GEMINI = "gemini"
+
+
+DEFAULT_TOOL_PARAMETER_SCHEMA: Dict[str, Any] = {
+    "type": "object",
+    "properties": {},
+}
+
+
+class ToolDefinition(BaseModel):
+    id: str = Field(..., min_length=1, max_length=120)
+    display_name: str = Field(..., min_length=1, max_length=120)
+    description: str = Field(..., min_length=1, max_length=2000)
+    parameters: Dict[str, Any] = Field(default_factory=lambda: dict(DEFAULT_TOOL_PARAMETER_SCHEMA))
+    execution_type: Literal["builtin", "webhook", "local_script"] = "builtin"
+    scope: Literal["public", "admin_only"] = "admin_only"
+    is_mutating: bool = False
+    requires_approval: bool = False
+    execution_config: Dict[str, Any] = Field(default_factory=dict)
+
+
+class QuickChipDefinition(BaseModel):
+    label: str = Field(..., min_length=1, max_length=120)
+    action_type: Literal["suggested_prompt", "tool_call", "link"] = "suggested_prompt"
+    value: str = Field(..., min_length=1, max_length=500)
+    style: Literal["primary", "outline", "ghost"] = "outline"
+    visibility_mode: Literal["always", "on_start", "keywords", "ai_only"] = "always"
+    trigger_keywords: List[str] = Field(default_factory=list)
+    ai_instruction: str = Field(default="", max_length=500)
+    sentiment_filter: Literal["positive", "negative", "any"] = "any"
+    priority: int = Field(default=0, ge=0, le=1000)
+    id: Optional[str] = Field(default=None, max_length=120)
+    payload: Dict[str, Any] = Field(default_factory=dict)
+
+
+class ToolSettings(BaseModel):
+    enabled: bool = False
+    always_require_approval_for_mutating: bool = True
+    max_tool_calls_per_session: int = Field(default=6, ge=1, le=50)
+
+
+class QuickChipSettings(BaseModel):
+    initial_chips: List[QuickChipDefinition] = Field(default_factory=list)
+    allow_ai_suggestions: bool = True
 
 
 # ============== Bot Schemas ==============
@@ -30,6 +73,10 @@ class BotCreate(BaseModel):
     memory_enabled: bool = True
     analytics_enabled: bool = True
     is_active: bool = True
+    tools_enabled: bool = False
+    allowed_tools: List[ToolDefinition] = Field(default_factory=list)
+    tool_settings: ToolSettings = Field(default_factory=ToolSettings)
+    quick_chip_settings: QuickChipSettings = Field(default_factory=QuickChipSettings)
     message_limit: Optional[int] = Field(default=None, ge=1)
     expiration_date: Optional[datetime] = None
     accent_color: str = Field(default="#007bff", pattern="^#[0-9A-Fa-f]{6}$")
@@ -47,6 +94,10 @@ class BotUpdate(BaseModel):
     memory_enabled: Optional[bool] = None
     analytics_enabled: Optional[bool] = None
     is_active: Optional[bool] = None
+    tools_enabled: Optional[bool] = None
+    allowed_tools: Optional[List[ToolDefinition]] = None
+    tool_settings: Optional[ToolSettings] = None
+    quick_chip_settings: Optional[QuickChipSettings] = None
     message_limit: Optional[int] = Field(None, ge=1)
     expiration_date: Optional[datetime] = None
     accent_color: Optional[str] = Field(None, pattern="^#[0-9A-Fa-f]{6}$")
@@ -66,6 +117,10 @@ class BotResponse(BaseModel):
     memory_enabled: bool
     analytics_enabled: bool
     is_active: bool
+    tools_enabled: bool = False
+    allowed_tools: List[ToolDefinition] = Field(default_factory=list)
+    tool_settings: ToolSettings = Field(default_factory=ToolSettings)
+    quick_chip_settings: QuickChipSettings = Field(default_factory=QuickChipSettings)
     message_limit: Optional[int]
     messages_used: int
     token_usage: int = 0
@@ -86,11 +141,23 @@ class BotListResponse(BaseModel):
     total: int
 
 
+class QuickChipResponse(QuickChipDefinition):
+    id: str = Field(..., min_length=1, max_length=120)
+
+
 # ============== Chat Schemas ==============
 
 class ChatRequest(BaseModel):
     message: str = Field(..., min_length=1, max_length=10000)
     session_id: Optional[str] = None
+    idempotency_key: Optional[str] = Field(default=None, max_length=255)
+
+    @validator("message")
+    def validate_message_not_blank(cls, value: str) -> str:
+        normalized = str(value or "").strip()
+        if not normalized:
+            raise ValueError("Message cannot be empty or whitespace-only")
+        return normalized
 
 
 class ChatResponse(BaseModel):
@@ -101,6 +168,15 @@ class ChatResponse(BaseModel):
     retry_count: int = 0
     fallback_used: bool = False
     status_message: Optional[str] = None
+    degraded_components: List[str] = Field(default_factory=list)
+    data_freshness: str = "fresh"
+    safe_modes: List[str] = Field(default_factory=list)
+    context_scope: Optional[str] = None
+    context_sources: List[str] = Field(default_factory=list)
+    citations: List[Dict[str, Any]] = Field(default_factory=list)
+    quick_chips: List[QuickChipResponse] = Field(default_factory=list)
+    tool_events: List[Dict[str, Any]] = Field(default_factory=list)
+    pending_tool_actions: List[Dict[str, Any]] = Field(default_factory=list)
 
 
 class BotStatusResponse(BaseModel):
@@ -112,6 +188,12 @@ class BotStatusResponse(BaseModel):
     startup_welcome_ready: bool = False
     startup_welcome_message: Optional[str] = None
     startup_welcome_generated_at: Optional[str] = None
+    hot_state: str = "cold"
+    hot_ready: bool = False
+    provider_ready: bool = False
+    index_hydrated: bool = False
+    warmup_detail: Optional[str] = None
+    quick_chip_settings: QuickChipSettings = Field(default_factory=QuickChipSettings)
 
 
 # ============== Knowledge Base Schemas ==============
@@ -139,6 +221,9 @@ class KnowledgeChunkResponse(BaseModel):
 class ScraperRequest(BaseModel):
     url: str = Field(..., pattern="^https?://")
     depth: int = Field(default=2, ge=1, le=3)
+    limit: int = Field(default=20, ge=1, le=500)
+    focus: Optional[str] = None
+    sitemap_only: bool = False
     consent_confirmed: bool = False
 
 
@@ -148,10 +233,15 @@ class ScraperJobResponse(BaseModel):
     url: str
     status: str
     depth: int
+    limit: Optional[int] = None
+    focus: Optional[str] = None
+    sitemap_only: bool = False
     pages_scraped: int
     chunks_created: int
     error_message: Optional[str]
     consent_confirmed: bool
+    telemetry: Optional[Dict[str, Any]] = None
+    summary: Optional[Dict[str, Any]] = None
     created_at: datetime
     completed_at: Optional[datetime]
     
@@ -222,12 +312,43 @@ class LoginRequest(BaseModel):
 
 class LoginResponse(BaseModel):
     access_token: str
+    requires_password_change: bool = False
     token_type: str = "bearer"
 
 
 class UserCreate(BaseModel):
     username: str = Field(..., min_length=3, max_length=100)
     password: str = Field(..., min_length=8)
+
+
+class AdminToolExecutionRequest(BaseModel):
+    tool_id: str = Field(..., min_length=1, max_length=120)
+    payload: Dict[str, Any] = Field(default_factory=dict)
+    session_id: Optional[str] = None
+
+
+class PublicToolTriggerRequest(BaseModel):
+    tool_id: str = Field(..., min_length=1, max_length=120)
+    payload: Dict[str, Any] = Field(default_factory=dict)
+    session_id: Optional[str] = None
+
+    @validator("tool_id")
+    def validate_tool_id_not_blank(cls, value: str) -> str:
+        normalized = str(value or "").strip()
+        if not normalized:
+            raise ValueError("tool_id cannot be empty or whitespace-only")
+        return normalized
+
+
+class ToolTriggerResponse(BaseModel):
+    status: str = "ok"
+    tool_id: str
+    response: str
+    session_id: str
+    quick_chips: List[QuickChipResponse] = Field(default_factory=list)
+    tool_events: List[Dict[str, Any]] = Field(default_factory=list)
+    pending_tool_actions: List[Dict[str, Any]] = Field(default_factory=list)
+    result: Dict[str, Any] = Field(default_factory=dict)
 
 
 # ============== Clone Schemas ==============
@@ -246,6 +367,7 @@ class EmbedConfigResponse(BaseModel):
     accent_color: str
     welcome_message: str
     is_available: bool
+    quick_chip_settings: QuickChipSettings = Field(default_factory=QuickChipSettings)
 
 
 # ============== Error Schemas ==============

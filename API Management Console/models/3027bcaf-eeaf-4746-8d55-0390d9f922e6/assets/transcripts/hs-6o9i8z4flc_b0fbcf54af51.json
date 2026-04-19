@@ -1,0 +1,42 @@
+{
+  "bot_id": "3027bcaf-eeaf-4746-8d55-0390d9f922e6",
+  "bot_name": "Arctic Customer Bot",
+  "session_id": "hs-6o9i8z4flc",
+  "provider_type": "local",
+  "model": "llama3.2:3b",
+  "created_at": "2026-04-19T06:28:16.609228Z",
+  "updated_at": "2026-04-19T06:28:28.331956Z",
+  "messages": [
+    {
+      "role": "user",
+      "content": "hi",
+      "timestamp": "2026-04-19T06:28:16.609228Z"
+    },
+    {
+      "role": "assistant",
+      "content": "We offer 24/7 support for all Arctic Studio services, including HubSpot solutions and custom engineering builds. What brings you here today? Are you experiencing an issue with your website or HubSpot instance, or do you have a question about our services?",
+      "timestamp": "2026-04-19T06:28:16.609228Z",
+      "tokens_used": 576,
+      "latency_ms": 3098,
+      "retries_used": 0,
+      "fallback_used": true,
+      "rag_used": false
+    },
+    {
+      "role": "user",
+      "content": "i wanna talk to an agent",
+      "timestamp": "2026-04-19T06:28:28.331956Z"
+    },
+    {
+      "role": "assistant",
+      "content": "Our technical support is available for all Arctic Studio clients. To ensure you get the best possible assistance, can you please confirm if you're an existing client seeking support or a prospect inquiring about our services?",
+      "timestamp": "2026-04-19T06:28:28.331956Z",
+      "tokens_used": 627,
+      "latency_ms": 2951,
+      "retries_used": 0,
+      "fallback_used": true,
+      "rag_used": false
+    }
+  ],
+  "message_count": 4
+}

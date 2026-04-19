@@ -9,6 +9,8 @@ from cryptography.fernet import Fernet
 from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 
+from .runtime_secret_service import runtime_secret_service
+
 
 class EncryptionService:
     """
@@ -22,14 +24,10 @@ class EncryptionService:
     
     def _get_secret_key(self) -> bytes:
         """Get or generate the secret key."""
-        secret = os.getenv("ENCRYPTION_SECRET")
-        
-        if not secret:
-            # Generate a new secret if not set
-            secret = base64.urlsafe_b64encode(os.urandom(32)).decode()
-            # In production, this should be set in .env
-            print(f"WARNING: No ENCRYPTION_SECRET set. Generated: {secret}")
-            print("Please add this to your .env file for persistent encryption.")
+        secret = runtime_secret_service.get_or_create_secret(
+            "ENCRYPTION_SECRET",
+            "encryption_secret",
+        )
         
         # Derive a key from the secret using PBKDF2
         salt = b'local_ai_chatbot_console_v1'  # Fixed salt for consistency

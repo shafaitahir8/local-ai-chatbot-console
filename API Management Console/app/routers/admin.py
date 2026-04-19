@@ -4,24 +4,36 @@ Admin dashboard API routes.
 
 import os
 import urllib.request
-from datetime import timedelta
+from datetime import datetime, timedelta
 from fastapi import APIRouter, Depends, HTTPException, status, Response, Request, Body
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, StreamingResponse
 from sqlalchemy.orm import Session
 from sqlalchemy import text
+from sqlalchemy.ext.asyncio import AsyncSession
 
-from ..models.database import get_db, AdminUser, Bot
-from ..models.schemas import LoginRequest, LoginResponse, UserCreate
+from ..models.database import get_db, get_async_db, AdminUser, Bot
+from ..models.schemas import LoginRequest, LoginResponse, UserCreate, AdminToolExecutionRequest
 from ..services.analytics_service import analytics_service
-from ..services.tunnel_service import tunnel_service
 from ..services.api_gateway_service import api_gateway_service
 from ..services.encryption_service import encryption_service
+from ..services.system_inspection_service import build_supervisor_health_report
+from ..services.tunnel_service import tunnel_service
+from ..services.bot_service import bot_service
+from ..services.tool_service import (
+    build_action_follow_up,
+    execute_tool_definition,
+    get_tool_catalog,
+    normalize_tool_settings,
+    tool_definition_map,
+)
 from .auth import (
     get_current_user, create_access_token, hash_password,
-    verify_password, ensure_default_admin, ACCESS_TOKEN_EXPIRE_HOURS
+    verify_password, ensure_default_admin, ACCESS_TOKEN_EXPIRE_HOURS,
+    DEFAULT_ADMIN_USERNAME, DEFAULT_ADMIN_PASSWORD,
 )
 
 router = APIRouter(prefix="/api/admin", tags=["admin"])
+APP_STARTED_AT = datetime.utcnow()
 
 
 def _provider_company(provider: str) -> str:
@@ -40,6 +52,47 @@ def _mask_key(key: str) -> str:
     if len(key) <= 8:
         return key[:2] + ("*" * max(0, len(key) - 4)) + key[-2:]
     return f"{key[:4]}{'*' * (len(key) - 8)}{key[-4:]}"
+
+
+def _build_public_runtime_status() -> dict:
+    report = build_supervisor_health_report()
+    tunnel_component = report.get("components", {}).get("tunnel-agent", {}) or {}
+    tunnel_status = tunnel_component.get("metadata", {}) or {}
+    public_base_url = (
+        report.get("public_base_url")
+        or tunnel_status.get("last_known_public_base_url")
+        or tunnel_status.get("public_base_url")
+        or tunnel_service.get_configured_public_base_url()
+    )
+    uptime_seconds = max(0, int((datetime.utcnow() - APP_STARTED_AT).total_seconds()))
+    public_tunnel_ready = bool(
+        tunnel_component.get("status") == "healthy"
+        and public_base_url
+    )
+
+    return {
+        "encryption_enabled": bool(getattr(encryption_service, "secret_value", None)),
+        "local_private_execution": True,
+        "current_deployment_url": public_base_url or "http://localhost:8000/admin",
+        "public_tunnel_ready": public_tunnel_ready,
+        "tunnel_stable": bool(public_tunnel_ready and tunnel_status.get("stable", False)),
+        "last_system_check_at": datetime.utcnow().isoformat() + "Z",
+        "uptime_seconds": uptime_seconds,
+    }
+
+
+def _is_default_admin_password_active(db: Session) -> bool:
+    ensure_default_admin(db)
+    admin = db.query(AdminUser).filter(AdminUser.username == DEFAULT_ADMIN_USERNAME).first()
+    if not admin:
+        return False
+    return admin.password_hash == hash_password(DEFAULT_ADMIN_PASSWORD)
+
+
+def _stream_event(event_type: str, **payload) -> bytes:
+    import json
+
+    return (json.dumps({"type": event_type, **payload}, ensure_ascii=False) + "\n").encode("utf-8")
 
 
 def _build_api_key_records(db: Session, reveal: bool = False):
@@ -112,8 +165,26 @@ async def login(
         max_age=ACCESS_TOKEN_EXPIRE_HOURS * 3600,
         samesite="lax"
     )
-    
-    return LoginResponse(access_token=access_token)
+
+    requires_password_change = (
+        user.username == DEFAULT_ADMIN_USERNAME
+        and user.password_hash == hash_password(DEFAULT_ADMIN_PASSWORD)
+    )
+
+    return LoginResponse(
+        access_token=access_token,
+        requires_password_change=requires_password_change,
+    )
+
+
+@router.get("/setup-status")
+async def get_setup_status(db: Session = Depends(get_db)):
+    """Public runtime status used by the login experience and first-run setup flow."""
+    runtime_status = _build_public_runtime_status()
+    return {
+        "requires_password_change": _is_default_admin_password_active(db),
+        **runtime_status,
+    }
 
 
 @router.post("/logout")
@@ -137,6 +208,18 @@ async def get_system_status(
     current_user: str = Depends(get_current_user)
 ):
     """Get runtime system status used by the settings and editor views."""
+    runtime_status = _build_public_runtime_status()
+    report = build_supervisor_health_report()
+    tunnel_component = report.get("components", {}).get("tunnel-agent", {}) or {}
+    tunnel_status = tunnel_component.get("metadata", {}) or {}
+    gateway_component = report.get("components", {}).get("gateway-agent", {}) or {}
+    gateway_status = gateway_component.get("metadata", {}) or {}
+    public_base_url = (
+        report.get("public_base_url")
+        or tunnel_status.get("last_known_public_base_url")
+        or tunnel_status.get("public_base_url")
+        or tunnel_service.get_configured_public_base_url()
+    )
     # Database check
     try:
         db.execute(text("SELECT 1"))
@@ -163,9 +246,7 @@ async def get_system_status(
         if os.getenv("LOCAL_LLM_URL"):
             local_llm_status = "Configured"
 
-    tunnel_status = tunnel_service.get_status()
-    cloudflare_status = "Running" if tunnel_status.get("running") else "Unavailable"
-    gateway_status = api_gateway_service.get_status()
+    cloudflare_status = "Running" if runtime_status["public_tunnel_ready"] else "Unavailable"
     tunnel_token = os.getenv("TUNNEL_SHARED_SECRET", "").strip()
 
     return {
@@ -175,14 +256,141 @@ async def get_system_status(
         "openai": openai_status,
         "local_llm": local_llm_status,
         "cloudflare_tunnel": cloudflare_status,
-        "public_base_url": tunnel_status.get("public_base_url"),
+        "public_base_url": public_base_url,
         "cloudflare_stable": tunnel_status.get("stable", False),
         "cloudflare_source": tunnel_status.get("source"),
         "cloudflare_error": tunnel_status.get("last_error"),
         "tunnel_token_required": bool(tunnel_token),
         "tunnel_token": tunnel_token or None,
-        "api_gateway_running": gateway_status.get("running", False),
+        "api_gateway_running": gateway_component.get("status") == "healthy",
         "api_gateway_port": gateway_status.get("port"),
+        "encryption_enabled": runtime_status["encryption_enabled"],
+        "local_private_execution": runtime_status["local_private_execution"],
+        "current_deployment_url": runtime_status["current_deployment_url"],
+        "last_system_check_at": runtime_status["last_system_check_at"],
+        "public_tunnel_ready": runtime_status["public_tunnel_ready"],
+        "tunnel_stable": runtime_status["tunnel_stable"],
+        "uptime_seconds": runtime_status["uptime_seconds"],
+        "requires_password_change": _is_default_admin_password_active(db),
+    }
+
+
+@router.get("/tool-catalog")
+async def get_admin_tool_catalog(current_user: str = Depends(get_current_user)):
+    return {"tools": get_tool_catalog()}
+
+
+@router.post("/bots/{bot_id}/chat/stream")
+async def admin_preview_chat_stream(
+    bot_id: str,
+    chat_request: dict = Body(...),
+    db: AsyncSession = Depends(get_async_db),
+    current_user: str = Depends(get_current_user),
+):
+    bot = await bot_service.get_bot_async(db, bot_id)
+    if not bot:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Bot not found")
+
+    message = str(chat_request.get("message") or "").strip()
+    if not message:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Message is required")
+    session_id = str(chat_request.get("session_id") or "").strip() or None
+
+    async def event_stream():
+        yield _stream_event("status", stage="prepare_request", message="Validating admin preview request...")
+        yield _stream_event("status", stage="searching_knowledge_base", message="Searching knowledge base...")
+        yield _stream_event("status", stage="checking_module_references", message="Checking module references...")
+        yield _stream_event("status", stage="awaiting_response", message="Drafting response...")
+        result = await bot_service.chat(
+            db=db,
+            bot_id=bot_id,
+            message=message,
+            session_id=session_id,
+            allow_admin_tools=True,
+            execute_mutating_tools=False,
+        )
+        response_payload = {
+            "response": result["response"],
+            "session_id": result["session_id"],
+            "tokens_used": result["tokens_used"],
+            "latency_ms": result["latency_ms"],
+            "retry_count": result.get("retry_count", 0),
+            "fallback_used": result.get("fallback_used", False),
+            "status_message": result.get("status_message", "completed"),
+            "degraded_components": result.get("degraded_components", []),
+            "data_freshness": result.get("data_freshness", "fresh"),
+            "safe_modes": result.get("safe_modes", []),
+            "context_scope": result.get("context_scope"),
+            "context_sources": result.get("context_sources", []),
+            "citations": result.get("citations", []),
+            "quick_chips": result.get("quick_chips", []),
+            "tool_events": result.get("tool_events", []),
+            "pending_tool_actions": result.get("pending_tool_actions", []),
+        }
+        yield _stream_event("status", stage="streaming_answer", message="Streaming answer...")
+        yield _stream_event("chunk", content=response_payload["response"])
+        yield _stream_event("complete", **response_payload)
+
+    return StreamingResponse(event_stream(), media_type="application/x-ndjson")
+
+
+@router.post("/bots/{bot_id}/tools/execute")
+async def execute_admin_tool_action(
+    bot_id: str,
+    request: AdminToolExecutionRequest,
+    db: AsyncSession = Depends(get_async_db),
+    current_user: str = Depends(get_current_user),
+):
+    bot = await bot_service.get_bot_async(db, bot_id)
+    if not bot:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Bot not found")
+    tool_settings = normalize_tool_settings(
+        bot.tool_settings_json,
+        fallback_enabled=bool(bot.tools_enabled),
+    )
+    if not tool_settings.get("enabled"):
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Tool calling is not enabled for this bot")
+    tool = tool_definition_map(bot.allowed_tools_json).get(request.tool_id)
+    if not tool:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Tool not allowed for this bot")
+    if tool.get("scope") == "public" and tool.get("is_mutating"):
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Public tools cannot be mutating")
+
+    result = await execute_tool_definition(
+        db=db,
+        bot_id=bot_id,
+        tool=tool,
+        payload=request.payload,
+    )
+    follow_up = {
+        "response": build_action_follow_up(tool, result),
+        "session_id": request.session_id or bot_service.create_session_id(),
+        "tokens_used": 0,
+        "latency_ms": 0,
+        "retry_count": 0,
+        "fallback_used": False,
+        "status_message": "tool_action_completed",
+        "degraded_components": [],
+        "data_freshness": "fresh",
+        "safe_modes": [],
+        "context_scope": None,
+        "context_sources": [],
+        "citations": [],
+        "quick_chips": [],
+        "tool_events": [{
+            "tool_id": tool["id"],
+            "status": "completed",
+            "mutating": bool(tool.get("is_mutating")),
+            "execution_type": tool.get("execution_type"),
+            "scope": tool.get("scope"),
+        }],
+        "pending_tool_actions": [],
+    }
+    return {
+        "status": "ok",
+        "tool_id": tool["id"],
+        "result": result,
+        "follow_up": follow_up,
     }
 
 

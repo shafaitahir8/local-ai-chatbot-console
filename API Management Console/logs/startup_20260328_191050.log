@@ -1,0 +1,11 @@
+============================================ 
+ Startup Log - Sat 03/28/2026 19:10:50.22 
+============================================ 
+[INFO] Working directory: D:\JupyterNotebooks\Chatbots\API Management Console 
+[INFO] Python 3.14.0 
+[INFO] venv activated 
+[INFO] localtunnel subdomain: arcticbot245 
+[INFO] tunnel provider: localtunnel 
+[INFO] Ollama ready, 0 models 
+[INFO] Starting uvicorn 
+{"tunnel-agent":{"stdout_log":"D:\\JupyterNotebooks\\Chatbots\\API Management Console\\logs\\tunnel-agent.stdout.log","pid":26092,"running":true,"stderr_log":"D:\\JupyterNotebooks\\Chatbots\\API Management Console\\logs\\tunnel-agent.stderr.log","enabled":true},"gateway-agent":{"stdout_log":"D:\\JupyterNotebooks\\Chatbots\\API Management Console\\logs\\gateway-agent.stdout.log","pid":15188,"running":true,"stderr_log":"D:\\JupyterNotebooks\\Chatbots\\API Management Console\\logs\\gateway-agent.stderr.log","enabled":true},"ollama-sentinel":{"stdout_log":"D:\\JupyterNotebooks\\Chatbots\\API Management Console\\logs\\ollama-sentinel.stdout.log","pid":4340,"running":true,"stderr_log":"D:\\JupyterNotebooks\\Chatbots\\API Management Console\\logs\\ollama-sentinel.stderr.log","enabled":true},"scraper-worker":{"stdout_log":"D:\\JupyterNotebooks\\Chatbots\\API Management Console\\logs\\scraper-worker.stdout.log","pid":24896,"running":true,"stderr_log":"D:\\JupyterNotebooks\\Chatbots\\API Management Console\\logs\\scraper-worker.stderr.log","enabled":true},"embedding-worker":{"stdout_log":"D:\\JupyterNotebooks\\Chatbots\\API Management Console\\logs\\embedding-worker.stdout.log","pid":464,"running":true,"stderr_log":"D:\\JupyterNotebooks\\Chatbots\\API Management Console\\logs\\embedding-worker.stderr.log","enabled":true},"scheduler":{"stdout_log":"D:\\JupyterNotebooks\\Chatbots\\API Management Console\\logs\\scheduler.stdout.log","pid":10708,"running":true,"stderr_log":"D:\\JupyterNotebooks\\Chatbots\\API Management Console\\logs\\scheduler.stderr.log","enabled":true}}

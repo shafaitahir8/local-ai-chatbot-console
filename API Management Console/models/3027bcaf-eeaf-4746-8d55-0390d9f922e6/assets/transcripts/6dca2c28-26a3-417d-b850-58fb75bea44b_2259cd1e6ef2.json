@@ -1,0 +1,27 @@
+{
+  "bot_id": "3027bcaf-eeaf-4746-8d55-0390d9f922e6",
+  "bot_name": "Arctic Customer Bot",
+  "session_id": "6dca2c28-26a3-417d-b850-58fb75bea44b",
+  "provider_type": "local",
+  "model": "llama3.2:3b",
+  "created_at": "2026-04-19T05:13:31.654128Z",
+  "updated_at": "2026-04-19T05:13:31.654128Z",
+  "messages": [
+    {
+      "role": "user",
+      "content": "hi",
+      "timestamp": "2026-04-19T05:13:31.654128Z"
+    },
+    {
+      "role": "assistant",
+      "content": "Welcome to Arctic Studio! How can I assist you today? Are you experiencing an issue with HubSpot or looking for guidance on one of our engineered solutions? Please let me know how I can help. \n\nDo you have a specific problem, or would you like to discuss your project requirements?",
+      "timestamp": "2026-04-19T05:13:31.654128Z",
+      "tokens_used": 0,
+      "latency_ms": 213,
+      "retries_used": 0,
+      "fallback_used": false,
+      "rag_used": false
+    }
+  ],
+  "message_count": 2
+}

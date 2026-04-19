@@ -1,4 +1,15 @@
-import { Bot, BotCreate, BotUpdate, Template, Analytics, ChatResponse } from "@/types/bot";
+import {
+  Bot,
+  BotCreate,
+  BotUpdate,
+  QuickChipDefinition,
+  Template,
+  Analytics,
+  ChatResponse,
+  ToolCatalogItem,
+  ToolSettings,
+  QuickChipSettings,
+} from "@/types/bot";
 
 const API_BASE = "/api";
 
@@ -46,7 +57,12 @@ async function fetchWithAuth(url: string, options: RequestInit = {}) {
 }
 
 // Auth API
-export async function login(password: string): Promise<{ access_token: string }> {
+export interface LoginResult {
+  access_token: string;
+  requires_password_change?: boolean;
+}
+
+export async function login(password: string): Promise<LoginResult> {
   const response = await fetch(`${API_BASE}/admin/login`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -58,7 +74,7 @@ export async function login(password: string): Promise<{ access_token: string }>
     throw new Error(error.detail || "Login failed");
   }
 
-  const data = await response.json();
+  const data: LoginResult = await response.json();
   setAuthToken(data.access_token);
   return data;
 }
@@ -73,9 +89,55 @@ export async function logout() {
 }
 
 // Helper to transform API bot response to frontend format
+function defaultToolSettings(enabled: boolean = false): ToolSettings {
+  return {
+    enabled,
+    always_require_approval_for_mutating: true,
+    max_tool_calls_per_session: 6,
+  };
+}
+
+function defaultQuickChipSettings(): QuickChipSettings {
+  return {
+    initial_chips: [],
+    allow_ai_suggestions: true,
+  };
+}
+
+function normalizeQuickChip(chip: any): QuickChipDefinition {
+  const legacyVisibility = chip?.visibility === "on_start_only"
+    ? "on_start"
+    : chip?.visibility === "conditional"
+      ? "keywords"
+      : chip?.visibility;
+  return {
+    label: String(chip?.label || ""),
+    action_type: chip?.action_type || "suggested_prompt",
+    value: String(chip?.value || chip?.label || ""),
+    style: chip?.style || "outline",
+    visibility_mode: chip?.visibility_mode || legacyVisibility || "always",
+    trigger_keywords: Array.isArray(chip?.trigger_keywords) ? chip.trigger_keywords.map((item: unknown) => String(item || "")) : [],
+    ai_instruction: String(chip?.ai_instruction || ""),
+    sentiment_filter: chip?.sentiment_filter || "any",
+    priority: Number(chip?.priority || 0),
+    id: chip?.id || undefined,
+    payload: chip?.payload || {},
+  };
+}
+
+function normalizeQuickChipSettings(raw: any): QuickChipSettings {
+  const settings = raw || {};
+  return {
+    initial_chips: Array.isArray(settings.initial_chips) ? settings.initial_chips.map(normalizeQuickChip) : [],
+    allow_ai_suggestions: settings.allow_ai_suggestions !== false,
+  };
+}
+
 function transformBotResponse(data: any): Bot {
   const expirationDate = data.expiration_date ? new Date(data.expiration_date) : null;
   const isExpired = !!(expirationDate && expirationDate < new Date());
+  const toolSettings = data.tool_settings || defaultToolSettings(data.tools_enabled || false);
+  const quickChipSettings = normalizeQuickChipSettings(data.quick_chip_settings || defaultQuickChipSettings());
 
   return {
     id: data.id,
@@ -83,6 +145,7 @@ function transformBotResponse(data: any): Bot {
     template_type: data.template_type,
     provider_type: data.provider_type,
     system_prompt: data.system_prompt || "",
+    welcome_message: data.welcome_message || "",
     status: isExpired ? "expired" : (data.is_active ? "active" : "inactive"),
     temperature: data.temperature,
     memory_enabled: data.memory_enabled || false,
@@ -96,6 +159,10 @@ function transformBotResponse(data: any): Bot {
     accent_color: data.accent_color || "#00d4aa",
     model: data.model,
     base_url: data.base_url,
+    tools_enabled: !!toolSettings.enabled,
+    allowed_tools: data.allowed_tools || [],
+    tool_settings: toolSettings,
+    quick_chip_settings: quickChipSettings,
   };
 }
 
@@ -235,7 +302,11 @@ export async function fetchAnalytics(botId?: string): Promise<Analytics> {
 export type ChatProgressStage =
   | "prepare_request"
   | "opening_session"
+  | "searching_knowledge_base"
+  | "checking_module_references"
+  | "warming_provider"
   | "awaiting_response"
+  | "streaming_answer"
   | "retrying_request"
   | "completed";
 
@@ -249,6 +320,7 @@ export interface ChatProgressUpdate {
 export interface SendMessageOptions {
   maxRetries?: number;
   onProgress?: (update: ChatProgressUpdate) => void;
+  onChunk?: (chunk: string) => void;
 }
 
 function isRetryableStatus(status: number): boolean {
@@ -259,18 +331,17 @@ function sleep(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-// Chat API
-export async function sendMessage(
-  botId: string,
-  message: string,
-  sessionId?: string,
-  options?: SendMessageOptions
+async function streamChatRequest(
+  url: string,
+  payload: Record<string, string>,
+  options?: SendMessageOptions,
+  authenticated: boolean = false
 ): Promise<ChatResponse> {
   const maxAttempts = Math.max(1, (options?.maxRetries ?? 2) + 1);
   let lastError: Error | null = null;
 
   for (let attempt = 1; attempt <= maxAttempts; attempt++) {
-    const hasSession = !!(sessionId && sessionId.trim());
+    const hasSession = !!(payload.session_id && payload.session_id.trim());
     options?.onProgress?.({
       stage: hasSession ? "prepare_request" : "opening_session",
       attempt,
@@ -279,23 +350,22 @@ export async function sendMessage(
     });
 
     try {
-      const payload: Record<string, string> = { message };
-      if (hasSession) {
-        payload.session_id = sessionId!.trim();
+      const headers: HeadersInit = { "Content-Type": "application/json" };
+      if (authenticated && authToken) {
+        headers["Authorization"] = `Bearer ${authToken}`;
       }
 
-      options?.onProgress?.({
-        stage: "awaiting_response",
-        attempt,
-        maxAttempts,
-        message: "Waiting for model response...",
-      });
-
-      const response = await fetch(`${API_BASE}/bot/${botId}/chat`, {
+      const response = await fetch(url, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers,
         body: JSON.stringify(payload),
       });
+
+      if (response.status === 401) {
+        clearAuthToken();
+        window.location.href = "/login";
+        throw new Error("Unauthorized");
+      }
 
       if (!response.ok) {
         const error = await response.json().catch(() => ({ detail: "Chat failed" }));
@@ -305,14 +375,65 @@ export async function sendMessage(
         throw requestError;
       }
 
-      const data: ChatResponse = await response.json();
+      if (!response.body) {
+        throw new Error("Streaming response body unavailable");
+      }
+
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+      let buffer = "";
+      let accumulated = "";
+      let completedPayload: ChatResponse | null = null;
+
+      while (true) {
+        const result = await reader.read();
+        buffer += decoder.decode(result.value || new Uint8Array(), { stream: !result.done });
+        const lines = buffer.split("\n");
+        buffer = lines.pop() || "";
+
+        for (const rawLine of lines) {
+          const line = rawLine.trim();
+          if (!line) continue;
+          const event = JSON.parse(line) as Record<string, any>;
+          if (event.type === "status") {
+            options?.onProgress?.({
+              stage: String(event.stage || "awaiting_response") as ChatProgressStage,
+              attempt,
+              maxAttempts,
+              message: String(event.message || "Working..."),
+            });
+            continue;
+          }
+          if (event.type === "chunk") {
+            const chunk = String(event.content || "");
+            accumulated += chunk;
+            options?.onChunk?.(chunk);
+            continue;
+          }
+          if (event.type === "complete") {
+            completedPayload = {
+              ...(event as ChatResponse),
+              response: String(event.response || accumulated),
+            };
+          }
+        }
+
+        if (result.done) {
+          break;
+        }
+      }
+
+      if (!completedPayload) {
+        throw new Error("Chat stream ended without a completion payload");
+      }
+
       options?.onProgress?.({
         stage: "completed",
         attempt,
         maxAttempts,
         message: "Response received.",
       });
-      return data;
+      return completedPayload;
     } catch (error) {
       const err = (error instanceof Error ? error : new Error("Chat failed")) as Error & { retryable?: boolean };
       lastError = err;
@@ -366,8 +487,129 @@ export interface KnowledgeChunk {
   full_content: string;
   source: string | null;
   metadata?: Record<string, unknown> | null;
+  source_file_path?: string | null;
+  raw_html_path?: string | null;
+  line_range?: [number, number] | null;
+  paragraph_range?: [number, number] | null;
   created_at: string | null;
   word_count: number;
+}
+
+// Chat API
+export async function sendMessage(
+  botId: string,
+  message: string,
+  sessionId?: string,
+  options?: SendMessageOptions
+): Promise<ChatResponse> {
+  const payload: Record<string, string> = { message };
+  if (sessionId?.trim()) {
+    payload.session_id = sessionId.trim();
+  }
+  return streamChatRequest(`${API_BASE}/bot/${botId}/chat/stream`, payload, options, false);
+}
+
+export async function sendAdminPreviewMessage(
+  botId: string,
+  message: string,
+  sessionId?: string,
+  options?: SendMessageOptions
+): Promise<ChatResponse> {
+  const payload: Record<string, string> = { message };
+  if (sessionId?.trim()) {
+    payload.session_id = sessionId.trim();
+  }
+  return streamChatRequest(`${API_BASE}/admin/bots/${botId}/chat/stream`, payload, options, true);
+}
+
+export async function fetchAdminToolCatalog(): Promise<ToolCatalogItem[]> {
+  const response = await fetchWithAuth(`${API_BASE}/admin/tool-catalog`);
+  const data = await response.json();
+  return data.tools || [];
+}
+
+export async function executeAdminToolAction(
+  botId: string,
+  toolId: string,
+  payload: Record<string, unknown> = {},
+  sessionId?: string
+): Promise<{ status: string; tool_id: string; result: Record<string, unknown>; follow_up: ChatResponse }> {
+  const response = await fetchWithAuth(`${API_BASE}/admin/bots/${botId}/tools/execute`, {
+    method: "POST",
+    body: JSON.stringify({
+      tool_id: toolId,
+      payload,
+      session_id: sessionId,
+    }),
+  });
+  return response.json();
+}
+
+export async function triggerPublicToolAction(
+  botId: string,
+  toolId: string,
+  payload: Record<string, unknown> = {},
+  sessionId?: string
+): Promise<{
+  status: string;
+  tool_id: string;
+  response: string;
+  session_id: string;
+  quick_chips: ChatResponse["quick_chips"];
+  tool_events: ChatResponse["tool_events"];
+  pending_tool_actions: ChatResponse["pending_tool_actions"];
+  result: Record<string, unknown>;
+}> {
+  const response = await fetch(`${API_BASE}/bot/${botId}/tools/trigger`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      tool_id: toolId,
+      payload,
+      session_id: sessionId,
+    }),
+  });
+  if (!response.ok) {
+    const error = await response.json().catch(() => ({ detail: "Tool trigger failed" }));
+    throw new Error(error.detail || "Tool trigger failed");
+  }
+  return response.json();
+}
+
+export async function fetchBotStatus(botId: string): Promise<{
+  bot_id: string;
+  name: string;
+  is_available: boolean;
+  reason?: string | null;
+  welcome_message?: string | null;
+  startup_welcome_ready?: boolean;
+  startup_welcome_message?: string | null;
+  startup_welcome_generated_at?: string | null;
+  hot_state?: string;
+  hot_ready?: boolean;
+  provider_ready?: boolean;
+  index_hydrated?: boolean;
+  warmup_detail?: string | null;
+  quick_chip_settings: QuickChipSettings;
+}> {
+  const response = await fetch(`${API_BASE}/bot/${botId}/status`);
+  if (!response.ok) {
+    throw new Error("Could not load bot status");
+  }
+  const data = await response.json();
+  return {
+    ...data,
+    quick_chip_settings: normalizeQuickChipSettings(data.quick_chip_settings || defaultQuickChipSettings()),
+  };
+}
+
+export interface KnowledgeChunkSource {
+  chunk_id: string;
+  cleaned_text: string;
+  raw_text: string | null;
+  raw_html: string | null;
+  source_file_path: string | null;
+  metadata?: Record<string, unknown> | null;
 }
 
 export async function fetchKnowledgeChunks(
@@ -394,17 +636,89 @@ export async function fetchKnowledgeChunks(
   return response.json();
 }
 
-// Scraper API
-export async function scrapeWebsite(botId: string, url: string, depth: number = 2): Promise<{ id: string; status: string }> {
-  const response = await fetchWithAuth(`${API_BASE}/scraper/start`, {
-    method: "POST",
-    body: JSON.stringify({
-      url,
-      depth,
-      consent_confirmed: true,
-      bot_id: botId
-    }),
+export async function fetchKnowledgeChunkSource(botId: string, chunkId: string): Promise<KnowledgeChunkSource> {
+  const response = await fetchWithAuth(`${API_BASE}/bots/${botId}/knowledge/chunks/${chunkId}/source`);
+  return response.json();
+}
+
+export async function deleteKnowledgeChunk(botId: string, chunkId: string): Promise<void> {
+  await fetchWithAuth(`${API_BASE}/bots/${botId}/knowledge/chunks/${chunkId}`, {
+    method: "DELETE",
   });
+}
+
+export async function updateKnowledgeChunk(botId: string, chunkId: string, content: string): Promise<KnowledgeChunk> {
+  const response = await fetchWithAuth(`${API_BASE}/bots/${botId}/knowledge/chunks/${chunkId}`, {
+    method: "PUT",
+    body: JSON.stringify({ content }),
+  });
+  return response.json();
+}
+
+// Scraper API
+export interface ScrapeRunOptions {
+  depth?: number;
+  limit?: number;
+  focus?: string;
+  sitemap_only?: boolean;
+}
+
+export interface ScraperJobStatus {
+  id: string;
+  bot_id?: string | null;
+  url: string;
+  status: string;
+  depth: number;
+  limit?: number | null;
+  focus?: string | null;
+  sitemap_only?: boolean;
+  pages_scraped: number;
+  chunks_created: number;
+  error_message?: string | null;
+  telemetry?: Record<string, unknown> | null;
+  summary?: Record<string, unknown> | null;
+}
+
+export async function scrapeWebsite(
+  botId: string,
+  url: string,
+  options: ScrapeRunOptions = {}
+): Promise<{ id: string; status: string; limit?: number; focus?: string; sitemap_only?: boolean }> {
+  const formData = new FormData();
+  formData.append("url", url);
+  formData.append("depth", String(options.depth ?? 2));
+  formData.append("limit", String(options.limit ?? 20));
+  formData.append("focus", options.focus ?? "");
+  formData.append("sitemap_only", String(options.sitemap_only ?? false));
+  formData.append("consent_confirmed", "true");
+  formData.append("append", "true");
+
+  const headers: HeadersInit = {};
+  if (authToken) {
+    headers["Authorization"] = `Bearer ${authToken}`;
+  }
+
+  const response = await fetch(`${API_BASE}/bots/${botId}/scrape`, {
+    method: "POST",
+    headers,
+    body: formData,
+  });
+  if (!response.ok) {
+    const error = await response.json().catch(() => ({ detail: "Scrape failed" }));
+    throw new Error(error.detail || "Scrape failed");
+  }
+  const payload = await response.json();
+  return {
+    id: payload.id || payload.job_id,
+    status: payload.status,
+    limit: payload.limit,
+    focus: payload.focus,
+    sitemap_only: payload.sitemap_only,
+  };
+}
+
+export async function fetchScraperJobStatus(jobId: string): Promise<ScraperJobStatus> {
+  const response = await fetchWithAuth(`${API_BASE}/scraper/jobs/${jobId}`);
   return response.json();
 }
 
@@ -459,6 +773,14 @@ export async function getSystemStatus(): Promise<{
   tunnel_token?: string | null;
   api_gateway_running?: boolean;
   api_gateway_port?: number | null;
+  encryption_enabled?: boolean;
+  local_private_execution?: boolean;
+  current_deployment_url?: string | null;
+  last_system_check_at?: string | null;
+  public_tunnel_ready?: boolean;
+  tunnel_stable?: boolean;
+  uptime_seconds?: number;
+  requires_password_change?: boolean;
 }> {
   // Check the system status endpoint
   try {
@@ -486,6 +808,14 @@ export async function getSystemStatus(): Promise<{
           tunnel_token: null,
           api_gateway_running: false,
           api_gateway_port: null,
+          encryption_enabled: false,
+          local_private_execution: true,
+          current_deployment_url: "http://localhost:8000/admin",
+          last_system_check_at: new Date().toISOString(),
+          public_tunnel_ready: false,
+          tunnel_stable: false,
+          uptime_seconds: 0,
+          requires_password_change: false,
         };
       }
     } catch (e) {
@@ -507,5 +837,30 @@ export async function getSystemStatus(): Promise<{
     tunnel_token: null,
     api_gateway_running: false,
     api_gateway_port: null,
+    encryption_enabled: false,
+    local_private_execution: true,
+    current_deployment_url: "http://localhost:8000/admin",
+    last_system_check_at: null,
+    public_tunnel_ready: false,
+    tunnel_stable: false,
+    uptime_seconds: 0,
+    requires_password_change: false,
   };
+}
+
+export async function getSetupStatus(): Promise<{
+  requires_password_change: boolean;
+  encryption_enabled: boolean;
+  local_private_execution: boolean;
+  current_deployment_url: string | null;
+  public_tunnel_ready: boolean;
+  tunnel_stable: boolean;
+  last_system_check_at: string | null;
+  uptime_seconds: number;
+}> {
+  const response = await fetch(`${API_BASE}/admin/setup-status`);
+  if (!response.ok) {
+    throw new Error("Could not load setup status");
+  }
+  return response.json();
 }

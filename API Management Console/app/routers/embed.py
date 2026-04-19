@@ -7,11 +7,12 @@ from html import escape
 
 from fastapi import APIRouter, Depends, HTTPException, status, Request
 from fastapi.responses import HTMLResponse
-from sqlalchemy.orm import Session
+from sqlalchemy.ext.asyncio import AsyncSession
 
-from ..models.database import get_db, Bot
+from ..models.database import get_async_db, Bot
 from ..models.schemas import EmbedConfigResponse
 from ..services.bot_service import bot_service
+from ..services.tool_service import get_startup_quick_chips
 from ..services.tunnel_service import tunnel_service
 
 router = APIRouter(prefix="/embed", tags=["embed"])
@@ -494,6 +495,13 @@ def get_embed_html(bot: Bot, initial_message: str) -> str:
                 const data = await response.json().catch(() => ({{}}));
                 const startupMessage = (data.startup_welcome_message || '').trim();
                 const configuredMessage = (data.welcome_message || '').trim();
+                const hotState = String(data.hot_state || 'cold');
+
+                if (hotState === 'hot') {{
+                    updateCurrentStats('Hot', null, null);
+                }} else if (hotState === 'warming') {{
+                    updateCurrentStats('Warming', null, null);
+                }}
 
                 if (startupMessage && startupWelcomeEl) {{
                     startupWelcomeEl.textContent = startupMessage;
@@ -538,7 +546,7 @@ def get_embed_html(bot: Bot, initial_message: str) -> str:
             return new Promise((resolve) => setTimeout(resolve, ms));
         }}
 
-        async function sendMessageWithRetry(text) {{
+        async function sendMessageWithRetry(text, onChunk) {{
             for (let attempt = 1; attempt <= MAX_CHAT_RETRIES + 1; attempt++) {{
                 const isNewSession = !sessionId;
                 updateCurrentStats(isNewSession ? 'Opening Session...' : 'Sending Request...', null, null);
@@ -549,17 +557,80 @@ def get_embed_html(bot: Bot, initial_message: str) -> str:
                         payload.session_id = sessionId;
                     }}
 
-                    updateCurrentStats('Waiting For Model Response...', null, null);
-                    const response = await fetch(withOptionalToken(API_BASE + '/api/bot/' + BOT_ID + '/chat'), {{
+                    updateCurrentStats('Opening Stream...', null, null);
+                    const response = await fetch(withOptionalToken(API_BASE + '/api/bot/' + BOT_ID + '/chat/stream'), {{
                         method: 'POST',
                         headers: buildRequestHeaders('application/json'),
                         body: JSON.stringify(payload)
                     }});
 
-                    const data = await response.json().catch(() => ({{}}));
                     if (response.ok) {{
-                        return data;
+                        if (!response.body) {{
+                            throw new Error('Streaming response body unavailable');
+                        }}
+                        const reader = response.body.getReader();
+                        const decoder = new TextDecoder();
+                        let buffer = '';
+                        let accumulated = '';
+                        let completedPayload = null;
+
+                        while (true) {{
+                            const result = await reader.read();
+                            buffer += decoder.decode(result.value || new Uint8Array(), {{ stream: !result.done }});
+                            const lines = buffer.split('\\n');
+                            buffer = lines.pop() || '';
+
+                            for (const rawLine of lines) {{
+                                const line = rawLine.trim();
+                                if (!line) {{
+                                    continue;
+                                }}
+                                const event = JSON.parse(line);
+                                if (event.type === 'status') {{
+                                    if (event.hot_ready) {{
+                                        updateCurrentStats('Hot', null, null);
+                                    }} else if (event.hot_state === 'warming') {{
+                                        updateCurrentStats('Warming', null, null);
+                                    }} else {{
+                                        updateCurrentStats(event.message || 'Waiting For Model Response...', null, null);
+                                    }}
+                                    addLog(event.message || 'Streaming status update');
+                                    continue;
+                                }}
+                                if (event.type === 'chunk') {{
+                                    const chunk = String(event.content || '');
+                                    if (chunk) {{
+                                        accumulated += chunk;
+                                        if (onChunk) {{
+                                            onChunk(accumulated);
+                                        }}
+                                    }}
+                                    continue;
+                                }}
+                                if (event.type === 'complete') {{
+                                    completedPayload = event;
+                                    if (!completedPayload.response) {{
+                                        completedPayload.response = accumulated;
+                                    }}
+                                    continue;
+                                }}
+                                if (event.type === 'error') {{
+                                    throw new Error(event.detail || 'Streaming chat failed');
+                                }}
+                            }}
+
+                            if (result.done) {{
+                                break;
+                            }}
+                        }}
+
+                        if (!completedPayload) {{
+                            throw new Error('Chat stream ended without a completion payload');
+                        }}
+                        return completedPayload;
                     }}
+
+                    const data = await response.json().catch(() => ({{}}));
 
                     const detail = data.detail || 'Request failed with status ' + response.status;
                     if (attempt <= MAX_CHAT_RETRIES && isRetryableStatus(response.status)) {{
@@ -602,16 +673,29 @@ def get_embed_html(bot: Bot, initial_message: str) -> str:
             updateCurrentStats('Preparing Request...', null, null);
             
             const startTime = Date.now();
+            let assistantMessageEl = null;
             
             try {{
-                const data = await sendMessageWithRetry(text);
+                const data = await sendMessageWithRetry(text, function (fullText) {{
+                    typingEl.classList.remove('show');
+                    if (!assistantMessageEl) {{
+                        assistantMessageEl = document.createElement('div');
+                        assistantMessageEl.className = 'message assistant';
+                        assistantMessageEl.textContent = '';
+                        messagesEl.appendChild(assistantMessageEl);
+                    }}
+                    assistantMessageEl.textContent = fullText;
+                    messagesEl.scrollTop = messagesEl.scrollHeight;
+                }});
                 const responseTime = Date.now() - startTime;
                 
                 // Hide typing indicator
                 typingEl.classList.remove('show');
                 thinkingEl.classList.remove('active');
                 
-                addMessage(data.response || 'No response received.', 'assistant');
+                if (!assistantMessageEl) {{
+                    addMessage(data.response || 'No response received.', 'assistant');
+                }}
                 if (data.session_id) {{
                     sessionId = data.session_id;
                 }}
@@ -643,7 +727,7 @@ def get_embed_html(bot: Bot, initial_message: str) -> str:
 @router.get("/{bot_id}", response_class=HTMLResponse)
 async def get_embed_widget(
     bot_id: str,
-    db: Session = Depends(get_db)
+    db: AsyncSession = Depends(get_async_db)
 ):
     """
     Get embeddable chat widget for a bot.
@@ -676,10 +760,10 @@ async def get_embed_widget(
 @router.get("/{bot_id}/config", response_model=EmbedConfigResponse)
 async def get_embed_config(
     bot_id: str,
-    db: Session = Depends(get_db)
+    db: AsyncSession = Depends(get_async_db)
 ):
     """Get embed configuration for a bot."""
-    bot = bot_service.get_bot(db, bot_id)
+    bot = await bot_service.get_bot_async(db, bot_id)
     if not bot:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
@@ -691,7 +775,11 @@ async def get_embed_config(
         bot_name=bot.name,
         accent_color=bot.accent_color,
         welcome_message=bot.welcome_message,
-        is_available=bot.is_available()
+        is_available=bot.is_available(),
+        quick_chip_settings={
+            **(bot.quick_chips_json or {}),
+            "initial_chips": get_startup_quick_chips(bot.quick_chips_json, bot.allowed_tools_json, surface_scope="public"),
+        },
     )
 
 
@@ -699,12 +787,12 @@ async def get_embed_config(
 async def get_embed_snippet(
     bot_id: str,
     request: Request,
-    db: Session = Depends(get_db)
+    db: AsyncSession = Depends(get_async_db)
 ):
     """
     Get embed code snippets for different platforms.
     """
-    bot = bot_service.get_bot(db, bot_id)
+    bot = await bot_service.get_bot_async(db, bot_id)
     if not bot:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,

@@ -7,16 +7,18 @@ import subprocess
 from pathlib import Path
 from typing import Optional
 from datetime import datetime
-from fastapi import APIRouter, Depends, HTTPException, status, UploadFile, File, Form, Query
+from fastapi import APIRouter, Depends, HTTPException, status, UploadFile, File, Form, Query, Body
 from sqlalchemy.orm import Session
 
-from ..models.database import get_db, Bot
+from ..models.database import get_db, Bot, ScraperJob
 from ..models.schemas import (
     BotCreate, BotUpdate, BotResponse, BotListResponse,
     CloneRequest, KnowledgeUpload
 )
 from ..services.bot_service import bot_service
 from ..services.analytics_service import analytics_service
+from ..services.safe_mode_service import safe_mode_service
+from ..services.supervisor_service import supervisor_service
 from .auth import get_current_user
 
 router = APIRouter(prefix="/api/bots", tags=["bots"])
@@ -45,6 +47,7 @@ async def create_bot(
     current_user: str = Depends(get_current_user)
 ):
     """Create a new chatbot."""
+    safe_mode_service.assert_writes_allowed(db)
     try:
         bot = bot_service.create_bot(
             db,
@@ -59,6 +62,10 @@ async def create_bot(
             memory_enabled=bot_data.memory_enabled,
             analytics_enabled=bot_data.analytics_enabled,
             is_active=bot_data.is_active,
+            tools_enabled=bot_data.tools_enabled,
+            allowed_tools=bot_data.allowed_tools,
+            tool_settings=bot_data.tool_settings.model_dump(),
+            quick_chip_settings=bot_data.quick_chip_settings.model_dump(),
             message_limit=bot_data.message_limit,
             expiration_date=bot_data.expiration_date,
             accent_color=bot_data.accent_color,
@@ -97,6 +104,7 @@ async def update_bot(
     current_user: str = Depends(get_current_user)
 ):
     """Update a chatbot's configuration."""
+    safe_mode_service.assert_writes_allowed(db)
     update_data = bot_data.dict(exclude_unset=True)
     
     bot = bot_service.update_bot(db, bot_id, **update_data)
@@ -115,6 +123,7 @@ async def delete_bot(
     current_user: str = Depends(get_current_user)
 ):
     """Delete a chatbot."""
+    safe_mode_service.assert_writes_allowed(db)
     if not bot_service.delete_bot(db, bot_id):
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
@@ -130,6 +139,7 @@ async def clone_bot(
     current_user: str = Depends(get_current_user)
 ):
     """Clone an existing chatbot."""
+    safe_mode_service.assert_writes_allowed(db)
     cloned = bot_service.clone_bot(
         db,
         bot_id,
@@ -152,6 +162,7 @@ async def toggle_bot_status(
     current_user: str = Depends(get_current_user)
 ):
     """Toggle bot active/inactive status."""
+    safe_mode_service.assert_writes_allowed(db)
     bot = bot_service.get_bot(db, bot_id)
     if not bot:
         raise HTTPException(
@@ -181,6 +192,7 @@ async def expire_bot(
     current_user: str = Depends(get_current_user)
 ):
     """Expire a bot immediately and move it to expired state."""
+    safe_mode_service.assert_writes_allowed(db)
     bot = bot_service.get_bot(db, bot_id)
     if not bot:
         raise HTTPException(
@@ -204,6 +216,7 @@ async def recover_bot(
     current_user: str = Depends(get_current_user)
 ):
     """Recover an expired/inactive bot back to active state."""
+    safe_mode_service.assert_writes_allowed(db)
     bot = bot_service.get_bot(db, bot_id)
     if not bot:
         raise HTTPException(
@@ -292,6 +305,7 @@ async def upload_knowledge(
     current_user: str = Depends(get_current_user)
 ):
     """Upload knowledge base content."""
+    safe_mode_service.assert_writes_allowed(db)
     try:
         documents = [{"text": content, "source": source}]
         stats = await bot_service.upload_knowledge(db, bot_id, documents, append)
@@ -320,6 +334,7 @@ async def upload_knowledge_file(
     current_user: str = Depends(get_current_user)
 ):
     """Upload a file to the knowledge base."""
+    safe_mode_service.assert_writes_allowed(db)
     # Check file type
     allowed_types = ['.txt', '.md', '.json']
     filename = file.filename or "unknown"
@@ -389,6 +404,7 @@ async def rebuild_embeddings(
     current_user: str = Depends(get_current_user)
 ):
     """Rebuild embeddings for a bot's knowledge base."""
+    safe_mode_service.assert_writes_allowed(db)
     try:
         stats = await bot_service.rebuild_embeddings(db, bot_id)
         return {
@@ -442,14 +458,38 @@ async def get_knowledge_chunks(
     return bot_service.get_knowledge_chunks(db, bot_id, page, per_page, search)
 
 
+@router.get("/{bot_id}/knowledge/chunks/{chunk_id}/source")
+async def get_knowledge_chunk_source(
+    bot_id: str,
+    chunk_id: str,
+    db: Session = Depends(get_db),
+    current_user: str = Depends(get_current_user)
+):
+    """Read the local-first source file and cleaned chunk trace for a knowledge chunk."""
+    bot = bot_service.get_bot(db, bot_id)
+    if not bot:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Bot not found"
+        )
+    payload = bot_service.get_knowledge_chunk_source(db, bot_id, chunk_id)
+    if not payload:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Knowledge chunk not found"
+        )
+    return payload
+
+
 @router.delete("/{bot_id}/knowledge/chunks/{chunk_id}")
 async def delete_knowledge_chunk(
     bot_id: str,
-    chunk_id: int,
+    chunk_id: str,
     db: Session = Depends(get_db),
     current_user: str = Depends(get_current_user)
 ):
     """Delete a specific knowledge chunk."""
+    safe_mode_service.assert_writes_allowed(db)
     # Verify bot exists
     bot = bot_service.get_bot(db, bot_id)
     if not bot:
@@ -458,7 +498,13 @@ async def delete_knowledge_chunk(
             detail="Bot not found"
         )
     
-    success = bot_service.delete_knowledge_chunk(db, bot_id, chunk_id)
+    try:
+        success = await bot_service.delete_knowledge_chunk(db, bot_id, chunk_id)
+    except RuntimeError as e:
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail=str(e)
+        )
     if not success:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
@@ -468,11 +514,59 @@ async def delete_knowledge_chunk(
     return {"message": "Chunk deleted successfully"}
 
 
+@router.put("/{bot_id}/knowledge/chunks/{chunk_id}")
+async def update_knowledge_chunk(
+    bot_id: str,
+    chunk_id: str,
+    payload: dict = Body(...),
+    db: Session = Depends(get_db),
+    current_user: str = Depends(get_current_user)
+):
+    """Update a specific knowledge chunk's cleaned content."""
+    safe_mode_service.assert_writes_allowed(db)
+    bot = bot_service.get_bot(db, bot_id)
+    if not bot:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Bot not found"
+        )
+
+    content = str((payload or {}).get("content") or "").strip()
+    if not content:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Updated chunk content is required"
+        )
+
+    try:
+        updated = await bot_service.update_knowledge_chunk(db, bot_id, chunk_id, content)
+    except ValueError as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=str(e)
+        )
+    except RuntimeError as e:
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail=str(e)
+        )
+    if not updated:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Knowledge chunk not found"
+        )
+
+    return updated
+
+
 @router.post("/{bot_id}/scrape")
 async def scrape_for_bot(
     bot_id: str,
     url: str = Form(...),
     depth: int = Form(default=2, ge=1, le=3),
+    limit: int = Form(default=20, ge=1, le=500),
+    focus: str = Form(default=""),
+    sitemap_only: bool = Form(default=False),
     consent_confirmed: bool = Form(default=False),
     append: bool = Form(default=True),
     db: Session = Depends(get_db),
@@ -482,8 +576,7 @@ async def scrape_for_bot(
     Scrape a website and add content directly to this bot's knowledge base.
     Data is stored in the bot's isolated data directory.
     """
-    from ..services.scraper_service import scraper_service, ScraperConfig
-    
+    safe_mode_service.assert_scraper_allowed(db)
     if not consent_confirmed:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
@@ -498,35 +591,43 @@ async def scrape_for_bot(
             detail="Bot not found"
         )
     
-    try:
-        # Configure scraper
-        config = ScraperConfig(max_depth=depth)
-        scraper_service.config = config
-        
-        # Run scraper
-        result = await scraper_service.scrape_website(url)
-        
-        # Prepare documents for indexing
-        documents = scraper_service.prepare_for_indexing(result)
-        
-        if not documents:
-            return {
-                "message": "No content extracted from website",
-                "pages_scraped": result.get('statistics', {}).get('total_pages', 0),
-                "chunks_created": 0
-            }
-        
-        # Upload to bot's knowledge base (stored in bot's data directory)
-        stats = await bot_service.upload_knowledge(db, bot_id, documents, append)
-        
-        return {
-            "message": "Website scraped and knowledge uploaded successfully",
-            "url": url,
-            "pages_scraped": result.get('statistics', {}).get('total_pages', 0),
-            **stats
-        }
-    except Exception as e:
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Scraping failed: {str(e)}"
-        )
+    job = ScraperJob(
+        bot_id=bot_id,
+        url=url,
+        depth=depth,
+        consent_confirmed=True,
+        status="pending",
+    )
+    db.add(job)
+    db.commit()
+    db.refresh(job)
+    supervisor_service.ensure_task_run(
+        db,
+        task_type="scraper_job",
+        task_key=job.id,
+        payload_json={
+            "job_id": job.id,
+            "url": job.url,
+            "depth": job.depth,
+            "limit": limit,
+            "focus": focus.strip(),
+            "sitemap_only": bool(sitemap_only),
+            "bot_id": bot_id,
+            "append": append,
+            "auto_index_bot": True,
+        },
+        checkpoint_json={},
+        state="pending",
+    )
+
+    return {
+        "message": "Scrape job scheduled for background execution",
+        "job_id": job.id,
+        "bot_id": bot_id,
+        "url": url,
+        "status": job.status,
+        "append": append,
+        "limit": limit,
+        "focus": focus.strip(),
+        "sitemap_only": bool(sitemap_only),
+    }

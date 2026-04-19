@@ -1,10 +1,15 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { Toaster } from "sonner";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { getAuthToken } from "@/lib/api";
+import { initializeTheme } from "@/lib/theme";
 import { LoginPage } from "@/pages/LoginPage";
 import { Dashboard } from "@/pages/Dashboard";
+
+const routerBase = typeof window !== "undefined" && window.location.pathname.startsWith("/admin")
+  ? "/admin"
+  : undefined;
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -24,21 +29,26 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
 }
 
 const App = () => {
+  useEffect(() => {
+    initializeTheme();
+  }, []);
+
   return (
     <QueryClientProvider client={queryClient}>
       <Toaster 
         position="top-right" 
         toastOptions={{
           style: {
-            background: "hsl(220 18% 7%)",
-            border: "1px solid hsl(220 15% 14%)",
-            color: "hsl(180 10% 88%)",
-            fontFamily: "'JetBrains Mono', monospace",
-            fontSize: "12px",
+            background: "hsl(var(--card))",
+            border: "1px solid hsl(var(--border))",
+            color: "hsl(var(--card-foreground))",
+            fontFamily: "'IBM Plex Sans', sans-serif",
+            fontSize: "13px",
+            boxShadow: "var(--shadow-card)",
           },
         }}
       />
-      <BrowserRouter>
+      <BrowserRouter basename={routerBase}>
         <Routes>
           <Route path="/login" element={<LoginPage />} />
           <Route

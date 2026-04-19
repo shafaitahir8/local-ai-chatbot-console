@@ -1,0 +1,72 @@
+{
+  "bot_id": "3027bcaf-eeaf-4746-8d55-0390d9f922e6",
+  "bot_name": "Arctic Customer Bot",
+  "session_id": "hs-f24g7ew4km",
+  "provider_type": "local",
+  "model": "llama3.2:3b",
+  "created_at": "2026-04-18T10:07:21.243722Z",
+  "updated_at": "2026-04-18T10:08:02.685994Z",
+  "messages": [
+    {
+      "role": "user",
+      "content": "hi",
+      "timestamp": "2026-04-18T10:07:21.243722Z"
+    },
+    {
+      "role": "assistant",
+      "content": "Welcome to Arctic Studio! How can I assist you today? Are you experiencing an issue with HubSpot or looking for guidance on one of our engineered solutions? Please let me know how I can help. \n\nDo you have a specific problem, or would you like to discuss your project requirements?",
+      "timestamp": "2026-04-18T10:07:21.243722Z",
+      "tokens_used": 494,
+      "latency_ms": 2895,
+      "retries_used": 0,
+      "fallback_used": true,
+      "rag_used": false
+    },
+    {
+      "role": "user",
+      "content": "I need help with setting up a site on hubspot",
+      "timestamp": "2026-04-18T10:07:35.407802Z"
+    },
+    {
+      "role": "assistant",
+      "content": "Absolutely, I'd be happy to guide you through the setup process for your site on HubSpot! Let's start by ensuring we understand where the problem or issue lies.\n\n**Step 1: Gathering Information**\nCould you please provide me with some details about what you’ve already tried and encountered so far? This might include:\n\n- The name of your current site, if any.\n- Any specific issues you've encountered (e.g., error messages).\n- If it’s a new project or an existing one.\n\n**Step 2: Identifying the Site Type**\nCould we assume that the site is built on WordPress, Webflow, custom code, or another CMS? Understanding this will help us narrow down where to look for potential issues.",
+      "timestamp": "2026-04-18T10:07:35.407802Z",
+      "tokens_used": 706,
+      "latency_ms": 3385,
+      "retries_used": 0,
+      "fallback_used": true,
+      "rag_used": true
+    },
+    {
+      "role": "user",
+      "content": "How much will it cost?",
+      "timestamp": "2026-04-18T10:07:45.322590Z"
+    },
+    {
+      "role": "assistant",
+      "content": "I'm sorry for the confusion but I don't have access to that information as it varies based on several factors such as the complexity of the project, additional services needed, and industry rules. To provide you with a precise estimate, we would need to conduct an initial consultation where our team can assess your needs in-depth. This will enable us to give a more accurate cost proposal tailored specifically for your situation.\n\nCould you please clarify what level of assistance you're looking for? Are you interested in a basic setup or are there specific features and integrations you'd like to implement? Knowing this information would help me better prepare an initial estimate that can be shared with you soon.",
+      "timestamp": "2026-04-18T10:07:45.322590Z",
+      "tokens_used": 720,
+      "latency_ms": 1909,
+      "retries_used": 0,
+      "fallback_used": true,
+      "rag_used": true
+    },
+    {
+      "role": "user",
+      "content": "can i talk to an agent?",
+      "timestamp": "2026-04-18T10:08:02.685994Z"
+    },
+    {
+      "role": "assistant",
+      "content": "**Direct Contact**: I'd be happy to connect you directly with one of our experienced technical support specialists who can assist you with setting up your site on HubSpot. However, if your issue is complex or requires a more in-depth assessment, I may need to escalate it to our Lead Developer, Shafai.\n\nTo proceed, I'll need to know a little bit about yourself and your project. Please provide me with the following information:\n\n1. **Your Name**: \n2. **Work Email**:\n3. **Website URL** (if you have one):\n4. A brief description of what you'd like assistance with regarding your site on HubSpot.\n\nOnce I have this information, I can direct you to an agent who will be happy to help.",
+      "timestamp": "2026-04-18T10:08:02.685994Z",
+      "tokens_used": 783,
+      "latency_ms": 4604,
+      "retries_used": 0,
+      "fallback_used": true,
+      "rag_used": false
+    }
+  ],
+  "message_count": 8
+}

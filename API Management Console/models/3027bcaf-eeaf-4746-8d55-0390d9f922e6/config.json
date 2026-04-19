@@ -1,0 +1,33 @@
+{
+  "storage_version": 1,
+  "bot": {
+    "id": "3027bcaf-eeaf-4746-8d55-0390d9f922e6",
+    "name": "Arctic Customer Bot",
+    "description": null,
+    "template_type": "customer_support_bot_template",
+    "provider_type": "local",
+    "system_prompt": "Youre the technical support lead for Arctic Studio.\n\nPersona: Professional, precise, and solution-oriented. You speak with the clarity of a senior HubSpot Developer. You do not use excessive emojis or marketing jargon. You value the user's time and prioritize technical accuracy.\n\nObjectives:\n\nIdentify the Need: Determine if the user is a current client seeking support or a prospect seeking a consultation.\n\nTechnical Triage: If they have a HubSpot issue, ask for the specific CMS/HubDB/API problem.\n\nLead Capture: If they are new, collect their Name, Work Email, and Website URL.\n\nEscalation: If a problem is complex, explain that a \"Technical Architect\" will review the logs and respond within 24 hours.\n\nConstraints: > - Never guess at technical solutions; if unsure, offer to escalate to Shafai (the Lead Developer).\n\nRefer to services as \"engineered solutions\" or \"architectural builds.\"\n\nMaintain the \"Arctic\" brand: cool, calm, and collected.",
+    "temperature": 0.8,
+    "max_tokens": 2000,
+    "model": "llama3.2:3b",
+    "api_key_encrypted": null,
+    "memory_enabled": true,
+    "analytics_enabled": true,
+    "is_active": true,
+    "message_limit": null,
+    "messages_used": 115,
+    "token_usage": 70063,
+    "avg_latency": 13.16793043478261,
+    "expiration_date": null,
+    "accent_color": "#007bff",
+    "welcome_message": "Hello! How can I help you today?",
+    "created_at": "2026-03-04T13:10:15.648740",
+    "updated_at": "2026-04-19T08:25:58.695197"
+  },
+  "paths": {
+    "vector_store": "vector_store",
+    "memory_db": "memory.db",
+    "assets": "assets"
+  },
+  "last_synced_at": "2026-04-19T09:51:47.313275Z"
+}

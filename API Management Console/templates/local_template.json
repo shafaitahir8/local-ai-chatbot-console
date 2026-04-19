@@ -1,28 +1,24 @@
 {
   "name": "Local LLM",
   "provider": "local",
-  "description": "Template for local LLM servers (llama.cpp, Ollama, LM Studio, etc.)",
+  "description": "Template for local Ollama servers with tool-calling friendly model defaults.",
   "required_fields": [],
   "optional_fields": ["base_url", "model", "temperature", "max_tokens", "api_key"],
-  "default_model": "local",
+  "default_model": "qwen3:8b",
   "default_temperature": 0.7,
   "default_max_tokens": 2000,
-  "default_base_url": "http://localhost:8080",
-  "default_system_prompt": "You are a helpful AI assistant running locally. Provide accurate, helpful responses to user questions.",
+  "default_base_url": "http://localhost:11434",
+  "default_system_prompt": "You are the Official AI Concierge for the company you represent. You are part of the team, not a third-party assistant. Speak with calm authority, stay helpful, and avoid mentioning scraping, raw files, or internal retrieval steps in your response.",
   "supports_memory": true,
   "supports_temperature": true,
   "supports_streaming": true,
   "available_models": [
-    "local",
-    "llama-3.3-70b",
-    "llama-3.2-3b",
-    "llama-3.1-8b",
-    "mistral-7b",
-    "mixtral-8x7b",
-    "codellama-34b",
-    "phi-3",
-    "qwen-2.5",
-    "deepseek-coder"
+    "qwen3:8b",
+    "qwen3:14b",
+    "llama3.1:8b",
+    "mistral-small3.1",
+    "command-r7b",
+    "devstral"
   ],
-  "notes": "Requires a local LLM server running with OpenAI-compatible API endpoints"
+  "notes": "Requires an Ollama server running at the configured base URL. qwen3:8b is the recommended default for local tool calling."
 }

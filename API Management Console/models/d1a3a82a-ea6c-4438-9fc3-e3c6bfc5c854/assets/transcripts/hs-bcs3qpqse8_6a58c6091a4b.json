@@ -1,0 +1,42 @@
+{
+  "bot_id": "d1a3a82a-ea6c-4438-9fc3-e3c6bfc5c854",
+  "bot_name": "Hubbase Chatbot",
+  "session_id": "hs-bcs3qpqse8",
+  "provider_type": "local",
+  "model": "qwen2.5:1.5b",
+  "created_at": "2026-03-28T17:25:03.756212Z",
+  "updated_at": "2026-03-28T17:25:14.085098Z",
+  "messages": [
+    {
+      "role": "user",
+      "content": "hi",
+      "timestamp": "2026-03-28T17:25:03.756212Z"
+    },
+    {
+      "role": "assistant",
+      "content": "Hello! How can I assist you today?",
+      "timestamp": "2026-03-28T17:25:03.756212Z",
+      "tokens_used": 0,
+      "latency_ms": 371,
+      "retries_used": 0,
+      "fallback_used": false,
+      "rag_used": false
+    },
+    {
+      "role": "user",
+      "content": "hlo",
+      "timestamp": "2026-03-28T17:25:14.085098Z"
+    },
+    {
+      "role": "assistant",
+      "content": "Hello! How can I assist you today?",
+      "timestamp": "2026-03-28T17:25:14.085098Z",
+      "tokens_used": 323,
+      "latency_ms": 1007,
+      "retries_used": 0,
+      "fallback_used": true,
+      "rag_used": false
+    }
+  ],
+  "message_count": 4
+}

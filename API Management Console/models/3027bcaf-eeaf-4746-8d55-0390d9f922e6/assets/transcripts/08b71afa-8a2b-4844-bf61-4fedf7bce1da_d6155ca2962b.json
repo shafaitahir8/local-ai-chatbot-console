@@ -1,0 +1,87 @@
+{
+  "bot_id": "3027bcaf-eeaf-4746-8d55-0390d9f922e6",
+  "bot_name": "Arctic Customer Bot",
+  "session_id": "08b71afa-8a2b-4844-bf61-4fedf7bce1da",
+  "provider_type": "local",
+  "model": "llama3.2:3b",
+  "created_at": "2026-04-19T05:26:33.517938Z",
+  "updated_at": "2026-04-19T05:27:45.612763Z",
+  "messages": [
+    {
+      "role": "user",
+      "content": "User has asked to contact Arctic, so respond with a suitable message to deliver shafaitahir8@gmail.com this email to the user and tell them that they can contact on this email to set up a meeting.",
+      "timestamp": "2026-04-19T05:26:33.517938Z"
+    },
+    {
+      "role": "assistant",
+      "content": "You can contact us at shafaitahir8@gmail.com to set up a meeting.",
+      "timestamp": "2026-04-19T05:26:33.517938Z",
+      "tokens_used": 919,
+      "latency_ms": 4295,
+      "retries_used": 0,
+      "fallback_used": true,
+      "rag_used": true
+    },
+    {
+      "role": "user",
+      "content": "hi",
+      "timestamp": "2026-04-19T05:26:44.591117Z"
+    },
+    {
+      "role": "assistant",
+      "content": "We offer technical support through email for all your HubSpot-related queries. You can send an email to shafaitahir8@gmail.com, and we'll respond promptly to assist you. If you'd like to schedule a consultation, please include that in the email so we can direct our conversation accordingly.",
+      "timestamp": "2026-04-19T05:26:44.591117Z",
+      "tokens_used": 656,
+      "latency_ms": 3317,
+      "retries_used": 0,
+      "fallback_used": true,
+      "rag_used": false
+    },
+    {
+      "role": "user",
+      "content": "i want to talk to an arctic agent",
+      "timestamp": "2026-04-19T05:26:55.213756Z"
+    },
+    {
+      "role": "assistant",
+      "content": "I'd be happy to help you with your HubSpot-related questions. Please send me an email at shafaitahir8@gmail.com and I'll assist you there.\n\nIf you need any further assistance, feel free to ask!",
+      "timestamp": "2026-04-19T05:26:55.213756Z",
+      "tokens_used": 791,
+      "latency_ms": 1332,
+      "retries_used": 0,
+      "fallback_used": true,
+      "rag_used": true
+    },
+    {
+      "role": "user",
+      "content": "i need to see a quick chip",
+      "timestamp": "2026-04-19T05:27:19.701039Z"
+    },
+    {
+      "role": "assistant",
+      "content": "To get started, can you please tell me a little bit about your issue with HubSpot? What specifically is not working the way you expect it to?",
+      "timestamp": "2026-04-19T05:27:19.701039Z",
+      "tokens_used": 731,
+      "latency_ms": 3282,
+      "retries_used": 0,
+      "fallback_used": true,
+      "rag_used": false
+    },
+    {
+      "role": "user",
+      "content": "Talk with us",
+      "timestamp": "2026-04-19T05:27:45.612763Z"
+    },
+    {
+      "role": "assistant",
+      "content": "We offer technical support through email for all your HubSpot-related queries. You can send an email to shafaitahir8@gmail.com and I'll be happy to assist you. We also have a contact form on our website [Link to Contact Form](https://www.arcticstudio.com/contact). Alternatively, we're always here to chat. What's on your mind?",
+      "timestamp": "2026-04-19T05:27:45.612763Z",
+      "tokens_used": 779,
+      "latency_ms": 4025,
+      "retries_used": 0,
+      "fallback_used": true,
+      "rag_used": false
+    }
+  ],
+  "message_count": 10
+}

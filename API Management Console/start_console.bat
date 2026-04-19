@@ -279,6 +279,15 @@ echo.
 
 echo [INFO] Starting uvicorn >> "%LOGFILE%"
 
+echo        Starting supervised background roles...
+powershell -NoProfile -ExecutionPolicy Bypass -File "%~dp0scripts\manage_runtime_roles.ps1" start >> "%LOGFILE%" 2>&1
+if %ERRORLEVEL% neq 0 (
+    echo [WARN] Failed to start one or more background roles. Console will continue, but health may be degraded.
+    echo [WARN] role manager start failed >> "%LOGFILE%"
+) else (
+    echo        Background roles started.
+)
+
 REM Open browser after delay using a hidden PowerShell script
 start "" /B powershell -WindowStyle Hidden -Command "Start-Sleep -Seconds 4; Start-Process 'http://localhost:8000/admin'"
 
@@ -308,6 +317,8 @@ pause
 exit /b 1
 
 :end
+echo [INFO] Stopping supervised background roles >> "%LOGFILE%"
+powershell -NoProfile -ExecutionPolicy Bypass -File "%~dp0scripts\manage_runtime_roles.ps1" stop >> "%LOGFILE%" 2>&1
 echo.
 echo [INFO] Server stopped >> "%LOGFILE%"
 echo  Server stopped. Goodbye!

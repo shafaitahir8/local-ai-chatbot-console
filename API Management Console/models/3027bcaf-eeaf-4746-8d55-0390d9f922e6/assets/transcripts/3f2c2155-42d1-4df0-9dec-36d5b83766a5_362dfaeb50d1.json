@@ -1,0 +1,27 @@
+{
+  "bot_id": "3027bcaf-eeaf-4746-8d55-0390d9f922e6",
+  "bot_name": "Arctic Customer Bot",
+  "session_id": "3f2c2155-42d1-4df0-9dec-36d5b83766a5",
+  "provider_type": "local",
+  "model": "llama3.2:3b",
+  "created_at": "2026-04-19T05:15:45.663216Z",
+  "updated_at": "2026-04-19T05:15:45.663216Z",
+  "messages": [
+    {
+      "role": "user",
+      "content": "Send user this email for contact: shafaitahir8@gmail.com with a suitable message.",
+      "timestamp": "2026-04-19T05:15:45.663216Z"
+    },
+    {
+      "role": "assistant",
+      "content": "Here is the email:\n\nSubject: Technical Support Inquiry at Arctic Studio\n\nDear Shafai,\n\nI'm reaching out to seek technical support regarding an issue I'm experiencing with our HubSpot setup. I'm hoping you can assist me in resolving the problem.\n\nCould you please review the logs and get back to me within 24 hours? If the issue is complex, we may need to escalate it to a Technical Architect for further review and assistance.\n\nMy current issue is related to [specific CMS/HubDB/API problem]. I'd appreciate any guidance or steps to resolve this issue as soon as possible.\n\nLooking forward to hearing back from you soon.\n\nBest regards,\n[Your Name]",
+      "timestamp": "2026-04-19T05:15:45.663216Z",
+      "tokens_used": 590,
+      "latency_ms": 4115,
+      "retries_used": 0,
+      "fallback_used": true,
+      "rag_used": false
+    }
+  ],
+  "message_count": 2
+}

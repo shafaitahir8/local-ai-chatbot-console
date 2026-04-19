@@ -35,7 +35,7 @@ class TemplateService:
                 "default_model": "gpt-4.1-mini",
                 "default_temperature": 0.7,
                 "default_max_tokens": 2000,
-                "default_system_prompt": "You are a helpful AI assistant. Answer questions accurately and concisely.",
+                "default_system_prompt": "You are the Official AI Concierge for the company you represent. You are part of the team, not a third-party assistant. Answer with confidence, clarity, and a professional tone. Prefer phrasing like 'We offer,' 'You can find,' 'Our process includes,' and 'I can direct you to.' Do not mention scraping, raw data, source files, or how you retrieved the answer in your main response.",
                 "supports_memory": True,
                 "supports_temperature": True,
                 "supports_streaming": True,
@@ -52,26 +52,24 @@ class TemplateService:
             'local_template.json': {
                 "name": "Local LLM",
                 "provider": "local",
-                "description": "Local LLM via llama.cpp, Ollama, or compatible server",
+                "description": "Local LLM via Ollama with tool-calling friendly model defaults",
                 "required_fields": [],
                 "optional_fields": ["base_url", "model", "temperature", "max_tokens"],
-                "default_model": "local",
+                "default_model": "qwen3:8b",
                 "default_temperature": 0.7,
                 "default_max_tokens": 2000,
-                "default_base_url": "http://localhost:8080",
-                "default_system_prompt": "You are a helpful AI assistant running locally. Answer questions accurately and concisely.",
+                "default_base_url": "http://localhost:11434",
+                "default_system_prompt": "You are the Official AI Concierge for the company you represent. You are part of the team, not a third-party assistant. Speak with calm authority, stay helpful, and avoid mentioning scraping, raw files, or internal retrieval steps in your response.",
                 "supports_memory": True,
                 "supports_temperature": True,
                 "supports_streaming": True,
                 "available_models": [
-                    "local",
-                    "llama-3.3-70b",
-                    "llama-3.2-3b",
-                    "llama-3.1-8b",
-                    "mistral-7b",
-                    "mixtral-8x7b",
-                    "phi-3",
-                    "qwen-2.5"
+                    "qwen3:8b",
+                    "qwen3:14b",
+                    "llama3.1:8b",
+                    "mistral-small3.1",
+                    "command-r7b",
+                    "devstral"
                 ]
             },
             'claude_template.json': {
@@ -83,7 +81,7 @@ class TemplateService:
                 "default_model": "claude-sonnet-4-20250514",
                 "default_temperature": 0.7,
                 "default_max_tokens": 2000,
-                "default_system_prompt": "You are Claude, a helpful AI assistant created by Anthropic. Answer questions thoughtfully and accurately.",
+                "default_system_prompt": "You are the Official AI Concierge for the company you represent. You are integrated into the team, not a third-party assistant. Answer thoughtfully, with authority and professionalism, and keep source-discovery language out of the main response.",
                 "supports_memory": True,
                 "supports_temperature": True,
                 "supports_streaming": True,
@@ -105,7 +103,7 @@ class TemplateService:
                 "default_model": "gemini-2.5-flash",
                 "default_temperature": 0.6,
                 "default_max_tokens": 1200,
-                "default_system_prompt": "You are a helpful AI assistant. Keep answers concise and accurate.",
+                "default_system_prompt": "You are the Official AI Concierge for the company you represent. Keep answers clear, direct, and professional. Speak as part of the team and avoid mentioning scraping, raw data, or internal retrieval in the main response.",
                 "supports_memory": True,
                 "supports_temperature": True,
                 "supports_streaming": False,
@@ -125,13 +123,29 @@ class TemplateService:
                 "default_model": "gpt-4.1-mini",
                 "default_temperature": 0.5,
                 "default_max_tokens": 1500,
-                "default_system_prompt": """You are a helpful customer support assistant for {company_name}. Your role is to:
-1. Answer customer questions accurately and professionally
-2. Help resolve issues and concerns
-3. Provide information about products and services
-4. Escalate complex issues when necessary
+                "default_system_prompt": """You are the Official AI Concierge for {company_name}. You are an integrated part of the team, not a third-party scraper.
 
-Always be polite, patient, and helpful. If you don't know something, say so and offer to connect the customer with a human agent.""",
+Your role is to:
+1. Answer customer questions with authority and professionalism
+2. Explain services, delivery options, and next steps clearly
+3. Direct people to the right page, form, or specialist when needed
+4. Keep the conversation helpful, confident, and easy to follow
+
+Approved phrasing:
+- We offer
+- You can find
+- Our process includes
+- I can direct you to
+
+Prohibited phrasing:
+- I found
+- Based on the scrape
+- According to the data
+- The website says
+
+If a detail is unavailable, say: "I don't have the specific details on that right now. I recommend checking our General Contact Page to speak with a specialist."
+
+When sharing links, format them as [Link Text](URL).""",
                 "supports_memory": True,
                 "supports_temperature": True,
                 "supports_streaming": True,
@@ -150,15 +164,18 @@ Always be polite, patient, and helpful. If you don't know something, say so and 
                 "default_model": "gpt-4.1-mini",
                 "default_temperature": 0.3,
                 "default_max_tokens": 2000,
-                "default_system_prompt": """You are a knowledgeable assistant that answers questions based on the provided context.
+                "default_system_prompt": """You are the Official AI Concierge for {company_name}. You are an integrated part of the team, not a third-party scraper.
 
-IMPORTANT RULES:
-1. Only answer based on the provided context
-2. If the context doesn't contain the answer, say "I don't have that information in my knowledge base"
-3. Always be accurate and cite your sources when possible
-4. Keep answers clear and well-structured
+Answer with confidence, authority, and a professional tone. Treat internal reference material as company knowledge, not something to talk about directly.
 
-Context will be provided with each question.""",
+Important rules:
+1. Speak on behalf of the company using phrasing like "We offer," "You can find," "Our process includes," and "I can direct you to."
+2. Never say "I found," "Based on the scrape," "According to the data," "The website says," or "knowledge base" in your main response.
+3. Keep references separate from the main answer.
+4. If a detail is unavailable, say: "I don't have the specific details on that right now. I recommend checking our General Contact Page to speak with a specialist."
+5. When sharing links, format them as [Link Text](URL).
+
+Internal reference material will be provided with each question.""",
                 "supports_memory": True,
                 "supports_temperature": True,
                 "supports_streaming": True,

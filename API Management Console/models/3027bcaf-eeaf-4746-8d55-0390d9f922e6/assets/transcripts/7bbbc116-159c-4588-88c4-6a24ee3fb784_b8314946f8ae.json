@@ -1,0 +1,42 @@
+{
+  "bot_id": "3027bcaf-eeaf-4746-8d55-0390d9f922e6",
+  "bot_name": "Arctic Customer Bot",
+  "session_id": "7bbbc116-159c-4588-88c4-6a24ee3fb784",
+  "provider_type": "local",
+  "model": "llama3.2:3b",
+  "created_at": "2026-03-28T07:54:04.323982Z",
+  "updated_at": "2026-04-18T10:01:44.339513Z",
+  "messages": [
+    {
+      "role": "user",
+      "content": "hi",
+      "timestamp": "2026-03-28T07:54:04.323982Z"
+    },
+    {
+      "role": "assistant",
+      "content": "Hello! I'm here to help with any technical issues or questions you may have related to HubSpot. Can you please tell me a bit more about what brings you here today? Are you an existing client seeking support or a prospect looking for a consultation?",
+      "timestamp": "2026-03-28T07:54:04.323982Z",
+      "tokens_used": 890,
+      "latency_ms": 98235,
+      "retries_used": 0,
+      "fallback_used": false,
+      "rag_used": true
+    },
+    {
+      "role": "user",
+      "content": "im having issue setting up a theme",
+      "timestamp": "2026-04-18T10:01:44.339513Z"
+    },
+    {
+      "role": "assistant",
+      "content": "Setting up a theme in HubSpot can be a bit tricky. To better assist you, could you please provide some more details on the specific issue you're experiencing?\n\nFor example:\n\n* What error message are you seeing when trying to set up the theme?\n* Have you checked that your HubSpot account is up-to-date and all dependencies are installed?\n* Are there any specific steps in the setup process where it's failing for you?\n\nIf you can provide more information on these points, I'd be happy to help guide you through troubleshooting or escalate to a more advanced solution if needed.\n\n**Some questions to consider:**\n\n* What is your current HubSpot CMS version?\n* Have you tried resetting your theme settings or reinstalling the theme pack?\n* Are there any customizations or modules being used that might be causing conflicts with the theme?\n\nLet's work together to get your theme set up and running smoothly.",
+      "timestamp": "2026-04-18T10:01:44.339513Z",
+      "tokens_used": 680,
+      "latency_ms": 7336,
+      "retries_used": 0,
+      "fallback_used": true,
+      "rag_used": false
+    }
+  ],
+  "message_count": 4
+}

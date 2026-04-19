@@ -1,0 +1,16 @@
+[
+  {
+    "text": "Arctic Studio | Technical Service Documentation & Knowledge Base 1. Core Identity and Methodology Arctic Studio is a specialized HubSpot CMS development firm. Our methodology, \"The Arctic Standard,\" prioritizes technical performance over generic aesthetics. We utilize a \"Developer-First, Marketer-Friendly\" approach, ensuring that while the underlying code (HubL, HubDB, JS) is complex and optimized, the end-user experience in the HubSpot Drag-and-Drop editor remains intuitive. 2. The Technical Stack Framework: Primary utilization of the Sprocket Rocket framework for accelerated, clean-code deployments. Languages: Expert-level implementation of HubL (HubSpot Markup Language), HubDB (Relational Data), JavaScript (ES6+), and CSS/SCSS. Performance Standards: Every build is audited for Core Web Vitals (LCP, FID, CLS). We aim for a 90+ performance score on mobile and desktop by eliminating render-blocking resources and optimizing asset delivery. 3. Service Definitions Custom HubDB Architecture: We engineer dynamic, data-driven solutions such as resource libraries, team directories, and real estate listings using HubDB. This allows for centralized data management and site-wide updates without editing individual pages. Technical CMS Migrations: Moving enterprise-level sites from WordPress, Webflow, or custom stacks into HubSpot while maintaining SEO equity and clean URL structures. Custom Module Development: Building reusable, high-performance HubSpot modules that extend beyond standard theme capabilities, including custom calculators, interactive maps, and API-integrated UI components. 4. Project Engagement Process (The Pipeline) Technical Audit: Reviewing the current HubSpot portal for technical debt, redundant CSS, and broken HubL logic. Architectural Blueprint: Defining the data schema (HubDB) and module requirements before writing a single line of code. Development Sprint: Agile-based coding with a focus on modularity and scalability. QA & Performance Tuning: Cross-browser testing and speed optimization. Deployment & Documentation: Handing over a \"User Manual\" to the client's marketing team for easy site management. 5. Frequently Asked Questions for Embeddings Why use Arctic Studio over a general agency? We are specialists,",
+    "source": "Sample datas.txt",
+    "chunk_index": 0,
+    "word_count": 300,
+    "metadata": {}
+  },
+  {
+    "text": "with a focus on modularity and scalability. QA & Performance Tuning: Cross-browser testing and speed optimization. Deployment & Documentation: Handing over a \"User Manual\" to the client's marketing team for easy site management. 5. Frequently Asked Questions for Embeddings Why use Arctic Studio over a general agency? We are specialists, not generalists. We focus exclusively on the technical architecture of HubSpot, ensuring your site scales without breaking. Do you work with HubSpot Free? Yes, we optimize the HubSpot Free tier by leveraging high-quality themes like Sprocket Rocket to maximize perceived value. What is your pricing model? We offer competitive hourly rates for initial projects to build credibility, moving toward high-value project-based contracts for custom architectural builds.",
+    "source": "Sample datas.txt",
+    "chunk_index": 0,
+    "word_count": 116,
+    "metadata": {}
+  }
+]

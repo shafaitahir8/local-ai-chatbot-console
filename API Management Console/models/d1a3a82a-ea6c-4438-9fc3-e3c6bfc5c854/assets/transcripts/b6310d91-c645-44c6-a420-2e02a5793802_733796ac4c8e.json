@@ -1,0 +1,42 @@
+{
+  "bot_id": "d1a3a82a-ea6c-4438-9fc3-e3c6bfc5c854",
+  "bot_name": "Hubbase Chatbot",
+  "session_id": "b6310d91-c645-44c6-a420-2e02a5793802",
+  "provider_type": "local",
+  "model": "qwen2.5:1.5b",
+  "created_at": "2026-04-18T17:56:54.472917Z",
+  "updated_at": "2026-04-18T17:57:10.609306Z",
+  "messages": [
+    {
+      "role": "user",
+      "content": "Book a consultation",
+      "timestamp": "2026-04-18T17:56:54.472917Z"
+    },
+    {
+      "role": "assistant",
+      "content": "I'm sorry, but I currently don't have the ability to book consultations. I can help answer your questions about how to schedule a meeting or provide information on booking appointments if it's an option offered by Hubbase. Is there something specific you'd like to know or discuss with me regarding your current situation?",
+      "timestamp": "2026-04-18T17:56:54.472917Z",
+      "tokens_used": 707,
+      "latency_ms": 3622,
+      "retries_used": 0,
+      "fallback_used": true,
+      "rag_used": false
+    },
+    {
+      "role": "user",
+      "content": "show a quick chip",
+      "timestamp": "2026-04-18T17:57:10.609306Z"
+    },
+    {
+      "role": "assistant",
+      "content": "To show a quick chip, I can suggest using the Quick Chips feature in our app or service. This could be helpful for quickly accessing important information without having to navigate through more complex steps. Would you like to know how to activate this feature and what kind of content you might expect from it?",
+      "timestamp": "2026-04-18T17:57:10.609306Z",
+      "tokens_used": 780,
+      "latency_ms": 2217,
+      "retries_used": 0,
+      "fallback_used": true,
+      "rag_used": false
+    }
+  ],
+  "message_count": 4
+}

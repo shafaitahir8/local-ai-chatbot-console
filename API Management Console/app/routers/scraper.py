@@ -3,64 +3,46 @@ Website scraper API routes.
 """
 
 from typing import Optional
-from fastapi import APIRouter, Depends, HTTPException, status, BackgroundTasks
+from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
 from ..models.database import get_db, ScraperJob, Bot
 from ..models.schemas import ScraperRequest, ScraperJobResponse, ScraperReviewRequest
-from ..services.scraper_service import scraper_service, ScraperConfig
+from ..services.scraper_service import ScraperService, ScraperConfig
 from ..services.bot_service import bot_service
+from ..services.safe_mode_service import safe_mode_service
+from ..services.supervisor_service import supervisor_service
 from .auth import get_current_user
 
 router = APIRouter(prefix="/api/scraper", tags=["scraper"])
 
-# Store for in-progress scraping jobs
-scraping_jobs = {}
 
-
-async def run_scraper_job(job_id: str, url: str, depth: int, db_session_factory):
-    """Background task to run scraper."""
-    from ..models.database import SessionLocal
-    
-    db = db_session_factory()
-    try:
-        job = db.query(ScraperJob).filter(ScraperJob.id == job_id).first()
-        if not job:
-            return
-        
-        job.status = "running"
-        db.commit()
-        
-        # Configure scraper
-        config = ScraperConfig(max_depth=depth)
-        scraper = scraper_service
-        scraper.config = config
-        
-        # Run scraper
-        result = await scraper.scrape_website(url)
-        
-        # Update job
-        job.status = "review"
-        job.pages_scraped = result['statistics']['total_pages']
-        job.extracted_data = result
-        job.completed_at = __import__('datetime').datetime.utcnow()
-        
-        db.commit()
-        
-    except Exception as e:
-        job = db.query(ScraperJob).filter(ScraperJob.id == job_id).first()
-        if job:
-            job.status = "failed"
-            job.error_message = str(e)
-            db.commit()
-    finally:
-        db.close()
+def _scraper_response(job: ScraperJob, checkpoint: Optional[dict] = None) -> ScraperJobResponse:
+    payload = dict((job.extracted_data or {}))
+    summary = (payload.get("statistics") or {}) if payload else None
+    return ScraperJobResponse(
+        id=job.id,
+        bot_id=job.bot_id,
+        url=job.url,
+        status=job.status,
+        depth=job.depth,
+        limit=int((payload.get("limit") if payload else None) or ((checkpoint or {}).get("limit") or 0) or 0) or None,
+        focus=(payload.get("focus") if payload else None) or (checkpoint or {}).get("focus"),
+        sitemap_only=bool((payload.get("sitemap_only") if payload else None) or (checkpoint or {}).get("sitemap_only", False)),
+        pages_scraped=job.pages_scraped,
+        chunks_created=job.chunks_created,
+        error_message=job.error_message,
+        consent_confirmed=job.consent_confirmed,
+        telemetry=checkpoint,
+        summary=summary,
+        created_at=job.created_at,
+        completed_at=job.completed_at,
+    )
 
 
 @router.post("/start", response_model=ScraperJobResponse)
 async def start_scraper(
     scraper_request: ScraperRequest,
-    background_tasks: BackgroundTasks,
     db: Session = Depends(get_db),
     current_user: str = Depends(get_current_user)
 ):
@@ -74,6 +56,7 @@ async def start_scraper(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="You must confirm that you have consent to scrape this website."
         )
+    safe_mode_service.assert_scraper_allowed(db)
     
     # Create job record
     job = ScraperJob(
@@ -85,29 +68,30 @@ async def start_scraper(
     db.add(job)
     db.commit()
     db.refresh(job)
-    
-    # Start background task
-    from ..models.database import SessionLocal
-    background_tasks.add_task(
-        run_scraper_job,
-        job.id,
-        scraper_request.url,
-        scraper_request.depth,
-        SessionLocal
+    supervisor_service.ensure_task_run(
+        db,
+        task_type="scraper_job",
+        task_key=job.id,
+        payload_json={
+            "job_id": job.id,
+            "url": job.url,
+            "depth": job.depth,
+            "limit": scraper_request.limit,
+            "focus": (scraper_request.focus or "").strip(),
+            "sitemap_only": bool(scraper_request.sitemap_only),
+            "auto_index_bot": False,
+        },
+        checkpoint_json={},
+        state="pending",
     )
-    
-    return ScraperJobResponse(
-        id=job.id,
-        bot_id=job.bot_id,
-        url=job.url,
-        status=job.status,
-        depth=job.depth,
-        pages_scraped=job.pages_scraped,
-        chunks_created=job.chunks_created,
-        error_message=job.error_message,
-        consent_confirmed=job.consent_confirmed,
-        created_at=job.created_at,
-        completed_at=job.completed_at
+
+    return _scraper_response(
+        job,
+        {
+            "limit": scraper_request.limit,
+            "focus": (scraper_request.focus or "").strip() or None,
+            "sitemap_only": bool(scraper_request.sitemap_only),
+        },
     )
 
 
@@ -118,22 +102,7 @@ async def list_scraper_jobs(
 ):
     """List all scraper jobs."""
     jobs = db.query(ScraperJob).order_by(ScraperJob.created_at.desc()).limit(50).all()
-    return [
-        ScraperJobResponse(
-            id=job.id,
-            bot_id=job.bot_id,
-            url=job.url,
-            status=job.status,
-            depth=job.depth,
-            pages_scraped=job.pages_scraped,
-            chunks_created=job.chunks_created,
-            error_message=job.error_message,
-            consent_confirmed=job.consent_confirmed,
-            created_at=job.created_at,
-            completed_at=job.completed_at
-        )
-        for job in jobs
-    ]
+    return [_scraper_response(job) for job in jobs]
 
 
 @router.get("/jobs/{job_id}", response_model=ScraperJobResponse)
@@ -149,20 +118,18 @@ async def get_scraper_job(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Scraper job not found"
         )
+    safe_mode_service.assert_writes_allowed(db)
     
-    return ScraperJobResponse(
-        id=job.id,
-        bot_id=job.bot_id,
-        url=job.url,
-        status=job.status,
-        depth=job.depth,
-        pages_scraped=job.pages_scraped,
-        chunks_created=job.chunks_created,
-        error_message=job.error_message,
-        consent_confirmed=job.consent_confirmed,
-        created_at=job.created_at,
-        completed_at=job.completed_at
+    task = supervisor_service.ensure_task_run(
+        db,
+        task_type="scraper_job",
+        task_key=job_id,
+        payload_json=None,
+        state=job.status,
     )
+    telemetry = dict(task.checkpoint_json or {})
+    telemetry.update(dict(task.payload_json or {}))
+    return _scraper_response(job, telemetry)
 
 
 @router.get("/jobs/{job_id}/preview")
@@ -187,6 +154,8 @@ async def preview_scraped_data(
     
     extracted_data = job.extracted_data or {}
     pages = extracted_data.get('pages', [])
+    if extracted_data.get("persist_pages_path"):
+        pages = ScraperService().load_persisted_pages(extracted_data.get("persist_pages_path"))
     
     return {
         "job_id": job_id,
@@ -234,10 +203,15 @@ async def create_bot_from_scraper(
         )
     
     extracted_data = job.extracted_data or {}
+    if extracted_data.get("persist_pages_path"):
+        extracted_data = {
+            **extracted_data,
+            "pages": ScraperService().load_persisted_pages(extracted_data.get("persist_pages_path")),
+        }
     
     # Filter pages if specified
     if selected_pages is not None:
-        extracted_data = scraper_service.filter_pages(extracted_data, selected_pages)
+        extracted_data = ScraperService().filter_pages(extracted_data, selected_pages)
     
     # Create bot
     from ..services.template_service import template_service
@@ -258,7 +232,7 @@ async def create_bot_from_scraper(
     db.commit()
     
     # Prepare documents for indexing
-    documents = scraper_service.prepare_for_indexing(extracted_data)
+    documents = ScraperService().prepare_for_indexing(extracted_data)
     
     # Upload knowledge
     try:
@@ -294,6 +268,7 @@ async def delete_scraper_job(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Scraper job not found"
         )
+    safe_mode_service.assert_writes_allowed(db)
     
     db.delete(job)
     db.commit()

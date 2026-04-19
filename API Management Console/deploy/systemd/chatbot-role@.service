@@ -1,0 +1,18 @@
+[Unit]
+Description=Chatbot Console Background Role %i
+After=network.target postgresql.service redis.service
+Wants=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/chatbot-console
+EnvironmentFile=/opt/chatbot-console/.env
+Environment=APP_ENV=production
+ExecStart=/opt/chatbot-console/venv/bin/python -m app.runtime_supervisor %i
+Restart=on-failure
+RestartSec=5
+TimeoutStopSec=30
+KillSignal=SIGINT
+
+[Install]
+WantedBy=multi-user.target

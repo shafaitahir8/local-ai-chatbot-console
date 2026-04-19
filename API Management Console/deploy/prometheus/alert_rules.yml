@@ -1,0 +1,56 @@
+groups:
+  - name: chatbot-console
+    rules:
+      - alert: ChatbotWorkerHeartbeatMissing
+        expr: heartbeat_age_seconds > 15
+        for: 30s
+        labels:
+          severity: critical
+        annotations:
+          summary: "Worker heartbeat missing"
+          description: "A supervised component lease heartbeat is older than 15 seconds."
+
+      - alert: ChatbotTunnelUnavailable
+        expr: heartbeat_age_seconds{component="tunnel-agent"} > 60
+        for: 60s
+        labels:
+          severity: critical
+        annotations:
+          summary: "Tunnel agent unavailable"
+          description: "The tunnel agent has been stale or unavailable for more than 60 seconds."
+
+      - alert: ChatbotRagBypassRateHigh
+        expr: increase(rag_bypass_total[5m]) / clamp_min(increase(task_restart_total[5m]), 1) > 0.01
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "RAG bypass rate exceeds 1%"
+          description: "RAG bypass is occurring too frequently and likely indicates stale or unavailable indexes."
+
+      - alert: ChatbotDbWriteFailures
+        expr: increase(db_write_fail_total[5m]) > 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Database write failures detected"
+          description: "One or more database write failures occurred in the last 5 minutes."
+
+      - alert: ChatbotProviderCircuitOpen
+        expr: provider_circuit_open == 1
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Provider circuit breaker open"
+          description: "A provider dependency circuit has remained open for more than 5 minutes."
+
+      - alert: ChatbotQueueAgeHigh
+        expr: scraper_checkpoint_lag > 300 or heartbeat_age_seconds > 300
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Queue age high"
+          description: "Scraper checkpoints or component heartbeats are lagging beyond 5 minutes."

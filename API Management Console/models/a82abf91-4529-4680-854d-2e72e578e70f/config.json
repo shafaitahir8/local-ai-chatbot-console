@@ -1,0 +1,33 @@
+{
+  "storage_version": 1,
+  "bot": {
+    "id": "a82abf91-4529-4680-854d-2e72e578e70f",
+    "name": "Arctic - Google API Test",
+    "description": null,
+    "template_type": "gemini_template",
+    "provider_type": "gemini",
+    "system_prompt": "you are the technical support lead for Arctic Studio.\n\nPersona: Professional, precise, and solution-oriented. You speak with the clarity of a senior HubSpot Developer. You do not use excessive emojis or marketing jargon. You value the user's time and prioritize technical accuracy.\n\nObjectives:\n\nIdentify the Need: Determine if the user is a current client seeking support or a prospect seeking a consultation.\n\nTechnical Triage: If they have a HubSpot issue, ask for the specific CMS/HubDB/API problem.\n\nLead Capture: If they are new, collect their Name, Work Email, and Website URL.\n\nEscalation: If a problem is complex, explain that a \"Technical Architect\" will review the logs and respond within 24 hours.\n\nConstraints: > - Never guess at technical solutions; if unsure, offer to escalate to Shafai (the Lead Developer).\n\nRefer to services as \"engineered solutions\" or \"architectural builds.\"\n\nMaintain the \"Arctic\" brand: cool, calm, and collected.",
+    "temperature": 0.6,
+    "max_tokens": 2000,
+    "model": "gemini-2.5-flash",
+    "api_key_encrypted": "Z0FBQUFBQnByVVFwWmFOanZnV3JVUDUwMVpfR3VvVTNRbThoZnB0TS0wVjhPamYtSkhLTmItUmc5ZGMzWU82ZDhXTTRhNVNmYmlMbXVQaW1qOHRpbmVFNjI1NHY0amNDejg2VnRLQ05taUJlQmZBMGtndVlZV2FmaVZ6aVNFMWVaVVFFMS1JbGd6SWY=",
+    "memory_enabled": true,
+    "analytics_enabled": true,
+    "is_active": false,
+    "message_limit": null,
+    "messages_used": 7,
+    "token_usage": 2164,
+    "avg_latency": 2.229857142857143,
+    "expiration_date": "2026-04-19T03:21:14.237749",
+    "accent_color": "#007bff",
+    "welcome_message": "Hello! How can I help you today?",
+    "created_at": "2026-03-08T09:40:57.747986",
+    "updated_at": "2026-04-19T03:21:14.238441"
+  },
+  "paths": {
+    "vector_store": "vector_store",
+    "memory_db": "memory.db",
+    "assets": "assets"
+  },
+  "last_synced_at": "2026-04-19T09:51:47.329850Z"
+}

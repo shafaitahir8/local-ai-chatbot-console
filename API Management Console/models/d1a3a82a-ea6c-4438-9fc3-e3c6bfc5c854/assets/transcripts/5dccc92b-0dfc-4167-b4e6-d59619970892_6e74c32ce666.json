@@ -1,0 +1,27 @@
+{
+  "bot_id": "d1a3a82a-ea6c-4438-9fc3-e3c6bfc5c854",
+  "bot_name": "Hubbase Chatbot",
+  "session_id": "5dccc92b-0dfc-4167-b4e6-d59619970892",
+  "provider_type": "local",
+  "model": "qwen2.5:1.5b",
+  "created_at": "2026-03-28T09:51:54.339689Z",
+  "updated_at": "2026-03-28T09:51:54.339689Z",
+  "messages": [
+    {
+      "role": "user",
+      "content": "what can you do?",
+      "timestamp": "2026-03-28T09:51:54.339689Z"
+    },
+    {
+      "role": "assistant",
+      "content": "Hubbase Chatbot can help with practical HubSpot-focused work. Based on the current knowledge base, that includes HubSpot integrations, workflow automation, and Slack to HubSpot integrations. If you want, I can explain one of those areas in more detail or help you scope the next step.",
+      "timestamp": "2026-03-28T09:51:54.339689Z",
+      "tokens_used": 574,
+      "latency_ms": 13582,
+      "retries_used": 0,
+      "fallback_used": true,
+      "rag_used": true
+    }
+  ],
+  "message_count": 2
+}

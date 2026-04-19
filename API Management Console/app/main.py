@@ -14,15 +14,18 @@ import logging
 import asyncio
 from datetime import datetime
 from contextlib import asynccontextmanager
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, HTTPException, status
+from fastapi.exceptions import RequestValidationError
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import HTMLResponse, RedirectResponse
+from fastapi.responses import HTMLResponse, RedirectResponse, PlainTextResponse, JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
+from .services.logging_utils import JsonFormatter, redact_sensitive_text
 
 # Setup logging before anything else
 def setup_logging():
     """Configure logging to file and console."""
+
     # Create logs directory
     log_dir = os.path.join(os.path.dirname(os.path.dirname(__file__)), "logs")
     os.makedirs(log_dir, exist_ok=True)
@@ -31,10 +34,7 @@ def setup_logging():
     log_file = os.path.join(log_dir, f"app_{datetime.now().strftime('%Y%m%d')}.log")
     
     # Create formatter
-    formatter = logging.Formatter(
-        '%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-        datefmt='%Y-%m-%d %H:%M:%S'
-    )
+    formatter = JsonFormatter()
     
     # File handler
     file_handler = logging.FileHandler(log_file, encoding='utf-8')
@@ -49,6 +49,7 @@ def setup_logging():
     # Root logger
     root_logger = logging.getLogger()
     root_logger.setLevel(logging.DEBUG)
+    root_logger.handlers.clear()
     root_logger.addHandler(file_handler)
     root_logger.addHandler(console_handler)
     
@@ -84,7 +85,7 @@ except Exception as e:
 # Initialize database
 logger.info("Initializing database...")
 try:
-    from .models.database import init_db
+    from .models.database import Bot, SessionLocal, init_db, init_db_async
     logger.info("Database module imported")
 except Exception as e:
     logger.exception(f"Failed to import database module: {e}")
@@ -110,6 +111,16 @@ except Exception as e:
 logger.info("Importing API gateway service...")
 try:
     from .services.api_gateway_service import api_gateway_service
+    from .services.health_service import health_service
+    from .services.metrics_service import metrics_service
+    from .services.safe_mode_service import safe_mode_service
+    from .services.startup_warmup_service import startup_warmup_service
+    from .services.system_inspection_service import (
+        build_supervisor_health_report,
+        refresh_observability_metrics,
+    )
+    from .services.supervisor_service import supervisor_service
+    from .services.standalone_model_service import standalone_model_service
     logger.info("API gateway service imported")
 except Exception as e:
     logger.exception(f"Failed to import API gateway service: {e}")
@@ -122,162 +133,118 @@ async def lifespan(app: FastAPI):
     # Startup
     logger.info("Starting Local AI Chatbot Deployment Console...")
     print("Starting Local AI Chatbot Deployment Console...")
+    runtime_role = (os.getenv("APP_RUNTIME_ROLE", "api").strip().lower() or "api")
+    api_lease_owner = f"api-{os.getpid()}"
     
     try:
-        init_db()
+        await init_db_async()
         logger.info("Database initialized")
         print("Database initialized")
+        health_service.set_component("database", "healthy", critical=True, detail="database initialized")
     except Exception as e:
         logger.exception(f"Failed to initialize database: {e}")
+        health_service.set_component("database", "unhealthy", critical=True, detail=str(e))
         raise
     
     try:
         template_service._ensure_default_templates()
         logger.info("Templates loaded")
         print("Templates loaded")
+        health_service.set_component("templates", "healthy", critical=False, detail="templates loaded")
     except Exception as e:
         logger.exception(f"Failed to load templates: {e}")
+        health_service.set_component("templates", "unhealthy", critical=False, detail=str(e))
         raise
 
-    # Start API-only gateway and expose that through the tunnel for reduced attack surface.
-    app_origin_url = os.getenv("APP_ORIGIN_URL", "http://127.0.0.1:8000")
-    gateway_origin_url = app_origin_url
+    registry_db = SessionLocal()
     try:
-        gateway_enabled = os.getenv("TUNNEL_API_ONLY", "true").strip().lower() not in {"0", "false", "no"}
-        if gateway_enabled:
-            api_gateway_service.start(target_base_url=app_origin_url)
-            gateway_status = api_gateway_service.get_status()
-            if gateway_status.get("running") and gateway_status.get("port"):
-                gateway_origin_url = api_gateway_service.get_origin_url() or app_origin_url
-                logger.info("API-only gateway active on: %s", gateway_origin_url)
-                print(f"API-only gateway active on: {gateway_origin_url}")
-            else:
-                logger.warning("API-only gateway failed to start; falling back to full app origin")
-                print("WARNING: API-only gateway failed to start; falling back to full app origin")
-    except Exception as gateway_err:
-        logger.warning("API-only gateway startup failed; using direct app origin: %s", gateway_err)
-        print(f"WARNING: API-only gateway startup failed; using direct app origin: {gateway_err}")
+        imported_count = standalone_model_service.sync_db_from_folders(registry_db)
+        standalone_model_service.ensure_folders_for_existing_bots(registry_db.query(Bot).all())
+        health_service.set_component(
+            "storage_registry",
+            "healthy",
+            critical=False,
+            detail="portable model registry synchronized",
+            metadata={"imported_bots": imported_count},
+        )
+        logger.info("Portable model registry synchronized (%s imported bot folders)", imported_count)
+    except Exception as e:
+        logger.exception("Failed to synchronize standalone model folders: %s", e)
+        health_service.set_component("storage_registry", "degraded", critical=False, detail=str(e))
+        raise
+    finally:
+        registry_db.close()
 
-    # Start/resolve public tunnel URL for external integrations (e.g., HubSpot)
-    tunnel_origin_url = os.getenv("TUNNEL_ORIGIN_URL", gateway_origin_url)
-    try:
-        tunnel_ok = await tunnel_service.ensure_started(origin_url=tunnel_origin_url)
-        tunnel_status = tunnel_service.get_status()
-        if tunnel_ok and tunnel_status.get("public_base_url"):
-            logger.info("Public endpoint ready: %s", tunnel_status["public_base_url"])
-            print(f"Public endpoint ready: {tunnel_status['public_base_url']}")
-        else:
-            logger.warning("Public tunnel unavailable: %s", tunnel_status.get("last_error"))
-            print(f"WARNING: Public tunnel unavailable: {tunnel_status.get('last_error')}")
-    except Exception as tunnel_err:
-        logger.warning("Public tunnel startup failed: %s", tunnel_err)
-        print(f"WARNING: Public tunnel startup failed: {tunnel_err}")
-    
     logger.info("Admin Dashboard: http://localhost:8000/admin")
     logger.info("API Documentation: http://localhost:8000/docs")
     print("Admin Dashboard: http://localhost:8000/admin")
     print("API Documentation: http://localhost:8000/docs")
-    
-    # Schedule bot initialization as a background task (non-blocking)
-    async def _init_bots():
-        """Warm up active bots after server is ready to accept connections."""
-        await asyncio.sleep(1)  # let the server finish binding
-        try:
-            from .models.database import SessionLocal, Bot as BotModel
-            from .services.bot_service import bot_service
+    logger.info(
+        "Running API role '%s'. Gateway/tunnel/scraper/warmup now require separate supervisor roles.",
+        runtime_role,
+    )
 
-            db = SessionLocal()
+    async def _api_lease_loop() -> None:
+        while True:
+            lease_db = SessionLocal()
             try:
-                warmup_all = os.getenv("BOT_WARMUP_ALL_PROVIDERS", "false").strip().lower() in {"1", "true", "yes"}
-                warmup_query = db.query(BotModel).filter(BotModel.is_active == True)
-                if not warmup_all:
-                    warmup_query = warmup_query.filter(BotModel.provider_type == "local")
-                bots_to_warm = [
-                    {
-                        "id": bot_record.id,
-                        "name": bot_record.name,
-                        "provider": bot_record.provider_type,
-                    }
-                    for bot_record in warmup_query.all()
-                ]
+                supervisor_service.upsert_component_lease(
+                    lease_db,
+                    component_name="api",
+                    unit_type="api",
+                    lease_owner=api_lease_owner,
+                    state="running",
+                    metadata={
+                        "pid": os.getpid(),
+                        "role": runtime_role,
+                        "origin_url": os.getenv("APP_ORIGIN_URL", "http://127.0.0.1:8000"),
+                    },
+                )
             finally:
-                db.close()
-
-            if not bots_to_warm:
-                logger.info("No eligible bots for startup warmup")
-                print("No eligible bots for startup warmup")
-                return
-
-            warmup_concurrency = max(1, int(os.getenv("BOT_WARMUP_CONCURRENCY", "4")))
-            logger.info(
-                "Prewarming %s bot(s) in parallel (concurrency=%s) with prompt: %s",
-                len(bots_to_warm),
-                warmup_concurrency,
-                "Hi, send a welcome message",
+                lease_db.close()
+            health_service.set_component(
+                "api",
+                "healthy",
+                critical=True,
+                detail="api serving",
+                metadata={"pid": os.getpid(), "role": runtime_role},
             )
-            print(
-                f"Prewarming {len(bots_to_warm)} bot(s) in parallel "
-                f"(concurrency={warmup_concurrency})..."
-            )
+            await asyncio.sleep(5)
 
-            semaphore = asyncio.Semaphore(warmup_concurrency)
-
-            async def _warm_single(bot_meta: dict):
-                async with semaphore:
-                    warm_db = SessionLocal()
-                    try:
-                        result = await bot_service.warmup_bot(
-                            warm_db,
-                            bot_meta["id"],
-                            prompt="Hi, send a welcome message",
-                        )
-                        if result.get("status") == "ready":
-                            logger.info(
-                                "Warmup complete: %s (%s) in %sms",
-                                bot_meta["name"],
-                                bot_meta["id"],
-                                result.get("latency_ms", 0),
-                            )
-                            print(
-                                f"{bot_meta['name']} warmup complete "
-                                f"({result.get('latency_ms', 0)}ms)"
-                            )
-                        else:
-                            logger.info(
-                                "Warmup skipped: %s (%s) reason=%s",
-                                bot_meta["name"],
-                                bot_meta["id"],
-                                result.get("reason"),
-                            )
-                    except Exception as bot_err:
-                        logger.warning(
-                            "Warmup failed: %s (%s): %s",
-                            bot_meta["name"],
-                            bot_meta["id"],
-                            bot_err,
-                        )
-                        print(f"{bot_meta['name']} warmup failed: {bot_err}")
-                    finally:
-                        warm_db.close()
-
-            await asyncio.gather(*[_warm_single(bot_meta) for bot_meta in bots_to_warm])
-        except Exception as e:
-            logger.warning(f"Bot initialization skipped: {e}")
-            print(f"Bot initialization skipped: {e}")
-
-    init_task = asyncio.create_task(_init_bots())
+    api_lease_task = asyncio.create_task(_api_lease_loop())
+    warmup_enabled = runtime_role == "api" and os.getenv("API_STARTUP_WARMUP_ENABLED", "true").strip().lower() not in {
+        "0",
+        "false",
+        "no",
+    }
+    if warmup_enabled:
+        await startup_warmup_service.start()
     
     yield
     
-    # Shutdown - cancel init if still running
-    init_task.cancel()
-    await tunnel_service.shutdown()
-    api_gateway_service.shutdown()
-
     # Shutdown
+    api_lease_task.cancel()
+    try:
+        await api_lease_task
+    except asyncio.CancelledError:
+        pass
+    lease_db = SessionLocal()
+    try:
+        supervisor_service.upsert_component_lease(
+            lease_db,
+            component_name="api",
+            unit_type="api",
+            lease_owner=api_lease_owner,
+            state="stopped",
+            metadata={"pid": os.getpid(), "role": runtime_role},
+        )
+    finally:
+        lease_db.close()
+    if warmup_enabled:
+        await startup_warmup_service.shutdown()
+
     logger.info("Shutting down...")
     print("Shutting down...")
-
 
 # Create FastAPI application
 app = FastAPI(
@@ -325,6 +292,32 @@ app.include_router(scraper.router)
 app.include_router(templates.router)
 app.include_router(embed.router)
 
+
+@app.exception_handler(RequestValidationError)
+async def request_validation_exception_handler(request: Request, exc: RequestValidationError):
+    is_public_bot_route = request.url.path.startswith("/api/bot/")
+    errors = exc.errors()
+    if is_public_bot_route and any(error.get("type") == "json_invalid" for error in errors):
+        return JSONResponse(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            content={"detail": "Malformed JSON request body"},
+        )
+    return JSONResponse(
+        status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+        content={"detail": errors},
+    )
+
+
+@app.exception_handler(HTTPException)
+async def http_exception_handler(request: Request, exc: HTTPException):
+    detail = exc.detail
+    if isinstance(detail, str):
+        safe_detail = redact_sensitive_text(detail)
+    else:
+        safe_detail = detail
+    headers = getattr(exc, "headers", None)
+    return JSONResponse(status_code=exc.status_code, content={"detail": safe_detail}, headers=headers)
+
 # Static files (for admin UI)
 static_path = os.path.join(os.path.dirname(__file__), "static")
 if os.path.exists(static_path):
@@ -365,21 +358,98 @@ async def admin_dashboard(request: Request, path: str = ""):
     return get_admin_html()
 
 
+@app.get("/login", response_class=RedirectResponse)
+async def legacy_login_redirect():
+    """Keep stale frontend redirects and bookmarks from breaking the admin UI."""
+    return RedirectResponse(url="/admin/login")
+
+
+@app.get("/favicon.ico", include_in_schema=False)
+async def favicon_redirect():
+    """Serve the frontend favicon when the browser asks for /favicon.ico."""
+    favicon_path = os.path.join(frontend_dist_path, "favicon.svg")
+    if os.path.exists(favicon_path):
+        return RedirectResponse(url="/favicon.svg")
+    return PlainTextResponse("", status_code=204)
+
+
+@app.get("/health/live")
+async def health_live():
+    """Liveness probe for process supervision."""
+    return {
+        "status": "alive",
+        "role": "api",
+        "generated_at": datetime.utcnow().isoformat() + "Z",
+    }
+
+
+@app.get("/health/ready")
+async def health_ready():
+    """Readiness probe backed by DB connectivity and supervisor leases."""
+    report = build_supervisor_health_report()
+    critical_components = ["database", "api"]
+    critical_ok = all(
+        report["components"].get(component, {}).get("status") == "healthy"
+        for component in critical_components
+    )
+    return {
+        "status": "ready" if critical_ok else "not_ready",
+        "hot_state": report.get("hot_state", "cold"),
+        "hot_ready": bool(report.get("hot_ready")),
+        "warmup": report.get("warmup", {}),
+        "critical_components": {name: report["components"].get(name) for name in critical_components},
+        "safe_modes": report.get("safe_modes", []),
+        "generated_at": report["generated_at"],
+    }
+
+
+@app.get("/health/fresh")
+async def health_fresh():
+    """Freshness probe for stale leases and degraded dependency state."""
+    report = build_supervisor_health_report()
+    degraded_components = [
+        name for name, payload in report["components"].items()
+        if payload.get("status") != "healthy"
+    ]
+    is_fresh = not degraded_components and not report.get("safe_modes")
+    return {
+        "status": "fresh" if is_fresh else "stale",
+        "hot_state": report.get("hot_state", "cold"),
+        "hot_ready": bool(report.get("hot_ready")),
+        "degraded_components": degraded_components,
+        "safe_modes": report.get("safe_modes", []),
+        "generated_at": report["generated_at"],
+    }
+
+
 @app.get("/health")
 async def health_check():
-    """Health check endpoint."""
-    tunnel_status = tunnel_service.get_status()
-    gateway_status = api_gateway_service.get_status()
+    """Supervisor-backed health report."""
+    report = build_supervisor_health_report()
+    tunnel_metadata = report["components"].get("tunnel-agent", {}).get("metadata", {})
     return {
-        "status": "healthy",
+        "status": report["status"],
+        "hot_state": report.get("hot_state", "cold"),
+        "hot_ready": bool(report.get("hot_ready")),
+        "warmup": report.get("warmup", {}),
         "version": "1.0.0",
-        "public_base_url": tunnel_status.get("public_base_url"),
+        "public_base_url": report.get("public_base_url"),
         "cloudflare_tunnel": {
-            "running": tunnel_status.get("running"),
-            "source": tunnel_status.get("source"),
+            "running": report["components"].get("tunnel-agent", {}).get("status") == "healthy",
+            "source": tunnel_metadata.get("source"),
         },
-        "api_gateway": gateway_status,
+        "api_gateway": report.get("api_gateway", {}),
+        "components": report["components"],
+        "safe_modes": report.get("safe_modes", []),
+        "generated_at": report["generated_at"],
     }
+
+
+@app.get("/metrics", response_class=PlainTextResponse)
+async def metrics():
+    """Prometheus-compatible metrics for supervisor and dependency state."""
+    refresh_observability_metrics()
+    return metrics_service.render_prometheus()
 
 
 def get_admin_html() -> str:

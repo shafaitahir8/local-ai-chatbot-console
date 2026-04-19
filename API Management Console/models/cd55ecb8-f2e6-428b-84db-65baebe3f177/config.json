@@ -1,0 +1,33 @@
+{
+  "storage_version": 1,
+  "bot": {
+    "id": "cd55ecb8-f2e6-428b-84db-65baebe3f177",
+    "name": "analytics-smoke-0c9a7775",
+    "description": null,
+    "template_type": "openai_template",
+    "provider_type": "openai",
+    "system_prompt": "You are a helpful AI assistant. Answer questions accurately, clearly, and concisely. If you don't know something, say so rather than making up information.",
+    "temperature": 0.7,
+    "max_tokens": 2000,
+    "model": "gpt-4.1-mini",
+    "api_key_encrypted": null,
+    "memory_enabled": true,
+    "analytics_enabled": true,
+    "is_active": true,
+    "message_limit": null,
+    "messages_used": 2,
+    "token_usage": 6,
+    "avg_latency": 0.11,
+    "expiration_date": null,
+    "accent_color": "#007bff",
+    "welcome_message": "Hello! How can I help you today?",
+    "created_at": "2026-03-28T06:06:58.761826",
+    "updated_at": "2026-04-19T03:21:14.133390"
+  },
+  "paths": {
+    "vector_store": "vector_store",
+    "memory_db": "memory.db",
+    "assets": "assets"
+  },
+  "last_synced_at": "2026-04-19T09:51:47.339040Z"
+}

@@ -1,0 +1,72 @@
+{
+  "bot_id": "d1a3a82a-ea6c-4438-9fc3-e3c6bfc5c854",
+  "bot_name": "Hubbase Chatbot",
+  "session_id": "09d12d57-1af9-44ef-b247-32bf18a7f834",
+  "provider_type": "local",
+  "model": "qwen2.5:1.5b",
+  "created_at": "2026-04-19T01:22:51.570319Z",
+  "updated_at": "2026-04-19T01:23:43.704054Z",
+  "messages": [
+    {
+      "role": "user",
+      "content": "Book a consultation",
+      "timestamp": "2026-04-19T01:22:51.570319Z"
+    },
+    {
+      "role": "assistant",
+      "content": "I can help you book a consultation through our customer service. Do you have any preferences such as time, date or topic of the consultation?",
+      "timestamp": "2026-04-19T01:22:51.570319Z",
+      "tokens_used": 673,
+      "latency_ms": 1935,
+      "retries_used": 0,
+      "fallback_used": true,
+      "rag_used": false
+    },
+    {
+      "role": "user",
+      "content": "show a quick chip",
+      "timestamp": "2026-04-19T01:23:16.076496Z"
+    },
+    {
+      "role": "assistant",
+      "content": "Sure! I'll add some quick chips to your request.\n\n1. Schedule a consultation.\n2. Book an appointment for a product demo.\n3. Request additional information on our customer reviews.\n\nWould you like any further assistance with these options, or do you have a specific choice?",
+      "timestamp": "2026-04-19T01:23:16.076496Z",
+      "tokens_used": 743,
+      "latency_ms": 2045,
+      "retries_used": 0,
+      "fallback_used": true,
+      "rag_used": false
+    },
+    {
+      "role": "user",
+      "content": "Explain this error",
+      "timestamp": "2026-04-19T01:23:24.213702Z"
+    },
+    {
+      "role": "assistant",
+      "content": "I'm sorry to hear that you're experiencing some difficulties! Could you please provide more details about the error message you are seeing? This will help me better understand the issue and provide a solution.",
+      "timestamp": "2026-04-19T01:23:24.213702Z",
+      "tokens_used": 799,
+      "latency_ms": 2018,
+      "retries_used": 0,
+      "fallback_used": true,
+      "rag_used": false
+    },
+    {
+      "role": "user",
+      "content": "Request additional information on our customer reviews.",
+      "timestamp": "2026-04-19T01:23:43.704054Z"
+    },
+    {
+      "role": "assistant",
+      "content": "Sure, I can assist with providing additional information on your customer reviews. Would you like to know how many review ratings there are, or would you prefer an example of one of our existing review? Additionally, could you specify the product category for which you're interested in this information? This will help me provide the most relevant content.",
+      "timestamp": "2026-04-19T01:23:43.704054Z",
+      "tokens_used": 872,
+      "latency_ms": 2331,
+      "retries_used": 0,
+      "fallback_used": true,
+      "rag_used": false
+    }
+  ],
+  "message_count": 8
+}

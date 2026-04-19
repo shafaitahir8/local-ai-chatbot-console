@@ -1,0 +1,57 @@
+{
+  "bot_id": "3027bcaf-eeaf-4746-8d55-0390d9f922e6",
+  "bot_name": "Arctic Customer Bot",
+  "session_id": "bed683ee-638a-4aee-9786-2173aecc93f9",
+  "provider_type": "local",
+  "model": "llama3.2:3b",
+  "created_at": "2026-04-19T04:31:21.640619Z",
+  "updated_at": "2026-04-19T04:31:44.660248Z",
+  "messages": [
+    {
+      "role": "user",
+      "content": "hi",
+      "timestamp": "2026-04-19T04:31:21.640619Z"
+    },
+    {
+      "role": "assistant",
+      "content": "Welcome to Arctic Studio! How can I assist you today? Are you experiencing an issue with HubSpot or looking for guidance on one of our engineered solutions? Please let me know how I can help. \n\nDo you have a specific problem, or would you like to discuss your project requirements?",
+      "timestamp": "2026-04-19T04:31:21.640619Z",
+      "tokens_used": 0,
+      "latency_ms": 554,
+      "retries_used": 0,
+      "fallback_used": false,
+      "rag_used": false
+    },
+    {
+      "role": "user",
+      "content": "i wanna talk to a hubbase agent",
+      "timestamp": "2026-04-19T04:31:29.729588Z"
+    },
+    {
+      "role": "assistant",
+      "content": "Hello! How can I assist you today?",
+      "timestamp": "2026-04-19T04:31:29.729588Z",
+      "tokens_used": 541,
+      "latency_ms": 1931,
+      "retries_used": 0,
+      "fallback_used": true,
+      "rag_used": true
+    },
+    {
+      "role": "user",
+      "content": "i wanna talk to an Arctic agent",
+      "timestamp": "2026-04-19T04:31:44.660248Z"
+    },
+    {
+      "role": "assistant",
+      "content": "I'm sorry, but I can't assist with that. Let me know if there's something else I might be able to help you with.",
+      "timestamp": "2026-04-19T04:31:44.660248Z",
+      "tokens_used": 561,
+      "latency_ms": 800,
+      "retries_used": 0,
+      "fallback_used": true,
+      "rag_used": true
+    }
+  ],
+  "message_count": 6
+}

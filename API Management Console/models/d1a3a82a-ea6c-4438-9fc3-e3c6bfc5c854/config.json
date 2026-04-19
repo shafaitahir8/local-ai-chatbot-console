@@ -1,0 +1,33 @@
+{
+  "storage_version": 1,
+  "bot": {
+    "id": "d1a3a82a-ea6c-4438-9fc3-e3c6bfc5c854",
+    "name": "Hubbase Chatbot",
+    "description": null,
+    "template_type": "customer_support_template",
+    "provider_type": "local",
+    "system_prompt": "You are a helpful customer support assistant for Hubbase. Your role is to:\n1. Answer customer questions accurately and professionally\n2. Help resolve issues and concerns\n3. Provide information about products and services\n4. Escalate complex issues when necessary\n5. Be in the scope of hubspot services\n\nAlways be polite, patient, and helpful. If you don't know something, say so and offer to connect the customer with a human agent.",
+    "temperature": 1.0,
+    "max_tokens": 2000,
+    "model": "qwen2.5:1.5b",
+    "api_key_encrypted": null,
+    "memory_enabled": true,
+    "analytics_enabled": true,
+    "is_active": true,
+    "message_limit": null,
+    "messages_used": 51,
+    "token_usage": 21774,
+    "avg_latency": 4.7233333333333345,
+    "expiration_date": null,
+    "accent_color": "#007bff",
+    "welcome_message": "Hello! How can I help you today?",
+    "created_at": "2026-03-28T09:08:18.954149",
+    "updated_at": "2026-04-19T03:20:23.224274"
+  },
+  "paths": {
+    "vector_store": "vector_store",
+    "memory_db": "memory.db",
+    "assets": "assets"
+  },
+  "last_synced_at": "2026-04-19T09:51:47.360435Z"
+}

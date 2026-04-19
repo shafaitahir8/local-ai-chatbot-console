@@ -1,0 +1,33 @@
+{
+  "storage_version": 1,
+  "bot": {
+    "id": "d3909391-417e-4e4a-ba18-ae8f890801e2",
+    "name": "Arctic Chatbot",
+    "description": null,
+    "template_type": "local_llm_template",
+    "provider_type": "local",
+    "system_prompt": "This is an Arctic Chatbot",
+    "temperature": 0.7,
+    "max_tokens": 2000,
+    "model": "qwen2.5:1.5b",
+    "api_key_encrypted": null,
+    "memory_enabled": false,
+    "analytics_enabled": true,
+    "is_active": false,
+    "message_limit": null,
+    "messages_used": 18,
+    "token_usage": 0,
+    "avg_latency": 0.0,
+    "expiration_date": "2026-03-08T09:30:06.293868",
+    "accent_color": "#007bff",
+    "welcome_message": "Hello! How can I help you today?",
+    "created_at": "2026-03-04T10:44:08.213767",
+    "updated_at": "2026-04-19T03:20:23.224865"
+  },
+  "paths": {
+    "vector_store": "vector_store",
+    "memory_db": "memory.db",
+    "assets": "assets"
+  },
+  "last_synced_at": "2026-04-19T09:51:47.276993Z"
+}

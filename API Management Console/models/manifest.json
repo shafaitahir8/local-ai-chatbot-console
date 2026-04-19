@@ -1,0 +1,126 @@
+{
+  "storage_version": 1,
+  "generated_at": "2026-04-19T09:51:47.391433Z",
+  "bots": [
+    {
+      "id": "d5319eb8-cd39-4ea4-8542-45a98284993f",
+      "name": "Acme",
+      "path": "d5319eb8-cd39-4ea4-8542-45a98284993f",
+      "config_path": "d5319eb8-cd39-4ea4-8542-45a98284993f/config.json",
+      "provider_type": "local",
+      "model": "qwen3:8b",
+      "is_active": true,
+      "updated_at": "2026-04-19T07:41:18.058031",
+      "storage_version": 1,
+      "vector_store": {
+        "path": "d5319eb8-cd39-4ea4-8542-45a98284993f/vector_store",
+        "faiss_index": false,
+        "chunks_json": false
+      },
+      "memory_db": {
+        "path": "d5319eb8-cd39-4ea4-8542-45a98284993f/memory.db",
+        "exists": true
+      }
+    },
+    {
+      "id": "a82abf91-4529-4680-854d-2e72e578e70f",
+      "name": "Arctic - Google API Test",
+      "path": "a82abf91-4529-4680-854d-2e72e578e70f",
+      "config_path": "a82abf91-4529-4680-854d-2e72e578e70f/config.json",
+      "provider_type": "gemini",
+      "model": "gemini-2.5-flash",
+      "is_active": false,
+      "updated_at": "2026-04-19T03:21:14.238441",
+      "storage_version": 1,
+      "vector_store": {
+        "path": "a82abf91-4529-4680-854d-2e72e578e70f/vector_store",
+        "faiss_index": false,
+        "chunks_json": false
+      },
+      "memory_db": {
+        "path": "a82abf91-4529-4680-854d-2e72e578e70f/memory.db",
+        "exists": true
+      }
+    },
+    {
+      "id": "d3909391-417e-4e4a-ba18-ae8f890801e2",
+      "name": "Arctic Chatbot",
+      "path": "d3909391-417e-4e4a-ba18-ae8f890801e2",
+      "config_path": "d3909391-417e-4e4a-ba18-ae8f890801e2/config.json",
+      "provider_type": "local",
+      "model": "qwen2.5:1.5b",
+      "is_active": false,
+      "updated_at": "2026-04-19T03:20:23.224865",
+      "storage_version": 1,
+      "vector_store": {
+        "path": "d3909391-417e-4e4a-ba18-ae8f890801e2/vector_store",
+        "faiss_index": true,
+        "chunks_json": true
+      },
+      "memory_db": {
+        "path": "d3909391-417e-4e4a-ba18-ae8f890801e2/memory.db",
+        "exists": true
+      }
+    },
+    {
+      "id": "3027bcaf-eeaf-4746-8d55-0390d9f922e6",
+      "name": "Arctic Customer Bot",
+      "path": "3027bcaf-eeaf-4746-8d55-0390d9f922e6",
+      "config_path": "3027bcaf-eeaf-4746-8d55-0390d9f922e6/config.json",
+      "provider_type": "local",
+      "model": "llama3.2:3b",
+      "is_active": true,
+      "updated_at": "2026-04-19T08:25:58.695197",
+      "storage_version": 1,
+      "vector_store": {
+        "path": "3027bcaf-eeaf-4746-8d55-0390d9f922e6/vector_store",
+        "faiss_index": true,
+        "chunks_json": true
+      },
+      "memory_db": {
+        "path": "3027bcaf-eeaf-4746-8d55-0390d9f922e6/memory.db",
+        "exists": true
+      }
+    },
+    {
+      "id": "d1a3a82a-ea6c-4438-9fc3-e3c6bfc5c854",
+      "name": "Hubbase Chatbot",
+      "path": "d1a3a82a-ea6c-4438-9fc3-e3c6bfc5c854",
+      "config_path": "d1a3a82a-ea6c-4438-9fc3-e3c6bfc5c854/config.json",
+      "provider_type": "local",
+      "model": "qwen2.5:1.5b",
+      "is_active": true,
+      "updated_at": "2026-04-19T03:20:23.224274",
+      "storage_version": 1,
+      "vector_store": {
+        "path": "d1a3a82a-ea6c-4438-9fc3-e3c6bfc5c854/vector_store",
+        "faiss_index": true,
+        "chunks_json": true
+      },
+      "memory_db": {
+        "path": "d1a3a82a-ea6c-4438-9fc3-e3c6bfc5c854/memory.db",
+        "exists": true
+      }
+    },
+    {
+      "id": "cd55ecb8-f2e6-428b-84db-65baebe3f177",
+      "name": "analytics-smoke-0c9a7775",
+      "path": "cd55ecb8-f2e6-428b-84db-65baebe3f177",
+      "config_path": "cd55ecb8-f2e6-428b-84db-65baebe3f177/config.json",
+      "provider_type": "openai",
+      "model": "gpt-4.1-mini",
+      "is_active": true,
+      "updated_at": "2026-04-19T03:21:14.133390",
+      "storage_version": 1,
+      "vector_store": {
+        "path": "cd55ecb8-f2e6-428b-84db-65baebe3f177/vector_store",
+        "faiss_index": false,
+        "chunks_json": false
+      },
+      "memory_db": {
+        "path": "cd55ecb8-f2e6-428b-84db-65baebe3f177/memory.db",
+        "exists": true
+      }
+    }
+  ]
+}

@@ -1,0 +1,57 @@
+{
+  "bot_id": "3027bcaf-eeaf-4746-8d55-0390d9f922e6",
+  "bot_name": "Arctic Customer Bot",
+  "session_id": "468f84eb-29ac-4ed1-8586-9961f31fbbb9",
+  "provider_type": "local",
+  "model": "llama3.2:3b",
+  "created_at": "2026-04-19T06:25:03.154534Z",
+  "updated_at": "2026-04-19T06:25:50.036411Z",
+  "messages": [
+    {
+      "role": "user",
+      "content": "hi",
+      "timestamp": "2026-04-19T06:25:03.154534Z"
+    },
+    {
+      "role": "assistant",
+      "content": "We offer technical support for Arctic Studio's HubSpot integration. How can we assist you today? Are you experiencing an issue or seeking guidance on how to use our services?",
+      "timestamp": "2026-04-19T06:25:03.154534Z",
+      "tokens_used": 559,
+      "latency_ms": 2875,
+      "retries_used": 0,
+      "fallback_used": true,
+      "rag_used": false
+    },
+    {
+      "role": "user",
+      "content": "i want to talk to an agent",
+      "timestamp": "2026-04-19T06:25:11.685264Z"
+    },
+    {
+      "role": "assistant",
+      "content": "I can direct you to our Technical Architect, who will review your issue and respond within 24 hours. Would you like me to escalate this to them immediately?",
+      "timestamp": "2026-04-19T06:25:11.685264Z",
+      "tokens_used": 602,
+      "latency_ms": 2913,
+      "retries_used": 0,
+      "fallback_used": true,
+      "rag_used": false
+    },
+    {
+      "role": "user",
+      "content": "give me an email to contact.",
+      "timestamp": "2026-04-19T06:25:50.036411Z"
+    },
+    {
+      "role": "assistant",
+      "content": "You can reach out to Shafai, the Lead Developer, at [shafai@arctic.studio](mailto:shafai@arctic.studio) for further assistance or support with your Arctic Studio and HubSpot integration.",
+      "timestamp": "2026-04-19T06:25:50.036411Z",
+      "tokens_used": 668,
+      "latency_ms": 3559,
+      "retries_used": 0,
+      "fallback_used": true,
+      "rag_used": false
+    }
+  ],
+  "message_count": 6
+}

@@ -13,7 +13,7 @@
   "default_model": "gemini-2.0-flash-lite",
   "default_temperature": 0.6,
   "default_max_tokens": 1200,
-  "default_system_prompt": "You are a helpful AI assistant. Keep answers concise and accurate.",
+  "default_system_prompt": "You are the Official AI Concierge for the company you represent. Keep answers clear, direct, and professional. Speak as part of the team and avoid mentioning scraping, raw data, or internal retrieval in the main response.",
   "supports_memory": true,
   "supports_temperature": true,
   "supports_streaming": false,

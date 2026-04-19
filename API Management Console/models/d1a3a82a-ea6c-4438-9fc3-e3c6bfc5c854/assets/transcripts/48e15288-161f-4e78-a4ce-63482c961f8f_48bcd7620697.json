@@ -1,0 +1,27 @@
+{
+  "bot_id": "d1a3a82a-ea6c-4438-9fc3-e3c6bfc5c854",
+  "bot_name": "Hubbase Chatbot",
+  "session_id": "48e15288-161f-4e78-a4ce-63482c961f8f",
+  "provider_type": "local",
+  "model": "qwen2.5:1.5b",
+  "created_at": "2026-04-18T17:56:01.624423Z",
+  "updated_at": "2026-04-18T17:56:01.624423Z",
+  "messages": [
+    {
+      "role": "user",
+      "content": "Check system status",
+      "timestamp": "2026-04-18T17:56:01.624423Z"
+    },
+    {
+      "role": "assistant",
+      "content": "To check the system status of Hubbase Chatbot, you can follow these steps:\n\n1. Open your browser and go to the Hubbase website at <https://hubbase.com/>.\n2. Log in or create an account if you haven't already.\n3. Navigate to the \"Help\" section on the left-hand side menu.\n4. Click on \"Contact Us\" to get a list of available options, including support through chat, email, phone, and social media.\n5. For direct assistance with system status inquiries, consider reaching out by visiting the Contact Hubbase page or using our live chat feature if it's available.\n\nIf you need further details about specific services or features on your platform, refer to the help section for more detailed information. If you encounter any issues related to integration of third-party applications or custom development, contact their support team directly as they can offer the most accurate and helpful guidance based on the current processes and documentation provided by both Hubbase and your client's needs.",
+      "timestamp": "2026-04-18T17:56:01.624423Z",
+      "tokens_used": 515,
+      "latency_ms": 4490,
+      "retries_used": 0,
+      "fallback_used": true,
+      "rag_used": false
+    }
+  ],
+  "message_count": 2
+}

@@ -26,14 +26,15 @@ export function SidebarNav({ activeView, onViewChange }: SidebarNavProps) {
   };
 
   return (
-    <aside className="fixed left-0 top-0 h-full w-16 lg:w-56 bg-card border-r border-border flex flex-col z-50">
+    <aside className="fixed left-0 top-0 z-50 flex h-full w-16 flex-col border-r border-border bg-card/95 backdrop-blur lg:w-56">
       <div className="p-4 flex items-center gap-3 border-b border-border">
-        <div className="w-8 h-8 rounded-md bg-primary/10 border border-primary/30 flex items-center justify-center glow-primary">
+        <div className="flex h-8 w-8 items-center justify-center rounded-xl border border-primary/20 bg-primary/10">
           <Terminal className="w-4 h-4 text-primary" />
         </div>
-        <span className="hidden lg:block font-mono text-sm font-semibold text-foreground tracking-tight">
-          AI Console
-        </span>
+        <div className="hidden lg:block">
+          <div className="text-sm font-semibold tracking-tight text-foreground">Arctic Studio</div>
+          <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground">HubSpot Ops</div>
+        </div>
       </div>
 
       <nav className="flex-1 p-2 space-y-1 mt-2">
@@ -44,10 +45,10 @@ export function SidebarNav({ activeView, onViewChange }: SidebarNavProps) {
               key={item.id}
               onClick={() => onViewChange(item.id)}
               className={cn(
-                "w-full flex items-center gap-3 px-3 py-2.5 rounded-md text-sm transition-all duration-200 font-mono",
+                "flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-all duration-200",
                 isActive
-                  ? "bg-primary/10 text-primary border border-primary/20 glow-primary"
-                  : "text-muted-foreground hover:text-foreground hover:bg-secondary"
+                  ? "border border-primary/20 bg-primary/10 text-primary"
+                  : "text-muted-foreground hover:bg-secondary hover:text-foreground"
               )}
             >
               <item.icon className="w-4 h-4 shrink-0" />
@@ -72,7 +73,7 @@ export function SidebarNav({ activeView, onViewChange }: SidebarNavProps) {
         </div>
         <button
           onClick={handleLogout}
-          className="w-full flex items-center gap-3 px-3 py-2 rounded-md text-sm font-mono text-muted-foreground hover:text-foreground hover:bg-secondary transition-all"
+          className="flex w-full items-center gap-3 rounded-xl px-3 py-2 text-sm text-muted-foreground transition-all hover:bg-secondary hover:text-foreground"
         >
           <LogOut className="w-4 h-4 shrink-0" />
           <span className="hidden lg:block truncate">Logout</span>

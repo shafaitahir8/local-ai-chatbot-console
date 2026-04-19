@@ -24,6 +24,8 @@ import urllib.request
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from typing import Optional
 
+from .circuit_breaker import CircuitBreaker, CircuitBreakerOpenError
+
 
 logger = logging.getLogger(__name__)
 
@@ -42,6 +44,8 @@ class ApiGatewayService:
     """Lifecycle manager for API-only local gateway."""
 
     CHAT_PATH_RE = re.compile(r"^/api/bot/[0-9a-fA-F-]{36}/chat$")
+    CHAT_STREAM_PATH_RE = re.compile(r"^/api/bot/[0-9a-fA-F-]{36}/chat/stream$")
+    TOOL_TRIGGER_PATH_RE = re.compile(r"^/api/bot/[0-9a-fA-F-]{36}/tools/trigger$")
     STATUS_PATH_RE = re.compile(r"^/api/bot/[0-9a-fA-F-]{36}/status$")
     EMBED_PATH_RE = re.compile(r"^/embed/[0-9a-fA-F-]{36}$")
     MAX_BODY_BYTES = 64 * 1024
@@ -51,6 +55,7 @@ class ApiGatewayService:
         self._thread: Optional[threading.Thread] = None
         self.port: Optional[int] = None
         self.target_base_url: str = "http://127.0.0.1:8000"
+        self._breaker = CircuitBreaker(name="api_gateway_upstream")
 
     def _build_handler(self):
         class GatewayHandler(BaseHTTPRequestHandler):
@@ -89,19 +94,25 @@ class ApiGatewayService:
 
             def _is_allowed_path(self) -> bool:
                 path = urllib.parse.urlparse(self.path).path
-                if path == "/health":
+                if path in {"/health", "/health/live", "/health/ready", "/health/fresh"}:
                     return True
                 return bool(
                     self.server.gateway_service.CHAT_PATH_RE.match(path)
+                    or self.server.gateway_service.CHAT_STREAM_PATH_RE.match(path)
+                    or self.server.gateway_service.TOOL_TRIGGER_PATH_RE.match(path)
                     or self.server.gateway_service.STATUS_PATH_RE.match(path)
                     or self.server.gateway_service.EMBED_PATH_RE.match(path)
                 )
 
             def _is_allowed_method(self) -> bool:
                 path = urllib.parse.urlparse(self.path).path
-                if path == "/health":
+                if path in {"/health", "/health/live", "/health/ready", "/health/fresh"}:
                     return self.command == "GET"
-                if self.server.gateway_service.CHAT_PATH_RE.match(path):
+                if (
+                    self.server.gateway_service.CHAT_PATH_RE.match(path)
+                    or self.server.gateway_service.CHAT_STREAM_PATH_RE.match(path)
+                    or self.server.gateway_service.TOOL_TRIGGER_PATH_RE.match(path)
+                ):
                     return self.command in {"POST", "OPTIONS"}
                 if self.server.gateway_service.STATUS_PATH_RE.match(path):
                     return self.command in {"GET", "OPTIONS"}
@@ -112,17 +123,33 @@ class ApiGatewayService:
             def _check_optional_token(self) -> bool:
                 required = os.getenv("TUNNEL_SHARED_SECRET", "").strip()
                 if not required:
-                    return True
+                    return False
 
                 parsed = urllib.parse.urlparse(self.path)
                 params = urllib.parse.parse_qs(parsed.query or "")
                 query_token = (params.get("token") or [None])[0]
-                header_token = self.headers.get("X-Tunnel-Token")
-                candidate = header_token or query_token or ""
+                tunnel_token = self.headers.get("X-Tunnel-Token")
+                auth_header = self.headers.get("Authorization")
+                bearer_token = None
+                if auth_header is not None:
+                    auth_value = auth_header.strip()
+                    scheme, _, credentials = auth_value.partition(" ")
+                    if scheme.lower() == "bearer" and credentials.strip():
+                        bearer_token = credentials.strip()
+                candidate = bearer_token or tunnel_token or query_token or ""
                 return hmac.compare_digest(candidate, required)
 
+            def _sanitize_forward_path(self) -> str:
+                parsed = urllib.parse.urlparse(self.path)
+                params = urllib.parse.parse_qsl(parsed.query or "", keep_blank_values=True)
+                filtered = [(key, value) for key, value in params if key.lower() != "token"]
+                sanitized_query = urllib.parse.urlencode(filtered)
+                return urllib.parse.urlunparse(
+                    (parsed.scheme, parsed.netloc, parsed.path, parsed.params, sanitized_query, parsed.fragment)
+                )
+
             def _forward(self, body: Optional[bytes]) -> None:
-                target = f"{self.server.gateway_service.target_base_url.rstrip('/')}{self.path}"
+                target = f"{self.server.gateway_service.target_base_url.rstrip('/')}{self._sanitize_forward_path()}"
                 request = urllib.request.Request(url=target, data=body, method=self.command)
 
                 # Forward only safe/needed headers.
@@ -132,24 +159,44 @@ class ApiGatewayService:
                     if value:
                         request.add_header(key, value)
 
+                tunnel_token = self.headers.get("X-Tunnel-Token")
+                if not tunnel_token:
+                    parsed = urllib.parse.urlparse(self.path)
+                    params = urllib.parse.parse_qs(parsed.query or "")
+                    tunnel_token = (params.get("token") or [None])[0]
+                if tunnel_token:
+                    request.add_header("X-Tunnel-Token", tunnel_token)
+
                 client_ip = self.client_address[0] if self.client_address else "unknown"
                 request.add_header("X-Forwarded-For", client_ip)
                 request.add_header("X-Forwarded-Proto", "https")
 
                 try:
+                    self.server.gateway_service._breaker.before_request()
                     with urllib.request.urlopen(request, timeout=60) as response:
                         data = response.read()
+                        self.server.gateway_service._breaker.record_success()
                         self._set_common_headers(response.getcode(), response.headers.get("Content-Type", "application/json"))
                         self.send_header("Content-Length", str(len(data)))
                         self.end_headers()
                         self.wfile.write(data)
                 except urllib.error.HTTPError as exc:
                     data = exc.read()
+                    if exc.code >= 500:
+                        self.server.gateway_service._breaker.record_failure(f"upstream_http_{exc.code}")
+                    else:
+                        self.server.gateway_service._breaker.record_success()
                     self._set_common_headers(exc.code, exc.headers.get("Content-Type", "application/json"))
                     self.send_header("Content-Length", str(len(data)))
                     self.end_headers()
                     self.wfile.write(data)
-                except Exception:
+                except CircuitBreakerOpenError as exc:
+                    payload = (
+                        f'{{"detail":"Gateway circuit open","retry_after_seconds":{exc.retry_after:.2f}}}'
+                    ).encode("utf-8")
+                    self._json(503, payload)
+                except Exception as exc:
+                    self.server.gateway_service._breaker.record_failure(exc)
                     self._json(502, b'{"detail":"Gateway upstream error"}')
 
             def do_OPTIONS(self):
@@ -247,6 +294,7 @@ class ApiGatewayService:
             "port": self.port,
             "target_base_url": self.target_base_url,
             "mode": "api_only_proxy",
+            "circuit_breaker": self._breaker.snapshot(),
         }
 
 

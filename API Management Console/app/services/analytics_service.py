@@ -2,12 +2,18 @@
 Analytics Service - Tracks and aggregates usage statistics.
 """
 
+import logging
 from datetime import datetime, timedelta
 from typing import Dict, Any, List, Optional
 from collections import Counter
 from sqlalchemy.orm import Session
 from sqlalchemy import func, desc
-from ..models.database import Message, Analytics, Bot, get_db_context
+from sqlalchemy.exc import IntegrityError
+
+from ..models.database import Message, Analytics, AnalyticsSession, Bot, get_db_context
+
+
+logger = logging.getLogger(__name__)
 
 
 class AnalyticsService:
@@ -15,7 +21,7 @@ class AnalyticsService:
     Service for tracking and retrieving analytics data.
     """
     
-    async def log_message(
+    def log_message_sync(
         self,
         db: Session,
         bot_id: str,
@@ -46,6 +52,26 @@ class AnalyticsService:
         Returns:
             Created Message object
         """
+        today = datetime.utcnow().replace(hour=0, minute=0, second=0, microsecond=0)
+        is_new_session = False
+        try:
+            session_guard = AnalyticsSession(
+                bot_id=bot_id,
+                date=today,
+                session_id=session_id,
+            )
+            db.add(session_guard)
+            db.flush()
+            is_new_session = True
+        except IntegrityError:
+            db.rollback()
+            logger.debug(
+                "Analytics session already exists for bot=%s session=%s date=%s",
+                bot_id,
+                session_id,
+                today.isoformat(),
+            )
+
         # Create message log
         message = Message(
             bot_id=bot_id,
@@ -73,8 +99,12 @@ class AnalyticsService:
                 bot.avg_latency = ((bot.avg_latency or 0) * old_count + latency_ms / 1000.0) / (old_count + 1)
         
         # Update daily analytics
-        await self._update_daily_analytics(
-            db, bot_id, session_id, tokens_prompt + tokens_completion, latency_ms
+        self._update_daily_analytics(
+            db,
+            bot_id,
+            tokens_prompt + tokens_completion,
+            latency_ms,
+            is_new_session=is_new_session,
         )
         
         db.commit()
@@ -82,13 +112,40 @@ class AnalyticsService:
         
         return message
     
-    async def _update_daily_analytics(
+    async def log_message(
         self,
         db: Session,
         bot_id: str,
         session_id: str,
+        user_message: str,
+        assistant_response: str,
+        tokens_prompt: int,
+        tokens_completion: int,
+        latency_ms: int,
+        user_ip: Optional[str] = None,
+        user_agent: Optional[str] = None
+    ) -> Message:
+        return self.log_message_sync(
+            db=db,
+            bot_id=bot_id,
+            session_id=session_id,
+            user_message=user_message,
+            assistant_response=assistant_response,
+            tokens_prompt=tokens_prompt,
+            tokens_completion=tokens_completion,
+            latency_ms=latency_ms,
+            user_ip=user_ip,
+            user_agent=user_agent,
+        )
+
+    def _update_daily_analytics(
+        self,
+        db: Session,
+        bot_id: str,
         tokens: int,
-        latency_ms: int
+        latency_ms: int,
+        *,
+        is_new_session: bool,
     ):
         """Update daily analytics aggregation."""
         today = datetime.utcnow().replace(hour=0, minute=0, second=0, microsecond=0)
@@ -125,14 +182,7 @@ class AnalyticsService:
                 (old_total + 1)
             )
         
-        # Check if new session
-        existing_session = db.query(Message).filter(
-            Message.bot_id == bot_id,
-            Message.session_id == session_id,
-            Message.created_at >= today
-        ).first()
-        
-        if not existing_session:
+        if is_new_session:
             analytics.unique_sessions += 1
     
     def get_bot_analytics(

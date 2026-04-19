@@ -44,6 +44,55 @@ class TunnelService:
         self._output_queue: "queue.Queue[str]" = queue.Queue()
         self._reader_thread: Optional[threading.Thread] = None
 
+    @staticmethod
+    def _normalize_public_url(url: str) -> str:
+        return (url or "").strip().rstrip("/")
+
+    def get_configured_public_base_url(self) -> Optional[str]:
+        provider = os.getenv("TUNNEL_PROVIDER", "cloudflare").strip().lower() or "cloudflare"
+
+        if provider == "cloudflare":
+            configured = (
+                os.getenv("CLOUDFLARE_PUBLIC_BASE_URL", "").strip()
+                or os.getenv("PUBLIC_BASE_URL", "").strip()
+            )
+            return self._normalize_public_url(configured) or None
+
+        if provider == "ngrok":
+            configured = os.getenv("PUBLIC_BASE_URL", "").strip()
+            if configured:
+                return self._normalize_public_url(configured)
+            static_domain = (
+                os.getenv("NGROK_STATIC_DOMAIN", "").strip()
+                or os.getenv("NGROK_DOMAIN", "").strip()
+            )
+            if static_domain:
+                if static_domain.startswith("http://") or static_domain.startswith("https://"):
+                    return self._normalize_public_url(static_domain)
+                return f"https://{static_domain.strip().strip('/')}"
+            return None
+
+        if provider == "localtunnel":
+            configured = os.getenv("LOCALTUNNEL_PUBLIC_BASE_URL", "").strip()
+            if configured:
+                return self._normalize_public_url(configured)
+
+            subdomain = os.getenv("LOCALTUNNEL_SUBDOMAIN", "").strip()
+            if not subdomain:
+                return None
+
+            public_host = os.getenv("LOCALTUNNEL_PUBLIC_HOST", "https://loca.lt").strip() or "https://loca.lt"
+            if not public_host.startswith("http://") and not public_host.startswith("https://"):
+                public_host = f"https://{public_host}"
+            parsed = urllib.parse.urlparse(public_host)
+            domain = (parsed.netloc or parsed.path or "loca.lt").strip().strip("/")
+            if not domain:
+                domain = "loca.lt"
+            return f"https://{subdomain}.{domain}".rstrip("/")
+
+        configured = os.getenv("PUBLIC_BASE_URL", "").strip()
+        return self._normalize_public_url(configured) or None
+
     def _find_cloudflared(self) -> Optional[str]:
         env_path = os.getenv("CLOUDFLARED_PATH", "").strip()
         if env_path and os.path.exists(env_path):
@@ -102,6 +151,10 @@ class TunnelService:
         if self.process and self.process.poll() is None and self.public_base_url:
             self.last_error = None
             return True
+        if self.process and self.process.poll() is None and not self.public_base_url:
+            await self.shutdown()
+        elif self.process and self.process.poll() is not None:
+            self.process = None
 
         self.provider = os.getenv("TUNNEL_PROVIDER", "cloudflare").strip().lower() or "cloudflare"
         if self.provider == "localtunnel":
@@ -450,13 +503,17 @@ class TunnelService:
 
     def get_status(self) -> Dict[str, Any]:
         running = bool(self.process and self.process.poll() is None)
+        configured_public_base_url = self.get_configured_public_base_url()
+        effective_public_base_url = self.public_base_url or configured_public_base_url
         return {
             "enabled": self.source not in {"disabled", "unavailable"},
             "running": running or self.source == "env",
-            "public_base_url": self.public_base_url,
+            "live_public_base_url": self.public_base_url,
+            "configured_public_base_url": configured_public_base_url,
+            "public_base_url": effective_public_base_url,
             "source": self.source,
             "provider": self.provider,
-            "stable": self.source in {"cloudflared_named", "env", "localtunnel_subdomain", "ngrok_static_domain"},
+            "stable": self.source in {"cloudflared_named", "env", "localtunnel_subdomain", "ngrok_static_domain"} or bool(configured_public_base_url),
             "last_error": self.last_error,
             "metrics_port": self.metrics_port,
         }
@@ -470,15 +527,17 @@ class TunnelService:
         return f"{url}{separator}token={urllib.parse.quote(token, safe='')}"
 
     def get_chat_endpoint(self, bot_id: str) -> Optional[str]:
-        if not self.public_base_url:
+        public_base_url = self.public_base_url or self.get_configured_public_base_url()
+        if not public_base_url:
             return None
-        endpoint = f"{self.public_base_url}/api/bot/{bot_id}/chat"
+        endpoint = f"{public_base_url}/api/bot/{bot_id}/chat"
         return self._with_optional_token(endpoint)
 
     def get_embed_endpoint(self, bot_id: str) -> Optional[str]:
-        if not self.public_base_url:
+        public_base_url = self.public_base_url or self.get_configured_public_base_url()
+        if not public_base_url:
             return None
-        endpoint = f"{self.public_base_url}/embed/{bot_id}"
+        endpoint = f"{public_base_url}/embed/{bot_id}"
         return self._with_optional_token(endpoint)
 
 

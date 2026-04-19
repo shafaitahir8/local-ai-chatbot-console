@@ -1,0 +1,14 @@
+<service>
+  <id>chatbot-ROLE_NAME</id>
+  <name>Chatbot Console ROLE_NAME</name>
+  <description>Supervised background role ROLE_NAME for the chatbot console.</description>
+  <executable>%BASE%\\venv\\Scripts\\python.exe</executable>
+  <arguments>-m app.runtime_supervisor ROLE_NAME</arguments>
+  <workingdirectory>%BASE%</workingdirectory>
+  <env name="APP_ENV" value="production" />
+  <onfailure action="restart" delay="5 sec" />
+  <log mode="roll-by-size">
+    <sizeThreshold>10485760</sizeThreshold>
+    <keepFiles>5</keepFiles>
+  </log>
+</service>

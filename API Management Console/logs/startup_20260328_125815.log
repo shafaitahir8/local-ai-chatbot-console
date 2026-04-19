@@ -1,0 +1,19 @@
+============================================ 
+ Startup Log - Sat 03/28/2026 12:58:15.04 
+============================================ 
+[INFO] Working directory: D:\JupyterNotebooks\Chatbots\API Management Console 
+[INFO] Python 3.14.0 
+[INFO] venv activated 
+[INFO] localtunnel subdomain: arcticbot245 
+[INFO] tunnel provider: localtunnel 
+[INFO] Ollama ready, 0 models 
+[INFO] Starting uvicorn 
+Method invocation failed because [System.Management.Automation.PSCustomObject] does not contain a method named 
+'ContainsKey'.
+At D:\JupyterNotebooks\Chatbots\API Management Console\scripts\manage_runtime_roles.ps1:113 char:13
++         if ($state.ContainsKey($role)) {
++             ~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (ContainsKey:String) [], ParentContainsErrorRecordException
+    + FullyQualifiedErrorId : MethodNotFound
+ 
+[WARN] role manager start failed 

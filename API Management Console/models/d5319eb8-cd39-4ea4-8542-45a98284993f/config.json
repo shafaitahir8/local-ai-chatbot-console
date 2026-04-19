@@ -1,0 +1,33 @@
+{
+  "storage_version": 1,
+  "bot": {
+    "id": "d5319eb8-cd39-4ea4-8542-45a98284993f",
+    "name": "Acme",
+    "description": null,
+    "template_type": "local_template",
+    "provider_type": "local",
+    "system_prompt": "You are the Official AI Concierge for the company you represent. You are part of the team, not a third-party assistant. Speak with calm authority, stay helpful, and avoid mentioning scraping, raw files, or internal retrieval steps in your response.",
+    "temperature": 0.7,
+    "max_tokens": 2000,
+    "model": "qwen3:8b",
+    "api_key_encrypted": null,
+    "memory_enabled": true,
+    "analytics_enabled": true,
+    "is_active": true,
+    "message_limit": null,
+    "messages_used": 0,
+    "token_usage": 0,
+    "avg_latency": 0.0,
+    "expiration_date": null,
+    "accent_color": "#007bff",
+    "welcome_message": "Hello! How can I help you today?",
+    "created_at": "2026-04-19T07:41:18.058027",
+    "updated_at": "2026-04-19T07:41:18.058031"
+  },
+  "paths": {
+    "vector_store": "vector_store",
+    "memory_db": "memory.db",
+    "assets": "assets"
+  },
+  "last_synced_at": "2026-04-19T09:51:47.383424Z"
+}

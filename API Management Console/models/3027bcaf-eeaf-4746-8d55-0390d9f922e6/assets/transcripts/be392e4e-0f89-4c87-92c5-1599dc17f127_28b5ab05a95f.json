@@ -1,0 +1,27 @@
+{
+  "bot_id": "3027bcaf-eeaf-4746-8d55-0390d9f922e6",
+  "bot_name": "Arctic Customer Bot",
+  "session_id": "be392e4e-0f89-4c87-92c5-1599dc17f127",
+  "provider_type": "local",
+  "model": "llama3.2:3b",
+  "created_at": "2026-04-19T04:30:30.132550Z",
+  "updated_at": "2026-04-19T04:30:30.132550Z",
+  "messages": [
+    {
+      "role": "user",
+      "content": "Send user this email for contact: shafaitahir8@gmail.com",
+      "timestamp": "2026-04-19T04:30:30.132550Z"
+    },
+    {
+      "role": "assistant",
+      "content": "**Subject: Support Request for Arctic Studio**\n\nDear User,\n\nThank you for reaching out to Arctic Studio. I'm happy to help you with any questions or concerns you may have.\n\nBefore we proceed, could you please provide some information about the issue you're experiencing? This will allow me to better understand your needs and provide a more accurate solution.\n\nIf you're an existing client, please let me know your account ID so I can look up your case. If not, don't worry - our process is designed to be easy and intuitive for everyone.\n\nTo help us get started, could you please answer the following:\n\n1. **What type of issue are you experiencing?** (Select one or describe it in detail)\n\t* HubSpot CMS\n\t* HubDB API\n\t* Other (please specify)\n2. **Can you provide any error messages or logs?**\n3. **What steps have you taken so far to troubleshoot the issue?**\n\nOnce I have this information, I'll do my best to assist you.\n\nYou can also find additional resources and support options on our website: [Arctic Studio Support](https://arcticstudio.com/support)\n\nIf your issue is complex or requires specialized attention, I may need to escalate it to one of our Technical Architects. In that case, I'll be in touch within 24 hours with an update.\n\nThank you for your patience and cooperation. I'm looking forward to helping you resolve your issue.\n\nBest regards,\n\n[Your Name]\nTechnical Support Lead\nArctic Studio",
+      "timestamp": "2026-04-19T04:30:30.132550Z",
+      "tokens_used": 757,
+      "latency_ms": 6360,
+      "retries_used": 0,
+      "fallback_used": true,
+      "rag_used": false
+    }
+  ],
+  "message_count": 2
+}

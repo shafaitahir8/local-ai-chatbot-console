@@ -7,10 +7,11 @@ import subprocess
 import asyncio
 import logging
 import threading
+import time
 from typing import List, Optional, AsyncIterator
 from concurrent.futures import ThreadPoolExecutor
 import httpx
-from .base_provider import BaseLLMProvider, ChatMessage, ChatResponse, EmbeddingResponse
+from .base_provider import BaseLLMProvider, ChatMessage, ChatResponse, EmbeddingResponse, ToolCall
 
 logger = logging.getLogger(__name__)
 
@@ -20,6 +21,8 @@ _sentence_model_lock = asyncio.Lock()
 _thread_executor = ThreadPoolExecutor(max_workers=2)
 _model_download_lock = threading.Lock()
 _model_download_processes: dict[str, subprocess.Popen] = {}
+_ollama_probe_cache_lock = threading.Lock()
+_ollama_probe_cache: dict[str, dict] = {}
 
 
 class LocalProvider(BaseLLMProvider):
@@ -76,12 +79,19 @@ class LocalProvider(BaseLLMProvider):
         super().__init__(api_key, model)
         self.base_url = base_url or os.getenv("LOCAL_LLM_URL", self.DEFAULT_BASE_URL)
         self.model = model or "qwen2.5:1.5b"  # Default to low-VRAM model
-        self.request_timeout = float(os.getenv("LOCAL_LLM_TIMEOUT_SECONDS", "300"))
+        total_timeout = float(os.getenv("LOCAL_LLM_TIMEOUT_SECONDS", "120"))
+        connect_timeout = float(os.getenv("LOCAL_LLM_CONNECT_TIMEOUT_SECONDS", "5"))
+        self.request_timeout = httpx.Timeout(timeout=total_timeout, connect=connect_timeout)
+        self.autostart_timeout_seconds = int(os.getenv("LOCAL_LLM_AUTOSTART_TIMEOUT_SECONDS", "10"))
         self.auto_pull_missing_models = os.getenv("LOCAL_LLM_AUTO_PULL_MISSING", "true").strip().lower() not in {
             "0",
             "false",
             "no",
         }
+        self.control_plane_cache_ttl_seconds = max(
+            1.0,
+            float(os.getenv("LOCAL_LLM_CONTROL_PLANE_CACHE_TTL_SECONDS", "15")),
+        )
         self._client: Optional[httpx.AsyncClient] = None
         self._is_ollama = "11434" in self.base_url or "ollama" in self.base_url.lower()
     
@@ -95,7 +105,12 @@ class LocalProvider(BaseLLMProvider):
             self._client = httpx.AsyncClient(
                 base_url=self.base_url,
                 headers=headers,
-                timeout=self.request_timeout
+                timeout=self.request_timeout,
+                limits=httpx.Limits(
+                    max_connections=int(os.getenv("HTTPX_MAX_CONNECTIONS", "32")),
+                    max_keepalive_connections=int(os.getenv("HTTPX_MAX_KEEPALIVE_CONNECTIONS", "16")),
+                    keepalive_expiry=float(os.getenv("HTTPX_KEEPALIVE_EXPIRY_SECONDS", "30")),
+                ),
             )
         return self._client
     
@@ -110,7 +125,131 @@ class LocalProvider(BaseLLMProvider):
     @property
     def supported_models(self) -> List[str]:
         return self.SUPPORTED_MODELS
-    
+
+    def _probe_cache_key(self, suffix: str) -> str:
+        return f"{self.base_url}:{suffix}"
+
+    def _get_probe_cache(self, suffix: str):
+        cache_key = self._probe_cache_key(suffix)
+        now = time.monotonic()
+        with _ollama_probe_cache_lock:
+            cached = _ollama_probe_cache.get(cache_key)
+            if cached is None:
+                return None
+            if now - float(cached.get("stored_at", 0.0)) > self.control_plane_cache_ttl_seconds:
+                _ollama_probe_cache.pop(cache_key, None)
+                return None
+            return cached.get("value")
+
+    def _set_probe_cache(self, suffix: str, value) -> None:
+        cache_key = self._probe_cache_key(suffix)
+        with _ollama_probe_cache_lock:
+            _ollama_probe_cache[cache_key] = {
+                "value": value,
+                "stored_at": time.monotonic(),
+            }
+
+    async def warm_client(self) -> bool:
+        """Prime the shared HTTP client and ensure Ollama is reachable."""
+        _ = self.client
+        if self._is_ollama:
+            return await self._ensure_ollama_running()
+        return True
+
+    async def warm_model(self) -> bool:
+        """Silently load the configured local model into memory before the first user request."""
+        ready = await self.warm_client()
+        if not ready:
+            return False
+
+        if self._is_ollama:
+            model_available = await self._ensure_model_available(self.model)
+            if not model_available:
+                if self.auto_pull_missing_models:
+                    if self._is_model_download_in_progress(self.model):
+                        raise RuntimeError(f"MODEL_DOWNLOAD_IN_PROGRESS::{self.model}")
+                    if self._start_model_download(self.model):
+                        raise RuntimeError(f"MODEL_DOWNLOAD_STARTED::{self.model}")
+                raise RuntimeError(
+                    f"Model '{self.model}' is not installed. "
+                    f"Please install it with: ollama pull {self.model}"
+                )
+
+            payload = {
+                "model": self.model,
+                "messages": [
+                    {"role": "system", "content": "You are a silent warmup request. Respond with OK."},
+                    {"role": "user", "content": "ping"},
+                ],
+                "stream": False,
+                "keep_alive": os.getenv("LOCAL_LLM_KEEP_ALIVE", "15m"),
+                "options": {
+                    "temperature": 0,
+                    "num_predict": max(1, int(os.getenv("LOCAL_LLM_WARMUP_MAX_TOKENS", "1"))),
+                },
+            }
+            response = await self.client.post("/api/chat", json=payload)
+            response.raise_for_status()
+            self._set_probe_cache("ready", True)
+            self._set_probe_cache(f"model:{self.model}", True)
+            if os.getenv("LOCAL_LLM_WARMUP_EMBEDDINGS", "true").strip().lower() not in {"0", "false", "no"}:
+                await self.warm_embeddings()
+            return True
+
+        payload = {
+            "model": self.model,
+            "messages": [{"role": "user", "content": "ping"}],
+            "temperature": 0,
+            "max_tokens": max(1, int(os.getenv("LOCAL_LLM_WARMUP_MAX_TOKENS", "1"))),
+            "stream": False,
+        }
+        response = await self.client.post("/v1/chat/completions", json=payload)
+        response.raise_for_status()
+        if os.getenv("LOCAL_LLM_WARMUP_EMBEDDINGS", "true").strip().lower() not in {"0", "false", "no"}:
+            await self.warm_embeddings()
+        return True
+
+    async def _ensure_sentence_embedding_model(self):
+        global _sentence_model
+        from sentence_transformers import SentenceTransformer
+
+        async with _sentence_model_lock:
+            if _sentence_model is None:
+                logger.info("Loading sentence-transformers model (first time, may take a moment)...")
+                loop = asyncio.get_event_loop()
+                _sentence_model = await loop.run_in_executor(
+                    _thread_executor,
+                    lambda: SentenceTransformer('all-MiniLM-L6-v2')
+                )
+                logger.info("Sentence-transformers model loaded successfully")
+        return _sentence_model
+
+    async def warm_embeddings(self) -> bool:
+        """Prime the embedding path so the first RAG query does not cold-load the fallback model."""
+        try:
+            payload = {
+                "input": ["warmup"],
+                "model": "default",
+            }
+            response = await self.client.post("/v1/embeddings", json=payload)
+            response.raise_for_status()
+            return True
+        except Exception:
+            await self._ensure_sentence_embedding_model()
+            return True
+
+    async def _fetch_ollama_tags(self) -> Optional[list[str]]:
+        cached_models = self._get_probe_cache("tags")
+        if cached_models is not None:
+            return list(cached_models)
+        response = await self.client.get("/api/tags")
+        response.raise_for_status()
+        data = response.json()
+        models = [model.get("name") for model in data.get("models", []) if model.get("name")]
+        self._set_probe_cache("tags", models)
+        self._set_probe_cache("ready", True)
+        return models
+
     async def _ensure_ollama_running(self) -> bool:
         """
         Ensure Ollama is running. Starts it if necessary.
@@ -118,14 +257,16 @@ class LocalProvider(BaseLLMProvider):
         """
         if not self._is_ollama:
             return True  # Not using Ollama, skip
+
+        cached_ready = self._get_probe_cache("ready")
+        if cached_ready is True:
+            return True
         
         # Check if Ollama is already running
         try:
-            async with httpx.AsyncClient(timeout=5.0) as client:
-                response = await client.get(f"{self.base_url}/api/tags")
-                if response.status_code == 200:
-                    logger.info("Ollama is already running")
-                    return True
+            await self._fetch_ollama_tags()
+            logger.info("Ollama is already running")
+            return True
         except Exception:
             pass  # Ollama not responding, try to start it
         
@@ -148,19 +289,17 @@ class LocalProvider(BaseLLMProvider):
                     start_new_session=True
                 )
             
-            # Wait for Ollama to start (up to 30 seconds)
-            for i in range(30):
+            # Wait for Ollama to start, but fail fast enough to avoid request pileups.
+            for i in range(self.autostart_timeout_seconds):
                 await asyncio.sleep(1)
                 try:
-                    async with httpx.AsyncClient(timeout=5.0) as client:
-                        response = await client.get(f"{self.base_url}/api/tags")
-                        if response.status_code == 200:
-                            logger.info(f"Ollama started successfully after {i+1} seconds")
-                            return True
+                    await self._fetch_ollama_tags()
+                    logger.info(f"Ollama started successfully after {i+1} seconds")
+                    return True
                 except Exception:
                     continue
             
-            logger.error("Ollama failed to start within 30 seconds")
+            logger.error("Ollama failed to start within %s seconds", self.autostart_timeout_seconds)
             return False
             
         except FileNotFoundError:
@@ -177,28 +316,33 @@ class LocalProvider(BaseLLMProvider):
         """
         if not self._is_ollama:
             return True
+
+        cached_available = self._get_probe_cache(f"model:{model_name}")
+        if cached_available is not None:
+            return bool(cached_available)
         
         try:
-            async with httpx.AsyncClient(timeout=10.0) as client:
-                response = await client.get(f"{self.base_url}/api/tags")
-                if response.status_code == 200:
-                    data = response.json()
-                    available_models = [m["name"] for m in data.get("models", [])]
-                    
-                    # Check exact match or base name match (e.g., "qwen2.5:1.5b" matches "qwen2.5:1.5b")
-                    if model_name in available_models:
-                        return True
-                    
-                    # Check if base name matches (handle version tags)
-                    base_name = model_name.split(":")[0]
-                    for m in available_models:
-                        if m.startswith(base_name):
-                            logger.info(f"Model {model_name} not found, but {m} is available")
-                            return True
-                    
-                    logger.warning(f"Model '{model_name}' not found locally. Available: {available_models}")
-                    logger.info(f"To install: ollama pull {model_name}")
-                    return False
+            available_models = await self._fetch_ollama_tags()
+            if available_models is None:
+                return False
+
+            # Check exact match or base name match (e.g., "qwen2.5:1.5b" matches "qwen2.5:1.5b")
+            if model_name in available_models:
+                self._set_probe_cache(f"model:{model_name}", True)
+                return True
+
+            # Check if base name matches (handle version tags)
+            base_name = model_name.split(":")[0]
+            for m in available_models:
+                if m.startswith(base_name):
+                    logger.info(f"Model {model_name} not found, but {m} is available")
+                    self._set_probe_cache(f"model:{model_name}", True)
+                    return True
+
+            logger.warning(f"Model '{model_name}' not found locally. Available: {available_models}")
+            logger.info(f"To install: ollama pull {model_name}")
+            self._set_probe_cache(f"model:{model_name}", False)
+            return False
         except Exception as e:
             logger.error(f"Failed to check model availability: {e}")
             return False
@@ -274,12 +418,12 @@ class LocalProvider(BaseLLMProvider):
             
             formatted_messages = self.format_messages(messages)
             
-            if self._is_ollama:
-                # Use Ollama's native API for better compatibility
-                return await self._chat_ollama(formatted_messages, temperature, max_tokens, **kwargs)
-            else:
-                # Use OpenAI-compatible endpoint
+            async def _call() -> ChatResponse:
+                if self._is_ollama:
+                    return await self._chat_ollama(formatted_messages, temperature, max_tokens, **kwargs)
                 return await self._chat_openai_compat(formatted_messages, temperature, max_tokens, **kwargs)
+
+            return await self.run_with_breaker(self.chat_breaker, self.chat_bulkhead, _call)
                 
         except httpx.HTTPStatusError as e:
             error_text = e.response.text
@@ -315,6 +459,8 @@ class LocalProvider(BaseLLMProvider):
                 "num_predict": max_tokens,
             }
         }
+        if kwargs.get("tools"):
+            payload["tools"] = kwargs["tools"]
         
         response = await self.client.post("/api/chat", json=payload)
         response.raise_for_status()
@@ -327,7 +473,8 @@ class LocalProvider(BaseLLMProvider):
             tokens_completion=data.get("eval_count", 0),
             tokens_total=data.get("prompt_eval_count", 0) + data.get("eval_count", 0),
             model=data.get("model", self.model),
-            finish_reason=data.get("done_reason", "stop")
+            finish_reason=data.get("done_reason", "stop"),
+            tool_calls=self._parse_tool_calls(data.get("message", {}).get("tool_calls") or []),
         )
     
     async def _chat_openai_compat(
@@ -355,12 +502,13 @@ class LocalProvider(BaseLLMProvider):
         usage = data.get("usage", {})
         
         return ChatResponse(
-            content=choice["message"]["content"],
+            content=choice["message"].get("content", ""),
             tokens_prompt=usage.get("prompt_tokens", 0),
             tokens_completion=usage.get("completion_tokens", 0),
             tokens_total=usage.get("total_tokens", 0),
             model=data.get("model", self.model),
-            finish_reason=choice.get("finish_reason")
+            finish_reason=choice.get("finish_reason"),
+            tool_calls=self._parse_tool_calls(choice.get("message", {}).get("tool_calls") or []),
         )
     
     async def chat_stream(
@@ -373,6 +521,20 @@ class LocalProvider(BaseLLMProvider):
         """Stream chat completion from local server."""
         try:
             formatted_messages = self.format_messages(messages)
+
+            if self._is_ollama:
+                ollama_ready = await self._ensure_ollama_running()
+                if not ollama_ready:
+                    raise RuntimeError(
+                        "Ollama is not running and could not be started automatically. "
+                        "Please start it manually with: ollama serve"
+                    )
+                model_available = await self._ensure_model_available(self.model)
+                if not model_available:
+                    raise RuntimeError(
+                        f"Model '{self.model}' is not installed. "
+                        f"Please install it with: ollama pull {self.model}"
+                    )
             
             if self._is_ollama:
                 # Ollama streaming
@@ -385,6 +547,8 @@ class LocalProvider(BaseLLMProvider):
                         "num_predict": max_tokens,
                     }
                 }
+                if kwargs.get("tools"):
+                    payload["tools"] = kwargs["tools"]
                 
                 async with self.client.stream("POST", "/api/chat", json=payload) as response:
                     response.raise_for_status()
@@ -434,56 +598,48 @@ class LocalProvider(BaseLLMProvider):
     ) -> EmbeddingResponse:
         """Get embeddings from local server."""
         try:
-            # Try OpenAI-compatible endpoint first
-            payload = {
-                "input": texts,
-                "model": kwargs.get("embedding_model", "default")
-            }
-            
-            response = await self.client.post(
-                "/v1/embeddings",
-                json=payload
-            )
-            response.raise_for_status()
-            
-            data = response.json()
-            embeddings = [item["embedding"] for item in data["data"]]
-            
-            return EmbeddingResponse(
-                embeddings=embeddings,
-                tokens_used=data.get("usage", {}).get("total_tokens", 0),
-                model=data.get("model", "local")
-            )
+            async def _call_remote() -> EmbeddingResponse:
+                payload = {
+                    "input": texts,
+                    "model": kwargs.get("embedding_model", "default")
+                }
+
+                response = await self.client.post(
+                    "/v1/embeddings",
+                    json=payload
+                )
+                response.raise_for_status()
+
+                data = response.json()
+                embeddings = [item["embedding"] for item in data["data"]]
+
+                return EmbeddingResponse(
+                    embeddings=embeddings,
+                    tokens_used=data.get("usage", {}).get("total_tokens", 0),
+                    model=data.get("model", "local")
+                )
+
+            return await self.run_with_breaker(self.embedding_breaker, self.embedding_bulkhead, _call_remote)
         except Exception as e:
             # Fallback: use sentence-transformers locally if available
             try:
                 global _sentence_model
-                from sentence_transformers import SentenceTransformer
-                
-                # Use singleton pattern with async lock to prevent blocking
-                async with _sentence_model_lock:
-                    if _sentence_model is None:
-                        logger.info("Loading sentence-transformers model (first time, may take a moment)...")
-                        # Load model in thread to avoid blocking
-                        loop = asyncio.get_event_loop()
-                        _sentence_model = await loop.run_in_executor(
-                            _thread_executor,
-                            lambda: SentenceTransformer('all-MiniLM-L6-v2')
-                        )
-                        logger.info("Sentence-transformers model loaded successfully")
-                
+                await self._ensure_sentence_embedding_model()
+
                 # Run encoding in thread executor to avoid blocking async
                 loop = asyncio.get_event_loop()
                 embeddings = await loop.run_in_executor(
                     _thread_executor,
                     lambda: _sentence_model.encode(texts).tolist()
                 )
+                self.embedding_breaker.record_success()
                 return EmbeddingResponse(
                     embeddings=embeddings,
                     tokens_used=sum(len(t.split()) for t in texts),
                     model="all-MiniLM-L6-v2"
                 )
             except ImportError:
+                self.embedding_breaker.record_failure(e)
                 raise RuntimeError(f"Local embedding error: {str(e)}. Install sentence-transformers as fallback.")
     
     def validate_config(self) -> bool:
@@ -550,3 +706,28 @@ class LocalProvider(BaseLLMProvider):
         if self._client:
             await self._client.aclose()
             self._client = None
+
+    def _parse_tool_calls(self, raw_calls: List[dict]) -> List[ToolCall]:
+        parsed: List[ToolCall] = []
+        for call in raw_calls or []:
+            function = dict(call.get("function") or {})
+            name = str(function.get("name") or "").strip()
+            if not name:
+                continue
+            arguments = function.get("arguments") or {}
+            if isinstance(arguments, str):
+                try:
+                    import json
+                    arguments = json.loads(arguments)
+                except Exception:
+                    arguments = {}
+            if not isinstance(arguments, dict):
+                arguments = {}
+            parsed.append(
+                ToolCall(
+                    name=name,
+                    arguments=arguments,
+                    call_id=str(call.get("id") or "").strip() or None,
+                )
+            )
+        return parsed

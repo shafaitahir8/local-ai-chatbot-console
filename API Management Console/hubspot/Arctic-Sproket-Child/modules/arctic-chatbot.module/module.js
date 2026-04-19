@@ -1,310 +1,306 @@
 (function() {
-  var containers = document.querySelectorAll('.arctic-chatbot-container');
+  var containers = document.querySelectorAll(".arctic-chatbot-container");
   if (!containers.length) return;
-  var MAX_RETRIES = 2;
+
+  var ACTIVE_PUBLIC_ORIGIN = "https://blah-tournament-tech-flags.trycloudflare.com";
 
   function normalizeApiUrl(url) {
-    if (!url) return '';
+    if (!url) return "";
     var next = String(url).trim();
-    if (!/\/api\/bot\/[^/?#]+\/chat([?#].*)?$/i.test(next)) {
-      next = next.replace(/\/bot\/([^/?#]+\/chat)([?#].*)?$/i, '/api/bot/$1$2');
+    if (!/\/api\/bot\/[^/?#]+\/chat(?:\/stream)?([?#].*)?$/i.test(next)) {
+      next = next.replace(/\/bot\/([^/?#]+\/chat(?:\/stream)?)([?#].*)?$/i, "/api/bot/$1$2");
     }
+    next = next.replace(/^https?:\/\/localhost:8000/i, ACTIVE_PUBLIC_ORIGIN);
     return next;
   }
 
-  function getStatusUrl(apiUrl) {
-    if (!apiUrl) return '';
-    return apiUrl.replace(/\/chat([?#].*)?$/i, function(_, suffix) {
-      return '/status' + (suffix || '');
-    });
+  function appendToken(url, token) {
+    if (!token) return url;
+    return url + (url.indexOf("?") === -1 ? "?" : "&") + "token=" + encodeURIComponent(token);
   }
 
   function getApiConfig(url) {
     var api = normalizeApiUrl(url);
     if (!api) return null;
 
-    var config = {
-      api: api,
-      isLocalTunnel: false,
-      tunnelToken: ''
-    };
-
     try {
       var parsed = new URL(api, window.location.href);
-      var host = (parsed.hostname || '').toLowerCase();
-      config.isLocalTunnel = /\.loca\.lt$/.test(host) || /localtunnel\.me$/.test(host);
-      config.tunnelToken = parsed.searchParams.get('token') || '';
-    } catch (e) {
-      config.isLocalTunnel = /https:\/\/[^/]*\.loca\.lt\//i.test(api);
-    }
+      var botMatch = parsed.pathname.match(/\/api\/bot\/([^/]+)\/chat(?:\/stream)?$/i);
+      if (!botMatch) return null;
 
-    return config;
+      var host = (parsed.hostname || "").toLowerCase();
+      var token = parsed.searchParams.get("token") || "";
+      var origin = parsed.origin;
+      var botId = botMatch[1];
+
+      return {
+        api: parsed.toString(),
+        botId: botId,
+        statusUrl: appendToken(origin + "/api/bot/" + botId + "/status", token),
+        toolTriggerUrl: appendToken(origin + "/api/bot/" + botId + "/tools/trigger", token),
+        isLocalTunnel: /\.loca\.lt$/.test(host) || /localtunnel\.me$/.test(host),
+        tunnelToken: token
+      };
+    } catch (error) {
+      return null;
+    }
   }
 
-  function isRetryableStatus(statusCode) {
-    return statusCode === 408 || statusCode === 409 || statusCode === 425 || statusCode === 429 || statusCode >= 500;
+  function buildHeaders(apiConfig, includeJson) {
+    var headers = {};
+    if (includeJson) {
+      headers["Content-Type"] = "application/json";
+    }
+    if (apiConfig.isLocalTunnel) {
+      headers["bypass-tunnel-reminder"] = "true";
+    }
+    if (apiConfig.tunnelToken) {
+      headers["X-Tunnel-Token"] = apiConfig.tunnelToken;
+    }
+    return headers;
+  }
+
+  function requestJson(url, apiConfig, options) {
+    return fetch(url, {
+      method: (options && options.method) || "GET",
+      headers: buildHeaders(apiConfig, !!(options && options.json)),
+      body: options && options.json ? JSON.stringify(options.json) : undefined
+    }).then(function(response) {
+      return response.text().then(function(text) {
+        var data = text ? JSON.parse(text) : {};
+        if (!response.ok) {
+          var message = (data && data.detail) || ("Request failed with status " + response.status);
+          throw new Error(message);
+        }
+        return data;
+      });
+    });
+  }
+
+  function normalizeChips(rawChips) {
+    var chips = Array.isArray(rawChips) ? rawChips : [];
+    return chips.map(function(chip, index) {
+      var legacyVisibility = chip.visibility;
+      var visibilityMode = chip.visibility_mode
+        || (legacyVisibility === "on_start_only"
+          ? "on_start"
+          : legacyVisibility === "conditional"
+            ? "keywords"
+            : "always");
+      return {
+        id: chip.id || ("chip-" + (index + 1)),
+        label: chip.label || "",
+        action_type: chip.action_type || "suggested_prompt",
+        value: chip.value || chip.label || "",
+        style: chip.style || "outline",
+        visibility_mode: visibilityMode,
+        trigger_keywords: Array.isArray(chip.trigger_keywords) ? chip.trigger_keywords : [],
+        ai_instruction: chip.ai_instruction || "",
+        sentiment_filter: chip.sentiment_filter || "any",
+        priority: Number(chip.priority || 0),
+        payload: chip.payload || {}
+      };
+    }).filter(function(chip) {
+      if (!chip.label) return false;
+      if (!chip.value) return false;
+      if (chip.visibility_mode === "keywords" && (!chip.trigger_keywords || !chip.trigger_keywords.length) && !String(chip.ai_instruction || "").trim()) return false;
+      if (chip.visibility_mode === "ai_only" && !String(chip.ai_instruction || "").trim()) return false;
+      return true;
+    });
+  }
+
+  function scrollToBottom(messagesEl) {
+    messagesEl.scrollTop = messagesEl.scrollHeight;
+  }
+
+  function setStatus(statusEl, text, isThinking) {
+    statusEl.textContent = text;
+    statusEl.className = isThinking ? "arctic-chatbot-status arctic-chatbot-thinking" : "arctic-chatbot-status";
+  }
+
+  function buildChipPromptPayload(chip) {
+    if (!chip || chip.action_type !== "suggested_prompt") {
+      return chip && chip.label ? chip.label : "";
+    }
+    var hiddenValue = String(chip.value || chip.label || "").trim();
+    return [
+      "Respond as a chatbot in 1-2 short sentences.",
+      "Do not write an email, letter, greeting, sign-off, or placeholders.",
+      "Give the user the direct answer only.",
+      hiddenValue
+    ].join("\n");
+  }
+
+  function createChipButton(chip, disabled, onClick) {
+    var button = document.createElement("button");
+    button.type = "button";
+    button.className = "arctic-chatbot-quick-chip";
+    button.setAttribute("data-style", chip.style || "outline");
+    button.disabled = !!disabled;
+    button.textContent = chip.label;
+    button.addEventListener("click", function(event) {
+      event.preventDefault();
+      onClick(chip);
+    });
+    return button;
+  }
+
+  function renderQuickChips(target, chips, disabled, onClick) {
+    if (!target) return;
+    target.innerHTML = "";
+    normalizeChips(chips).forEach(function(chip) {
+      target.appendChild(createChipButton(chip, disabled, onClick));
+    });
+  }
+
+  function createMessageElement(text, sender, chips, disabled, onChipClick) {
+    var wrapper = document.createElement("div");
+    wrapper.className = "arctic-chatbot-msg arctic-chatbot-msg-" + sender;
+
+    var stack = document.createElement("div");
+    stack.className = "arctic-chatbot-msg-stack";
+
+    var bubble = document.createElement("div");
+    bubble.className = "arctic-chatbot-msg-bubble";
+    bubble.textContent = text;
+    stack.appendChild(bubble);
+
+    var chipRow = document.createElement("div");
+    chipRow.className = "arctic-chatbot-quick-actions";
+    renderQuickChips(chipRow, chips, disabled, onChipClick);
+    stack.appendChild(chipRow);
+
+    wrapper.appendChild(stack);
+    return wrapper;
+  }
+
+  function createTypingElement() {
+    var wrapper = document.createElement("div");
+    wrapper.className = "arctic-chatbot-msg arctic-chatbot-msg-bot";
+
+    var stack = document.createElement("div");
+    stack.className = "arctic-chatbot-msg-stack";
+
+    var bubble = document.createElement("div");
+    bubble.className = "arctic-chatbot-msg-bubble arctic-chatbot-typing";
+    bubble.innerHTML = "<span></span><span></span><span></span>";
+    stack.appendChild(bubble);
+    wrapper.appendChild(stack);
+    return wrapper;
   }
 
   containers.forEach(function(container) {
-    var apiConfig = getApiConfig(container.getAttribute('data-api'));
+    var apiConfig = getApiConfig(container.getAttribute("data-api"));
     if (!apiConfig || !apiConfig.api) return;
 
-    var api = apiConfig.api;
-    var statusApi = getStatusUrl(api);
+    var messagesEl = container.querySelector("[data-role='messages']");
+    var input = container.querySelector("[data-role='input']");
+    var sendBtn = container.querySelector("[data-role='send']");
+    var statusEl = container.querySelector("[data-role='status']");
+    var seedBubble = container.querySelector("[data-role='seed-bubble']");
+    var seedChips = container.querySelector("[data-role='seed-chips']");
+    if (!messagesEl || !input || !sendBtn || !statusEl || !seedBubble || !seedChips) return;
 
-    var messagesEl = container.querySelector('[data-role="messages"]');
-    var input = container.querySelector('[data-role="input"]');
-    var sendBtn = container.querySelector('[data-role="send"]');
-    var statusEl = container.querySelector('[data-role="status"]');
-    if (!messagesEl || !input || !sendBtn || !statusEl) return;
-
-    var sessionId = null;
+    var sessionId = "hs-" + Math.random().toString(36).substring(2, 12);
     var sending = false;
     var typingEl = null;
-    var startupMessageEl = null;
 
-    function applyCommonHeaders(xhr, includeContentType) {
-      if (includeContentType) {
-        xhr.setRequestHeader('Content-Type', 'application/json');
+    function handleChipClick(chip) {
+      if (sending) return;
+      if (chip.action_type === "suggested_prompt") {
+        sendPrompt(buildChipPromptPayload(chip), chip.label);
+        return;
       }
-      if (apiConfig.isLocalTunnel) {
-        xhr.setRequestHeader('bypass-tunnel-reminder', 'true');
-      }
-      if (apiConfig.tunnelToken) {
-        xhr.setRequestHeader('X-Tunnel-Token', apiConfig.tunnelToken);
-      }
+      sendPrompt(chip.label, chip.label);
     }
 
-    function ensureStartupMessage(text) {
-      var content = (text || '').trim();
-      if (!content) return;
-
-      if (!startupMessageEl || !startupMessageEl.parentNode) {
-        var row = document.createElement('div');
-        row.className = 'arctic-chatbot-msg arctic-chatbot-msg-bot';
-
-        var bubble = document.createElement('div');
-        bubble.className = 'arctic-chatbot-msg-bubble';
-        bubble.setAttribute('data-role', 'startup-message');
-        row.appendChild(bubble);
-
-        messagesEl.appendChild(row);
-        startupMessageEl = bubble;
-      }
-
-      startupMessageEl.textContent = content;
-      messagesEl.scrollTop = messagesEl.scrollHeight;
+    function setLoading(state, statusText) {
+      sending = state;
+      container.classList.toggle("is-loading", state);
+      sendBtn.disabled = state;
+      input.disabled = state;
+      setStatus(statusEl, statusText || (state ? "Thinking..." : "Online"), state);
     }
 
-    function loadStartupMessage(attempt) {
-      if (!statusApi) return;
-      var currentAttempt = attempt || 1;
-      var xhr = new XMLHttpRequest();
-      xhr.open('GET', statusApi, true);
-      applyCommonHeaders(xhr, false);
-
-      xhr.onreadystatechange = function() {
-        if (xhr.readyState !== 4) return;
-
-        var data = {};
-        if (xhr.responseText) {
-          try {
-            data = JSON.parse(xhr.responseText);
-          } catch (e) {
-            data = {};
-          }
-        }
-
-        if (xhr.status >= 200 && xhr.status < 300) {
-          var startup = (data.startup_welcome_message || '').trim();
-          var configured = (data.welcome_message || '').trim();
-          if (startup) {
-            ensureStartupMessage(startup);
-            return;
-          }
-          if (configured) {
-            ensureStartupMessage(configured);
-          }
-
-          if (!startup && data.startup_welcome_ready === false && currentAttempt < 5) {
-            window.setTimeout(function() {
-              loadStartupMessage(currentAttempt + 1);
-            }, 700 * currentAttempt);
-          }
-          return;
-        }
-
-        if (currentAttempt < 3) {
-          window.setTimeout(function() {
-            loadStartupMessage(currentAttempt + 1);
-          }, 500 * currentAttempt);
-        }
-      };
-
-      xhr.onerror = function() {
-        if (currentAttempt < 3) {
-          window.setTimeout(function() {
-            loadStartupMessage(currentAttempt + 1);
-          }, 500 * currentAttempt);
-        }
-      };
-
-      xhr.send();
+    function appendMessage(text, sender, chips) {
+      var message = createMessageElement(text, sender, chips, sending, handleChipClick);
+      messagesEl.appendChild(message);
+      scrollToBottom(messagesEl);
     }
 
-    function addMessage(text, sender) {
-      var div = document.createElement('div');
-      div.className = 'arctic-chatbot-msg arctic-chatbot-msg-' + sender;
-      var bubble = document.createElement('div');
-      bubble.className = 'arctic-chatbot-msg-bubble';
-      bubble.textContent = text;
-      div.appendChild(bubble);
-      messagesEl.appendChild(div);
-      messagesEl.scrollTop = messagesEl.scrollHeight;
+    function showTyping() {
+      typingEl = createTypingElement();
+      messagesEl.appendChild(typingEl);
+      scrollToBottom(messagesEl);
     }
 
-    function addTyping() {
-      var div = document.createElement('div');
-      div.className = 'arctic-chatbot-msg arctic-chatbot-msg-bot';
-      var bubble = document.createElement('div');
-      bubble.className = 'arctic-chatbot-msg-bubble arctic-chatbot-typing';
-      bubble.innerHTML = '<span></span><span></span><span></span>';
-      div.appendChild(bubble);
-      messagesEl.appendChild(div);
-      messagesEl.scrollTop = messagesEl.scrollHeight;
-      typingEl = div;
-    }
-
-    function removeTyping() {
+    function hideTyping() {
       if (typingEl && typingEl.parentNode) {
         typingEl.parentNode.removeChild(typingEl);
       }
       typingEl = null;
     }
 
-    function setStatus(text, thinking) {
-      statusEl.textContent = text;
-      statusEl.className = thinking
-        ? 'arctic-chatbot-status arctic-chatbot-thinking'
-        : 'arctic-chatbot-status';
-    }
-
-    function setLoading(state, statusText) {
-      sending = state;
-      sendBtn.disabled = state;
-      input.disabled = state;
-      if (state) {
-        setStatus(statusText || 'Working...', true);
-      } else {
-        setStatus('Online', false);
+    function applyWelcomeState(payload) {
+      var welcomeText = (payload && (payload.startup_welcome_message || payload.welcome_message)) || "Hello! How can I help you today?";
+      var startupChips = payload && payload.quick_chip_settings ? payload.quick_chip_settings.initial_chips : [];
+      seedBubble.textContent = welcomeText;
+      renderQuickChips(seedChips, startupChips, sending, handleChipClick);
+      if (payload && payload.is_available === false && payload.reason) {
+        setStatus(statusEl, payload.reason, false);
+        input.disabled = true;
+        sendBtn.disabled = true;
       }
     }
 
-    function scheduleRetry(nextAttempt, callback) {
-      setStatus('Retrying request...', true);
-      window.setTimeout(callback, 350 * nextAttempt);
-    }
-
-    function sendMessageRequest(msg, attempt, done) {
-      var isNewSession = !sessionId;
-      setStatus(isNewSession ? 'Opening session...' : 'Sending request...', true);
-
-      var payload = { message: msg };
-      if (sessionId) {
-        payload.session_id = sessionId;
-      }
-
-      setStatus('Waiting for model response...', true);
-
-      var xhr = new XMLHttpRequest();
-      xhr.open('POST', api, true);
-      applyCommonHeaders(xhr, true);
-
-      xhr.onreadystatechange = function() {
-        if (xhr.readyState !== 4) return;
-
-        var data = {};
-        if (xhr.responseText) {
-          try {
-            data = JSON.parse(xhr.responseText);
-          } catch (e) {
-            data = {};
-          }
-        }
-
-        if (xhr.status >= 200 && xhr.status < 300) {
-          done(null, data);
-          return;
-        }
-
-        if (attempt <= MAX_RETRIES && isRetryableStatus(xhr.status)) {
-          scheduleRetry(attempt, function() {
-            sendMessageRequest(msg, attempt + 1, done);
-          });
-          return;
-        }
-
-        var detail = data.detail || ('Server returned status ' + xhr.status);
-        done(new Error(detail));
-      };
-
-      xhr.onerror = function() {
-        if (attempt <= MAX_RETRIES) {
-          scheduleRetry(attempt, function() {
-            sendMessageRequest(msg, attempt + 1, done);
-          });
-          return;
-        }
-        done(new Error('Could not reach the server.'));
-      };
-
-      xhr.send(JSON.stringify(payload));
-    }
-
-    function sendMessage() {
+    function sendPrompt(prompt, visibleLabel) {
       if (sending) return;
-      var msg = input.value.trim();
-      if (!msg) return;
+      var outbound = String(prompt || "").trim();
+      var visible = String(visibleLabel || prompt || "").trim();
+      if (!outbound || !visible) return;
 
-      addMessage(msg, 'user');
-      input.value = '';
-      setLoading(true, 'Preparing request...');
-      addTyping();
+      appendMessage(visible, "user");
+      input.value = "";
+      setLoading(true, "Thinking...");
+      showTyping();
 
-      sendMessageRequest(msg, 1, function(err, data) {
-        removeTyping();
-
-        if (err) {
-          addMessage('Error: ' + err.message, 'bot');
-          setStatus('Error', false);
-          setLoading(false);
-          input.focus();
-          return;
+      requestJson(apiConfig.api, apiConfig, {
+        method: "POST",
+        json: {
+          message: outbound,
+          session_id: sessionId
         }
-
-        addMessage(data.response || 'No response received.', 'bot');
+      }).then(function(data) {
+        hideTyping();
+        appendMessage(data.response || "No response received.", "bot", data.quick_chips || []);
         if (data.session_id) {
           sessionId = data.session_id;
         }
-
-        setLoading(false);
+      }).catch(function(error) {
+        hideTyping();
+        appendMessage(error instanceof Error ? error.message : "Could not reach the server.", "bot", []);
+      }).finally(function() {
+        setLoading(false, "Online");
         input.focus();
       });
     }
 
-    sendBtn.addEventListener('click', function(e) {
-      e.preventDefault();
-      sendMessage();
+    sendBtn.addEventListener("click", function(event) {
+      event.preventDefault();
+      sendPrompt(input.value);
     });
 
-    input.addEventListener('keydown', function(e) {
-      if (e.key === 'Enter' || e.keyCode === 13) {
-        e.preventDefault();
-        sendMessage();
+    input.addEventListener("keydown", function(event) {
+      if (event.key === "Enter" || event.keyCode === 13) {
+        event.preventDefault();
+        sendPrompt(input.value);
       }
     });
 
-    loadStartupMessage(1);
+    requestJson(apiConfig.statusUrl, apiConfig)
+      .then(applyWelcomeState)
+      .catch(function() {
+        renderQuickChips(seedChips, [], false, handleChipClick);
+      });
   });
 })();
-

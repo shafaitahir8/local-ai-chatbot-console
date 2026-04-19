@@ -3,7 +3,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import { fetchApiKeys, revealApiKeys, AdminApiKeyRecord } from "@/lib/api";
 import { toast } from "sonner";
-import { Copy, Eye, EyeOff, KeyRound, Loader2, ShieldAlert } from "lucide-react";
+import { Copy, Eye, EyeOff, KeyRound, Loader2, ShieldAlert, ShieldCheck, Lock } from "lucide-react";
 
 export function APIKeysView() {
   const [password, setPassword] = useState("");
@@ -35,6 +35,11 @@ export function APIKeysView() {
     [isUnlocked, revealedData, maskedData]
   );
 
+  const unlockedCount = useMemo(
+    () => rows.filter((row) => row.has_key).length,
+    [rows]
+  );
+
   const toggleRowVisibility = (rowId: string) => {
     setVisibleRows((prev) => ({ ...prev, [rowId]: !prev[rowId] }));
   };
@@ -47,50 +52,84 @@ export function APIKeysView() {
 
   return (
     <div>
-      <h1 className="font-mono text-xl font-bold text-foreground mb-1">API Keys</h1>
-      <p className="font-mono text-xs text-muted-foreground mb-6">
-        Stored provider keys for all bots. Reveal is password-gated per session.
-      </p>
+      <div className="mb-6 rounded-[1.25rem] border border-border bg-card p-5 surface-shadow">
+        <p className="font-mono text-[10px] uppercase tracking-[0.24em] text-primary">Business Summary</p>
+        <h1 className="mt-2 text-2xl font-semibold text-foreground">Provider key custody</h1>
+        <p className="mt-2 max-w-3xl text-sm leading-6 text-muted-foreground">
+          Review encrypted provider credentials without exposing raw values by default. Sensitive reveals stay password-gated
+          and limited to the current session.
+        </p>
+        <div className="mt-4 grid gap-3 md:grid-cols-3">
+          <div className="rounded-2xl border border-border bg-secondary/35 p-4">
+            <div className="flex items-center gap-2">
+              <ShieldCheck className="h-4 w-4 text-primary" />
+              <span className="font-mono text-[10px] uppercase tracking-wide text-muted-foreground">Stored Keys</span>
+            </div>
+            <p className="mt-2 text-lg font-semibold text-foreground">{unlockedCount}</p>
+          </div>
+          <div className="rounded-2xl border border-border bg-secondary/35 p-4">
+            <div className="flex items-center gap-2">
+              <Lock className="h-4 w-4 text-success" />
+              <span className="font-mono text-[10px] uppercase tracking-wide text-muted-foreground">Reveal Mode</span>
+            </div>
+            <p className="mt-2 text-lg font-semibold text-foreground">{isUnlocked ? "Unlocked" : "Protected"}</p>
+          </div>
+          <div className="rounded-2xl border border-border bg-secondary/35 p-4">
+            <div className="flex items-center gap-2">
+              <KeyRound className="h-4 w-4 text-accent" />
+              <span className="font-mono text-[10px] uppercase tracking-wide text-muted-foreground">Session Scope</span>
+            </div>
+            <p className="mt-2 text-lg font-semibold text-foreground">Admin-only</p>
+          </div>
+        </div>
+      </div>
 
       {!isUnlocked && (
-        <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="bg-card border border-border rounded-lg p-4 mb-5">
-          <div className="flex items-center gap-2 mb-3">
-            <ShieldAlert className="w-4 h-4 text-warning" />
-            <span className="font-mono text-xs text-foreground">Reveal Locked</span>
+        <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="mb-5 rounded-[1rem] border border-border bg-card p-5 surface-shadow">
+          <div className="mb-3 flex items-center gap-2">
+            <ShieldAlert className="h-4 w-4 text-warning" />
+            <span className="text-sm font-semibold text-foreground">Reveal locked</span>
           </div>
-          <div className="flex gap-2">
+          <p className="mb-3 text-sm text-muted-foreground">
+            Technical detail remains masked until the admin password is re-entered for this session.
+          </p>
+          <div className="flex flex-col gap-2 sm:flex-row">
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Enter admin password to unlock reveal"
-              className="flex-1 bg-secondary border border-border rounded-md px-3 py-2 font-mono text-xs text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/50 transition-colors"
+              className="flex-1 rounded-xl border border-border bg-background px-3 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary/50 focus:outline-none focus:ring-2 focus:ring-primary/10"
             />
             <button
               onClick={() => unlockMutation.mutate(password)}
               disabled={!password || unlockMutation.isPending}
-              className="font-mono text-xs px-3 py-2 rounded-md bg-primary text-primary-foreground hover:opacity-90 disabled:opacity-50 transition-opacity flex items-center gap-2"
+              className="flex items-center justify-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-sm text-primary-foreground transition-opacity hover:opacity-90 disabled:opacity-50"
             >
-              {unlockMutation.isPending ? <Loader2 className="w-3 h-3 animate-spin" /> : <KeyRound className="w-3 h-3" />}
+              {unlockMutation.isPending ? <Loader2 className="h-3 w-3 animate-spin" /> : <KeyRound className="h-3 w-3" />}
               Unlock
             </button>
           </div>
         </motion.div>
       )}
 
-      <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="bg-card border border-border rounded-lg overflow-hidden">
-        <div className="px-4 py-3 border-b border-border flex items-center justify-between">
-          <span className="font-mono text-xs text-muted-foreground uppercase tracking-wide">
-            Stored Keys ({rows.length})
+      <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="overflow-hidden rounded-[1rem] border border-border bg-card surface-shadow">
+        <div className="flex items-center justify-between border-b border-border px-4 py-3">
+          <div>
+            <span className="font-mono text-[10px] uppercase tracking-wide text-primary">Technical Detail</span>
+            <p className="mt-1 text-sm text-muted-foreground">Stored key inventory and per-bot provider assignments.</p>
+          </div>
+          <span className="rounded-full border border-border bg-secondary px-2.5 py-1 font-mono text-[10px] text-muted-foreground">
+            {rows.length} records
           </span>
         </div>
 
         {isLoading ? (
-          <div className="py-16 flex items-center justify-center">
-            <Loader2 className="w-5 h-5 text-primary animate-spin" />
+          <div className="flex items-center justify-center py-16">
+            <Loader2 className="h-5 w-5 animate-spin text-primary" />
           </div>
         ) : rows.length === 0 ? (
-          <div className="py-16 text-center font-mono text-xs text-muted-foreground">
+          <div className="py-16 text-center text-sm text-muted-foreground">
             No API keys stored yet.
           </div>
         ) : (
@@ -98,11 +137,11 @@ export function APIKeysView() {
             <table className="w-full">
               <thead>
                 <tr className="border-b border-border bg-secondary/40">
-                  <th className="text-left p-3 font-mono text-[10px] text-muted-foreground uppercase">Company</th>
-                  <th className="text-left p-3 font-mono text-[10px] text-muted-foreground uppercase">Bot</th>
-                  <th className="text-left p-3 font-mono text-[10px] text-muted-foreground uppercase">Model</th>
-                  <th className="text-left p-3 font-mono text-[10px] text-muted-foreground uppercase">Key</th>
-                  <th className="text-right p-3 font-mono text-[10px] text-muted-foreground uppercase">Actions</th>
+                  <th className="p-3 text-left font-mono text-[10px] uppercase text-muted-foreground">Company</th>
+                  <th className="p-3 text-left font-mono text-[10px] uppercase text-muted-foreground">Bot</th>
+                  <th className="p-3 text-left font-mono text-[10px] uppercase text-muted-foreground">Model</th>
+                  <th className="p-3 text-left font-mono text-[10px] uppercase text-muted-foreground">Key</th>
+                  <th className="p-3 text-right font-mono text-[10px] uppercase text-muted-foreground">Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -112,14 +151,14 @@ export function APIKeysView() {
                   const shownValue = isVisible ? row.key_value : row.masked_key;
 
                   return (
-                    <tr key={row.id} className="border-b border-border/50">
-                      <td className="p-3 font-mono text-xs text-foreground">{row.company}</td>
-                      <td className="p-3 font-mono text-xs text-foreground">{row.bot_name}</td>
-                      <td className="p-3 font-mono text-xs text-muted-foreground">{row.model || "-"}</td>
+                    <tr key={row.id} className="border-b border-border/50 align-top">
+                      <td className="p-3 text-sm text-foreground">{row.company}</td>
+                      <td className="p-3 text-sm text-foreground">{row.bot_name}</td>
+                      <td className="p-3 text-sm text-muted-foreground">{row.model || "-"}</td>
                       <td className="p-3">
-                        <code className="font-mono text-[11px] text-primary break-all">{shownValue || "Unavailable"}</code>
+                        <code className="break-all font-mono text-[11px] text-primary">{shownValue || "Unavailable"}</code>
                         {row.decrypt_error && (
-                          <div className="font-mono text-[10px] text-destructive mt-1">
+                          <div className="mt-1 font-mono text-[10px] text-destructive">
                             Could not decrypt this key with current ENCRYPTION_SECRET.
                           </div>
                         )}
@@ -129,18 +168,18 @@ export function APIKeysView() {
                           <button
                             onClick={() => toggleRowVisibility(row.id)}
                             disabled={!canShow}
-                            className="p-1.5 rounded border border-border bg-secondary text-secondary-foreground hover:text-foreground disabled:opacity-40"
+                            className="rounded-xl border border-border bg-secondary p-1.5 text-secondary-foreground transition-colors hover:text-foreground disabled:opacity-40"
                             title={canShow ? (isVisible ? "Hide key" : "Reveal key") : "Unlock first"}
                           >
-                            {isVisible ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
+                            {isVisible ? <EyeOff className="h-3.5 w-3.5" /> : <Eye className="h-3.5 w-3.5" />}
                           </button>
                           <button
                             onClick={() => copyKey(canShow ? row.key_value : null)}
                             disabled={!canShow}
-                            className="p-1.5 rounded border border-border bg-secondary text-secondary-foreground hover:text-foreground disabled:opacity-40"
+                            className="rounded-xl border border-border bg-secondary p-1.5 text-secondary-foreground transition-colors hover:text-foreground disabled:opacity-40"
                             title={canShow ? "Copy key" : "Unlock first"}
                           >
-                            <Copy className="w-3.5 h-3.5" />
+                            <Copy className="h-3.5 w-3.5" />
                           </button>
                         </div>
                       </td>

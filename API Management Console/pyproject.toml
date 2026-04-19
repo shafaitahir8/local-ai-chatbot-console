@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "arctic-console"
+version = "0.1.0"
+description = "Headless administrative CLI for the Arctic chatbot console."
+requires-python = ">=3.10"
+dynamic = ["dependencies"]
+
+[project.scripts]
+arctic = "app.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["app*"]
+
+[tool.setuptools.dynamic]
+dependencies = { file = ["requirements.txt"] }
