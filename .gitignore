@@ -1,0 +1,4 @@
+# Runtime database and log artifacts
+API Management Console/data/*.db
+API Management Console/data/*.db-*
+API Management Console/logs/*.log
