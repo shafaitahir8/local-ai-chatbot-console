@@ -1,6 +1,7 @@
+import os
 import requests
 
-API_KEY = "AIzaSyCpWEep3imrM0GPxuhFDPaoCSdp3heXArk"
+API_KEY = os.environ["GEMINI_API_KEY"]  # set in your environment; never commit keys
 ENDPOINT = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=" + API_KEY
 
 headers = {

@@ -2,3 +2,18 @@
 API Management Console/data/*.db
 API Management Console/data/*.db-*
 API Management Console/logs/*.log
+
+# Secrets and local configuration
+.env
+API Management Console/.env
+API Management Console/data/runtime_secrets/
+
+# Runtime data, logs and caches
+API Management Console/data/
+!API Management Console/data/.gitkeep
+API Management Console/logs/
+__pycache__/
+*.pyc
+
+# Binaries
+*.exe

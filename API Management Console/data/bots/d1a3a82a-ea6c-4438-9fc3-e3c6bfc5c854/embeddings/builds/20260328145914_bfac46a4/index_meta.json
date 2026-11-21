@@ -1,9 +1,0 @@
-{
-  "index_type": "flat",
-  "vector_count": 5,
-  "vector_dim": 384,
-  "use_pca": false,
-  "pca_dim": 0,
-  "rerank_k": 20,
-  "nprobe": 8
-}

@@ -59,7 +59,7 @@ A powerful, local-first AI deployment platform for creating, managing, and deplo
 ### Provider Support
 - **OpenAI** - GPT-4.1, GPT-4o, GPT-3.5-turbo, and more
 - **Local LLM** - llama.cpp, Ollama, LM Studio, vLLM
-- **Claude** - Anthropic models (future-ready)
+- **Claude** - Anthropic models (chat and streaming through the Anthropic API)
 
 ### Knowledge Base Management
 - Upload TXT, JSON, Markdown files
@@ -170,7 +170,7 @@ The script will automatically:
 6. **Access the dashboard:**
    - Admin UI: http://localhost:8000/admin
    - API Docs: http://localhost:8000/docs
-   - Default login: `admin` / `admin123`
+   - Login: the `ADMIN_USERNAME` and `ADMIN_PASSWORD` you set in `.env`. If unset, the code falls back to `admin` / `admin123`, so always set your own.
 
 ### Quick Ollama Setup
 
@@ -529,9 +529,7 @@ The dashboard provides:
 
 ### Running Tests
 
-```bash
-pytest tests/ -v
-```
+Automated tests for this project are not published yet.
 
 ### Adding a New Provider
 
@@ -567,4 +565,4 @@ For issues and feature requests, please open a GitHub issue.
 
 ---
 
-Built with ❤️ using FastAPI, SQLite, FAISS, and OpenAI
+Built with FastAPI, SQLAlchemy, FAISS and React. Supports OpenAI, Anthropic, Gemini and local models.
